@@ -5,7 +5,7 @@ import Slide from "./welcome_views/slide_view";
 import Footer from "./welcome_views/welcome_footer_view";
 import Dots from "./welcome_views/dots_view";
 
-export default function Welcome() {
+export default function Welcome({ navigation }) {
   const { container, scrollContainer, footer } = styles;
 
   const [page, setPage] = useState(0);
@@ -42,7 +42,11 @@ export default function Welcome() {
         </Animated.ScrollView>
         <Dots page={page} />
       </Animated.View>
-      <Footer page={page} nextEvent={nextPageEvent} />
+      <Footer
+        page={page}
+        nextEvent={nextPageEvent}
+        goLogin={() => navigation.navigate("Login")}
+      />
     </View>
   );
 }

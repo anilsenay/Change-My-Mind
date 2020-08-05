@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Button from "../../components/welcome_button";
 
-export default function Footer({ page, nextEvent }) {
+export default function Footer({ page, nextEvent, goLogin }) {
   return (
     <View style={styles.container}>
       {page !== 2 ? (
@@ -16,7 +16,7 @@ export default function Footer({ page, nextEvent }) {
           <Button onPress={nextEvent} text="Next" arrow />
         </>
       ) : (
-        <Button onPress={nextEvent} text="Get Started!" large />
+        <Button onPress={goLogin} text="Get Started!" large />
       )}
     </View>
   );
