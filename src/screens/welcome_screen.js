@@ -1,8 +1,9 @@
 import React, { useState, useRef } from "react";
 import { View, Text, StyleSheet, Animated, SafeAreaView } from "react-native";
 import { Dimensions } from "react-native";
-import Slide from "./welcome_views/slide";
-import Footer from "./welcome_views/welcome_footer";
+import Slide from "./welcome_views/slide_view";
+import Footer from "./welcome_views/welcome_footer_view";
+import Dots from "./welcome_views/dots_view";
 
 export default function Welcome() {
   const { container, scrollContainer, footer } = styles;
@@ -11,8 +12,12 @@ export default function Welcome() {
   const scrollRef = useRef();
   const width = Dimensions.get("window").width;
 
-  const nextPageEvent = () => {
-    scrollRef.current.scrollTo({ x: width * (page + 1), y: 0, animated: true });
+  const nextPageEvent = ({ toEnd }) => {
+    scrollRef.current.scrollTo({
+      x: width * (toEnd ? 2 : page + 1),
+      y: 0,
+      animated: true,
+    });
   };
 
   return (
@@ -35,10 +40,9 @@ export default function Welcome() {
           <Slide label="test2" />
           <Slide label="test3" />
         </Animated.ScrollView>
+        <Dots page={page} />
       </Animated.View>
-      <View style={footer}>
-        <Footer page={page} nextEvent={nextPageEvent} />
-      </View>
+      <Footer page={page} nextEvent={nextPageEvent} />
     </View>
   );
 }
@@ -51,11 +55,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   scrollContainer: {
+    alignItems: "center",
     height: Dimensions.get("window").height * 0.8,
-  },
-  footer: {
-    flex: 1,
-    alignContent: "center",
-    justifyContent: "center",
+    paddingBottom: 60,
+    borderBottomWidth: 1,
+    borderBottomColor: "#F5F5FD",
   },
 });

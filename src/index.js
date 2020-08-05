@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import { View, Text } from "react-native";
-import Welcome from "./screens/welcome";
-import Login from "./screens/login";
+import Welcome from "./screens/welcome_screen";
+import Login from "./screens/login_screen";
 
 export default function Root() {
   const [isFirstTime, setFirstTime] = useState(true);
