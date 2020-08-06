@@ -10,14 +10,10 @@ export default function Root({ navigation }) {
   const [isLogin, setLogin] = useState(false);
 
   if (isFirstTime) {
-    return <Welcome />;
+    navigation.replace("Welcome");
   } else if (!isLogin) {
-    return <Login />;
+    navigation.replace("Login");
   }
 
-  return (
-    <View>
-      <Text>Root Screen</Text>
-    </View>
-  );
+  return <View></View>;
 }

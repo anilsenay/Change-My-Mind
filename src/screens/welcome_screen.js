@@ -20,6 +20,8 @@ export default function Welcome({ navigation }) {
     });
   };
 
+  const goLogin = () => navigation.navigate("Login");
+
   return (
     <View style={container}>
       <Animated.View style={scrollContainer}>
@@ -36,17 +38,22 @@ export default function Welcome({ navigation }) {
             setPage(e.nativeEvent.contentOffset.x / width)
           }
         >
-          <Slide label="test" />
-          <Slide label="test2" />
-          <Slide label="test3" />
+          <Slide
+            title="Welcome to Change My Mind"
+            description="Fikirlerin tartışacağı özgür bir alandasınız. Savunacak bir fikriniz varsa hadi başlayalım."
+          />
+          <Slide
+            title="Change My Mind!"
+            description="Ortaya bir fikir atın ve gelecek karşı görüşlere karşı bunu savunun!"
+          />
+          <Slide
+            title="You are wrong!"
+            description="Bir fikrin yanlış olduğunu mu düşünüyorsunuz? Ona meydan okuyun!"
+          />
         </Animated.ScrollView>
         <Dots page={page} />
       </Animated.View>
-      <Footer
-        page={page}
-        nextEvent={nextPageEvent}
-        goLogin={() => navigation.navigate("Login")}
-      />
+      <Footer page={page} nextEvent={nextPageEvent} goLogin={goLogin} />
     </View>
   );
 }
@@ -60,8 +67,8 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     alignItems: "center",
-    height: Dimensions.get("window").height * 0.8,
-    paddingBottom: 60,
+    height: Dimensions.get("window").height * 0.82,
+    paddingBottom: 50,
     borderBottomWidth: 1,
     borderBottomColor: "#F5F5FD",
   },
