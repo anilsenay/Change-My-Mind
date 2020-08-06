@@ -5,8 +5,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { GlobalNavigation } from "./src/navigation/global_navigation";
 import { navigationRef } from "./src/navigation/root_navigation";
 
-import Root from "./src";
-
 export default function App() {
   return (
     <NavigationContainer ref={navigationRef}>

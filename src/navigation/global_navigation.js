@@ -1,10 +1,8 @@
 import React from "react";
-import { View, Text } from "react-native";
-
 import { createStackNavigator } from "@react-navigation/stack";
 
-import Login from "../screens/login_screen";
-import Welcome from "../screens/welcome_screen";
+import Login from "../screens/login.screen";
+import Welcome from "../screens/welcome.screen";
 import Root from "../index";
 
 const Stack = createStackNavigator();
