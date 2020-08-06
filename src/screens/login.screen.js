@@ -1,9 +1,12 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+
+import Register from "./register.screen";
+import { Colors } from "../consts/colors";
+
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Colors } from "../consts/colors";
-import Register from "./register.screen";
+import GradientButton from "../components/gradient_button";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -33,6 +36,7 @@ function Login() {
   return (
     <View style={styles.container}>
       <Text>Login</Text>
+      <GradientButton text="LOGIN" />
     </View>
   );
 }
@@ -43,5 +47,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    paddingHorizontal: 40,
   },
 });
