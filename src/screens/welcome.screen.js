@@ -1,9 +1,9 @@
 import React, { useState, useRef } from "react";
 import { View, Text, StyleSheet, Animated, SafeAreaView } from "react-native";
 import { Dimensions } from "react-native";
-import Slide from "./welcome_views/slide_view";
-import Footer from "./welcome_views/welcome_footer_view";
-import Dots from "./welcome_views/dots_view";
+import Slide from "./welcome_views/slide.view";
+import Footer from "./welcome_views/welcome.footer.view";
+import Dots from "./welcome_views/dots.view";
 
 export default function Welcome({ navigation }) {
   const { container, scrollContainer, footer } = styles;

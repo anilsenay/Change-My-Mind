@@ -12,7 +12,7 @@ export default function GradientButton({ text, style, onPress, ...props }) {
         {
           borderRadius: 5,
           width: "100%",
-          marginTop: 90,
+          marginTop: 10,
         },
         style,
       ]}
