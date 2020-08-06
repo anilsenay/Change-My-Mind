@@ -13,11 +13,13 @@
     "@react-navigation/native": "^5.7.3",
     "@react-navigation/stack": "^5.9.0",
     "expo": "~38.0.8",
+    "expo-facebook": "~8.2.1",
     "expo-google-app-auth": "^8.1.2",
     "expo-linear-gradient": "~8.2.1",
     "expo-splash-screen": "^0.3.1",
     "expo-status-bar": "^1.0.2",
     "firebase": "7.9.0",
+    "formik": "^2.1.5",
     "react": "~16.11.0",
     "react-dom": "~16.11.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
@@ -27,7 +29,7 @@
     "react-native-screens": "~2.9.0",
     "react-native-tab-view": "^2.15.1",
     "react-native-web": "~0.11.7",
-    "expo-facebook": "~8.2.1"
+    "yup": "^0.29.3"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

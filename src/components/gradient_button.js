@@ -10,14 +10,14 @@ export default function GradientButton({ text, style, onPress, ...props }) {
       colors={[Colors.darkPurple, Colors.purple]}
       style={[
         {
-          borderRadius: 5,
+          borderRadius: 30,
           width: "100%",
           marginTop: 10,
         },
         style,
       ]}
       start={[0, 0]}
-      end={[1, 1]}
+      end={[0.8, 1]}
     >
       <TouchableOpacity
         style={{ width: "100%", padding: 15, alignItems: "center" }}
