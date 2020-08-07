@@ -3,6 +3,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import Login from "../screens/login.screen";
 import Welcome from "../screens/welcome.screen";
+import Feed from "../screens/feed.screen";
+
 import Root from "../index";
 
 const Stack = createStackNavigator();
@@ -23,6 +25,11 @@ export function GlobalNavigation() {
       <Stack.Screen
         name="Login"
         component={Login}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Feed"
+        component={Feed}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

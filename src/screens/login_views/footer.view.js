@@ -11,6 +11,7 @@ import FacebookIcon from "../../components/icons/facebook";
 import { Colors } from "../../consts/colors";
 import SocialButton from "../../components/social_button";
 import ErrorMessage from "../../components/error_message";
+import { navigate } from "../../navigation/root_navigation";
 
 import {
   FACEBOOK_ID,
@@ -55,7 +56,7 @@ export default function Footer({ text }) {
       firebase
         .auth()
         .signInWithCredential(credential)
-        .then((user) => console.log("logged as " + JSON.stringify(user)))
+        .then((user) => navigate("Feed"))
         .catch((error) => {
           showErrorMessage(error);
         });
@@ -78,7 +79,7 @@ export default function Footer({ text }) {
         firebase
           .auth()
           .signInWithCredential(credential)
-          .then((user) => console.log("logged as " + user))
+          .then((user) => navigate("Feed"))
           .catch((error) => {
             showErrorMessage(error);
           });

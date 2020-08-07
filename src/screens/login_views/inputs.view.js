@@ -13,6 +13,7 @@ import PasswordIcon from "../../components/icons/password";
 import EmailIcon from "../../components/icons/email";
 import ErrorMessage from "../../components/error_message";
 import CheckboxView from "../register_views/checkbox.view";
+import { navigate } from "../../navigation/root_navigation";
 
 export default function Inputs({ type }) {
   const showErrorMessage = (errorMessage) => {
@@ -34,9 +35,7 @@ export default function Inputs({ type }) {
     await firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() =>
-        console.log("login with mail as " + firebase.auth().currentUser)
-      )
+      .then(() => navigate("Feed"))
       .catch((error) => {
         let errorCode = error.code;
         let errorMessage = error.message;
@@ -51,7 +50,7 @@ export default function Inputs({ type }) {
     await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(() => console.log("user created as " + firebase.auth().currentUser))
+      .then(() => navigate("Feed"))
       .catch((error) => {
         let errorCode = error.code;
         let errorMessage = error.message;
