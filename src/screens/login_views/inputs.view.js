@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TextInput } from "react-native";
+import { StyleSheet, Text, View, TextInput, SafeAreaView } from "react-native";
 import * as firebase from "firebase";
+import { Notifier, Easing, NotifierComponents } from "react-native-notifier";
 
 import * as yup from "yup";
 import { Formik } from "formik";
@@ -10,9 +11,24 @@ import { Colors } from "../../consts/colors";
 import GradientButton from "../../components/gradient_button";
 import PasswordIcon from "../../components/icons/password";
 import EmailIcon from "../../components/icons/email";
+import ErrorMessage from "../../components/error_message";
 
 export default function Inputs({ type }) {
-  const [errorMessage, setErrorMessage] = useState("");
+  const showErrorMessage = (errorMessage) => {
+    Notifier.showNotification({
+      title: (type === "login" ? "Login" : "Register") + " Failed",
+      description: errorMessage,
+      duration: 3000,
+      showAnimationDuration: 800,
+      showEasing: Easing.bounce,
+      Component: ErrorMessage,
+      componentProps: {
+        alertType: "error",
+      },
+      hideOnPress: true,
+    });
+  };
+
   async function signInWithEmail(email, password) {
     await firebase
       .auth()
@@ -27,6 +43,7 @@ export default function Inputs({ type }) {
           console.log("Weak Password!");
         } else {
           console.log("error:>" + errorMessage);
+          showErrorMessage(errorMessage);
         }
       });
   }
@@ -74,7 +91,7 @@ export default function Inputs({ type }) {
           <Text style={styles.labels}>E-mail</Text>
           <View
             style={
-              touched.password && !isValid && errors.password
+              touched.email && !isValid && errors.email
                 ? [styles.inputAreaContainer, styles.redBorder]
                 : styles.inputAreaContainer
             }

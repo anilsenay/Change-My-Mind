@@ -4,11 +4,14 @@ import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { GlobalNavigation } from "./src/navigation/global_navigation";
 import { navigationRef } from "./src/navigation/root_navigation";
+import { NotifierWrapper } from "react-native-notifier";
 
 export default function App() {
   return (
-    <NavigationContainer ref={navigationRef}>
-      <GlobalNavigation />
-    </NavigationContainer>
+    <NotifierWrapper>
+      <NavigationContainer ref={navigationRef}>
+        <GlobalNavigation />
+      </NavigationContainer>
+    </NotifierWrapper>
   );
 }
