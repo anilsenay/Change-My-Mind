@@ -29,6 +29,7 @@
     "react-native-safe-area-context": "~3.0.7",
     "react-native-screens": "~2.9.0",
     "react-native-svg": "^12.1.0",
+    "react-native-svg-transformer": "^0.14.3",
     "react-native-tab-view": "^2.15.1",
     "react-native-web": "~0.11.7",
     "yup": "^0.29.3"

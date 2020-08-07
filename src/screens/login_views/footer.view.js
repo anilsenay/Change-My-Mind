@@ -78,11 +78,11 @@ export default function Footer({ text }) {
     <View style={styles.container}>
       <Text style={styles.text}>{text.toUpperCase()}</Text>
       <View style={styles.iconContainer}>
-        <SocialButton onPress={signInWithGoogleAsync}>
-          <Text>G</Text>
+        <SocialButton text="Google" onPress={signInWithGoogleAsync}>
+          <GoogleIcon width={30} height={30} fill={Colors.darkPurple} />
         </SocialButton>
-        <SocialButton onPress={loginWithFacebook}>
-          <Text>F</Text>
+        <SocialButton text="Facebook" onPress={loginWithFacebook}>
+          <FacebookIcon width={30} height={30} fill={Colors.darkPurple} />
         </SocialButton>
       </View>
     </View>
