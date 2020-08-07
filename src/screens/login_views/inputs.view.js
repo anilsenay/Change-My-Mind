@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, TextInput, SafeAreaView } from "react-native";
+import React from "react";
+import { StyleSheet, Text, View, TextInput } from "react-native";
 import * as firebase from "firebase";
-import { Notifier, Easing, NotifierComponents } from "react-native-notifier";
+import { Notifier, Easing } from "react-native-notifier";
 
 import * as yup from "yup";
 import { Formik } from "formik";
@@ -40,9 +40,8 @@ export default function Inputs({ type }) {
         let errorCode = error.code;
         let errorMessage = error.message;
         if (errorCode == "auth/weak-password") {
-          console.log("Weak Password!");
+          showErrorMessage("Weak Password!");
         } else {
-          console.log("error:>" + errorMessage);
           showErrorMessage(errorMessage);
         }
       });
@@ -51,7 +50,16 @@ export default function Inputs({ type }) {
     await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(console.log("user created as " + firebase.auth().currentUser));
+      .then(() => console.log("user created as " + firebase.auth().currentUser))
+      .catch((error) => {
+        let errorCode = error.code;
+        let errorMessage = error.message;
+        if (errorCode == "auth/weak-password") {
+          showErrorMessage("Weak Password!");
+        } else {
+          showErrorMessage(errorMessage);
+        }
+      });
   }
 
   const submitEvent = (email, password) => {

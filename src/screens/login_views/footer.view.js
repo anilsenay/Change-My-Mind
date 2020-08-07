@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { Notifier, Easing } from "react-native-notifier";
 
 import * as Facebook from "expo-facebook";
 import * as Google from "expo-google-app-auth";
@@ -9,6 +10,7 @@ import GoogleIcon from "../../components/icons/google";
 import FacebookIcon from "../../components/icons/facebook";
 import { Colors } from "../../consts/colors";
 import SocialButton from "../../components/social_button";
+import ErrorMessage from "../../components/error_message";
 
 import {
   FACEBOOK_ID,
@@ -22,6 +24,21 @@ export default function Footer({ text }) {
       ? "Login yapılı as " + JSON.stringify(firebase.auth().currentUser)
       : "Login değil"
   );
+
+  const showErrorMessage = (errorMessage) => {
+    Notifier.showNotification({
+      title: (type === "login" ? "Login" : "Register") + " Failed",
+      description: errorMessage,
+      duration: 3000,
+      showAnimationDuration: 800,
+      showEasing: Easing.bounce,
+      Component: ErrorMessage,
+      componentProps: {
+        alertType: "error",
+      },
+      hideOnPress: true,
+    });
+  };
 
   async function loginWithFacebook() {
     await Facebook.initializeAsync(FACEBOOK_ID);
@@ -40,7 +57,7 @@ export default function Footer({ text }) {
         .signInWithCredential(credential)
         .then((user) => console.log("logged as " + JSON.stringify(user)))
         .catch((error) => {
-          // Handle Errors here.
+          showErrorMessage(error);
         });
     }
   }
@@ -63,7 +80,7 @@ export default function Footer({ text }) {
           .signInWithCredential(credential)
           .then((user) => console.log("logged as " + user))
           .catch((error) => {
-            // Handle Errors here.
+            showErrorMessage(error);
           });
         return result.accessToken;
       } else {
