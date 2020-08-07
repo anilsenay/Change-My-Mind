@@ -1,5 +1,6 @@
-import React from "react";
-import { StyleSheet, Text, View, TextInput, Button } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, View, TextInput } from "react-native";
+import * as firebase from "firebase";
 
 import * as yup from "yup";
 import { Formik } from "formik";
@@ -7,18 +8,53 @@ import { Formik } from "formik";
 import { Colors } from "../../consts/colors";
 
 import GradientButton from "../../components/gradient_button";
+import PasswordIcon from "../../components/icons/password";
+import EmailIcon from "../../components/icons/email";
 
 export default function Inputs({ type }) {
+  const [errorMessage, setErrorMessage] = useState("");
+  async function signInWithEmail(email, password) {
+    await firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() =>
+        console.log("login with mail as " + firebase.auth().currentUser)
+      )
+      .catch((error) => {
+        let errorCode = error.code;
+        let errorMessage = error.message;
+        if (errorCode == "auth/weak-password") {
+          console.log("Weak Password!");
+        } else {
+          console.log("error:>" + errorMessage);
+        }
+      });
+  }
+  async function createUserWithEmail(email, password) {
+    await firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(console.log("user created as " + firebase.auth().currentUser));
+  }
+
+  const submitEvent = (email, password) => {
+    type === "login"
+      ? signInWithEmail(email, password)
+      : createUserWithEmail(email, password);
+  };
   return (
     <Formik
       initialValues={{ email: "", password: "" }}
-      onSubmit={(values) => console.log(values)}
+      onSubmit={(values) => submitEvent(values.email, values.password)}
       validationSchema={yup.object().shape({
-        email: yup.string("Type your email").email().required(),
+        email: yup
+          .string("Type your email")
+          .email()
+          .required("* Email is a required field"),
         password: yup
           .string("No password provided.")
           .min(8, "Password is too short - should be 8 chars minimum.")
-          .required()
+          .required("* Password is a required field")
           .matches(
             /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/,
             `Password must contain at least :\n• minimum eight characters,\n• one upper case English letter,\n• one lower case English letter\n• one number`
@@ -34,37 +70,70 @@ export default function Inputs({ type }) {
         values,
         errors,
       }) => (
-        <View style={styles.inputContainer}>
+        <View style={styles.container}>
           <Text style={styles.labels}>E-mail</Text>
-          <TextInput
-            placeholder="Press here to type your Email"
-            textContentType="emailAddress"
+          <View
             style={
-              touched.email && !isValid && errors.email
-                ? [styles.input, styles.redBorder]
-                : styles.input
+              touched.password && !isValid && errors.password
+                ? [styles.inputAreaContainer, styles.redBorder]
+                : styles.inputAreaContainer
             }
-            onChangeText={handleChange("email")}
-            onBlur={handleBlur("email")}
-            value={values.email}
-          />
+          >
+            {!values.email && (
+              <EmailIcon
+                width={24}
+                height={24}
+                fill={Colors.grey + "88"}
+                style={styles.icon}
+              />
+            )}
+            <TextInput
+              placeholder="Press here to type your Email"
+              textContentType="emailAddress"
+              style={
+                values.email
+                  ? styles.input
+                  : [styles.input, { paddingLeft: 50 }]
+              }
+              onChangeText={handleChange("email")}
+              onBlur={handleBlur("email")}
+              value={values.email}
+            />
+          </View>
           {touched.email && !isValid && errors.email && (
             <Text style={styles.errorText}>{errors.email}</Text>
           )}
           <Text style={styles.labels}>Password</Text>
-          <TextInput
-            placeholder="Press here to type your Password"
-            textContentType="password"
-            secureTextEntry
+          <View
             style={
               touched.password && !isValid && errors.password
-                ? [styles.input, styles.redBorder]
-                : styles.input
+                ? [styles.inputAreaContainer, styles.redBorder]
+                : styles.inputAreaContainer
             }
-            onChangeText={handleChange("password")}
-            onBlur={handleBlur("password")}
-            value={values.password}
-          />
+          >
+            {!values.password && (
+              <PasswordIcon
+                width={24}
+                height={24}
+                fill={Colors.grey + "88"}
+                style={styles.icon}
+              />
+            )}
+            <TextInput
+              placeholder="Press here to type your Password"
+              textContentType="password"
+              secureTextEntry
+              autoCapitalize="none"
+              style={
+                values.password
+                  ? styles.input
+                  : [styles.input, { paddingLeft: 50 }]
+              }
+              onChangeText={handleChange("password")}
+              onBlur={handleBlur("password")}
+              value={values.password}
+            />
+          </View>
           {touched.password && !isValid && errors.password && (
             <Text style={styles.errorText}>{errors.password}</Text>
           )}
@@ -80,18 +149,29 @@ export default function Inputs({ type }) {
 }
 
 const styles = StyleSheet.create({
-  input: {
+  inputAreaContainer: {
+    flexDirection: "row",
+    alignItems: "center",
     borderRadius: 30,
     backgroundColor: Colors.lightGrey,
+    marginBottom: 10,
+  },
+  input: {
     padding: 10,
     paddingHorizontal: 20,
-    marginBottom: 10,
+    paddingLeft: 20,
+    width: "100%",
+  },
+  icon: {
+    position: "absolute",
+    zIndex: 2,
+    marginLeft: 16,
   },
   redBorder: {
     borderWidth: 1,
     borderColor: "#ff1744",
   },
-  inputContainer: {
+  container: {
     width: "100%",
   },
   labels: {
@@ -100,6 +180,6 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: "red",
-    marginVertical: 8,
+    marginBottom: 8,
   },
 });
