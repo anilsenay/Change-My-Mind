@@ -12,6 +12,7 @@ import GradientButton from "../../components/gradient_button";
 import PasswordIcon from "../../components/icons/password";
 import EmailIcon from "../../components/icons/email";
 import ErrorMessage from "../../components/error_message";
+import CheckboxView from "../register_views/checkbox.view";
 
 export default function Inputs({ type }) {
   const showErrorMessage = (errorMessage) => {
@@ -69,7 +70,7 @@ export default function Inputs({ type }) {
   };
   return (
     <Formik
-      initialValues={{ email: "", password: "" }}
+      initialValues={{ email: "", password: "", checkbox: false }}
       onSubmit={(values) => submitEvent(values.email, values.password)}
       validationSchema={yup.object().shape({
         email: yup
@@ -84,12 +85,14 @@ export default function Inputs({ type }) {
             /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/,
             `Password must contain at least :\n• minimum eight characters,\n• one upper case English letter,\n• one lower case English letter\n• one number`
           ),
+        checkbox: yup.boolean().oneOf([true], "* Must Accept Privacy Policy"),
       })}
     >
       {({
         handleChange,
         handleBlur,
         handleSubmit,
+        setFieldValue,
         touched,
         isValid,
         values,
@@ -162,7 +165,21 @@ export default function Inputs({ type }) {
           {touched.password && !isValid && errors.password && (
             <Text style={styles.errorText}>{errors.password}</Text>
           )}
+          {type === "register" && (
+            <CheckboxView
+              error={
+                touched.checkbox && !isValid && errors.checkbox
+                  ? errors.checkbox
+                  : null
+              }
+              value={values.checkbox}
+              onValueChange={() => {
+                setFieldValue("checkbox", !values.checkbox);
+              }}
+            />
+          )}
           <GradientButton
+            style={{ marginTop: 40 }}
             text={type === "login" ? "LOGIN" : "REGISTER"}
             title="Submit"
             onPress={handleSubmit}

@@ -17,13 +17,7 @@ export default function Register() {
     <>
       <ScrollView style={{ paddingTop: 40, backgroundColor: "white" }}>
         <View style={styles.container}>
-          <Inputs />
-          <TouchableOpacity
-            style={styles.forgotButton}
-            onPress={() => console.log("forgot")}
-          >
-            {/* checkbox */}
-          </TouchableOpacity>
+          <Inputs type="register" />
         </View>
         <Footer text="or create account with" />
       </ScrollView>
