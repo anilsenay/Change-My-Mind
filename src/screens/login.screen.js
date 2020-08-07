@@ -45,7 +45,7 @@ function Login() {
     <>
       <ScrollView style={{ paddingTop: 40, backgroundColor: "white" }}>
         <View style={styles.container}>
-          <Inputs />
+          <Inputs type="login" />
           <TouchableOpacity
             style={styles.forgotButton}
             onPress={() => console.log("forgot")}

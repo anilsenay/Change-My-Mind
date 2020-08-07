@@ -8,7 +8,7 @@ import { Colors } from "../../consts/colors";
 
 import GradientButton from "../../components/gradient_button";
 
-export default function Inputs() {
+export default function Inputs({ type }) {
   return (
     <Formik
       initialValues={{ email: "", password: "" }}
@@ -68,7 +68,11 @@ export default function Inputs() {
           {touched.password && !isValid && errors.password && (
             <Text style={styles.errorText}>{errors.password}</Text>
           )}
-          <GradientButton text="LOGIN" title="Submit" onPress={handleSubmit} />
+          <GradientButton
+            text={type === "login" ? "LOGIN" : "REGISTER"}
+            title="Submit"
+            onPress={handleSubmit}
+          />
         </View>
       )}
     </Formik>

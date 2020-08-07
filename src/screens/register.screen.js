@@ -1,22 +1,51 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import GradientButton from "../components/gradient_button";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
+
+import { Colors } from "../consts/colors";
+
+import Inputs from "./login_views/inputs.view";
+import Footer from "./login_views/footer.view";
 
 export default function Register() {
   return (
-    <View style={styles.container}>
-      <Text>Register</Text>
-      <GradientButton text="REGISTER" />
-    </View>
+    <>
+      <ScrollView style={{ paddingTop: 40, backgroundColor: "white" }}>
+        <View style={styles.container}>
+          <Inputs />
+          <TouchableOpacity
+            style={styles.forgotButton}
+            onPress={() => console.log("forgot")}
+          >
+            {/* checkbox */}
+          </TouchableOpacity>
+        </View>
+        <Footer text="or create account with" />
+      </ScrollView>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "white",
     alignItems: "center",
-    paddingHorizontal: 40,
     justifyContent: "center",
+    paddingHorizontal: 40,
+    paddingBottom: 50,
+  },
+  forgotButton: {
+    padding: 10,
+    marginTop: 10,
+  },
+  forgotPass: {
+    color: Colors.grey + "AA",
+    fontSize: 16,
   },
 });
