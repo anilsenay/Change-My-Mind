@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 export default function Explore() {
   return (
     <View>
-      <Text></Text>
+      <Text>Explore</Text>
     </View>
   );
 }
