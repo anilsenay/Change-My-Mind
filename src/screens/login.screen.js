@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -15,6 +15,8 @@ import { Colors } from "../consts/colors";
 
 import Inputs from "./login_views/inputs.view";
 import Footer from "./login_views/footer.view";
+import Modal from "../components/modal";
+import ForgotPassView from "./login_views/forgot_pass.view";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -41,14 +43,18 @@ export default function LoginNavigator() {
 }
 
 function Login() {
+  const [modalVisible, setModalVisible] = useState(false);
   return (
     <>
       <ScrollView style={{ paddingTop: 40, backgroundColor: "white" }}>
         <View style={styles.container}>
           <Inputs type="login" />
+          <Modal visible={modalVisible} setModalVisible={setModalVisible}>
+            <ForgotPassView goBack={() => setModalVisible(false)} />
+          </Modal>
           <TouchableOpacity
             style={styles.forgotButton}
-            onPress={() => console.log("forgot")}
+            onPress={() => setModalVisible(true)}
           >
             <Text style={styles.forgotPass}>Forgot Password?</Text>
           </TouchableOpacity>
