@@ -15,18 +15,27 @@ import GradientButton from "../../components/gradient_button";
 import BackIcon from "../../components/icons/back";
 import { ScrollView } from "react-native-gesture-handler";
 
-export default function ForgotPassView({ goBack }) {
-  const [email, setEmail] = useState();
+export default function ForgotPassView({ goBack, showNotification }) {
+  const [email, setEmail] = useState("");
+
+  console.log(/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email));
 
   const resetEvent = () => {
-    auth()
-      .sendPasswordResetEmail(email)
-      .then(function () {
-        console.log("sent");
-      })
-      .catch(function (error) {
-        // An error happened.
-      });
+    /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email) &&
+      auth()
+        .sendPasswordResetEmail(email)
+        .then(function () {
+          goBack();
+          showNotification(
+            "Reset mail sent",
+            "Password reset email sent! Please check your mail box.",
+            "Success"
+          );
+        })
+        .catch(function (error) {
+          goBack();
+          showNotification("Something went wrong!", error.toString(), "Fail");
+        });
   };
   return (
     <ScrollView contentContainerStyle={styles.container}>

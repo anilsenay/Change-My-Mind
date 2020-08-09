@@ -9,6 +9,7 @@ import {
 
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Notifier, Easing } from "react-native-notifier";
 
 import Register from "./register.screen";
 import { Colors } from "../consts/colors";
@@ -17,6 +18,22 @@ import Inputs from "./login_views/inputs.view";
 import Footer from "./login_views/footer.view";
 import Modal from "../components/modal";
 import ForgotPassView from "./login_views/forgot_pass.view";
+import { ErrorMessage, SuccessMessage } from "../components/error_message";
+
+const showErrorMessage = (title, errorMessage, status) => {
+  Notifier.showNotification({
+    title: title,
+    description: errorMessage,
+    duration: 5000,
+    showAnimationDuration: 800,
+    showEasing: Easing.bounce,
+    Component: status === "Success" ? SuccessMessage : ErrorMessage,
+    componentProps: {
+      alertType: "error",
+    },
+    hideOnPress: true,
+  });
+};
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -50,7 +67,10 @@ function Login() {
         <View style={styles.container}>
           <Inputs type="login" />
           <Modal visible={modalVisible} setModalVisible={setModalVisible}>
-            <ForgotPassView goBack={() => setModalVisible(false)} />
+            <ForgotPassView
+              goBack={() => setModalVisible(false)}
+              showNotification={showErrorMessage}
+            />
           </Modal>
           <TouchableOpacity
             style={styles.forgotButton}
