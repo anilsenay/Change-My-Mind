@@ -1,7 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-
-import BackIcon from "./icons/back";
 
 export default function Header({
   title,
@@ -55,7 +53,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "black",
-    fontSize: 20,
+    fontSize: 24,
     letterSpacing: 0.8,
     fontWeight: "bold",
     marginLeft: "auto",
