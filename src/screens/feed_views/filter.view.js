@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Picker,
+  FlatList,
 } from "react-native";
 
 import { Colors } from "../../consts/colors";
@@ -14,10 +15,13 @@ import Collapsible from "react-native-collapsible";
 
 import BackIcon from "../../components/icons/back";
 
-const FilterItem = ({ text, selected }) => {
+import filterHook from "../../hooks/filter.hook";
+
+const FilterItem = ({ text, selected, onPress }) => {
   return (
     <TouchableOpacity
       style={[styles.itemContainer, selected ? styles.selected : {}]}
+      onPress={onPress}
     >
       <Text style={styles.symbolText}>{selected ? "✓" : "+"}</Text>
       <Text style={styles.itemText}>{text}</Text>
@@ -36,28 +40,33 @@ const sortValues = [
   { label: "Popular: Least to Most", value: "popular-lest-to-most" },
 ];
 
-export default function Filter({ showFilter }) {
-  const [sortSelection, setSortSelection] = useState();
-  // TODO : global state
+export default function Filter({ hideFilter }) {
+  const { useFilterState, setSort, updateCategory } = filterHook();
+  const { categories, sortSelection } = useFilterState();
+
   return (
-    <Collapsible collapsed={showFilter}>
+    <Collapsible collapsed={hideFilter}>
       <View style={styles.container}>
-        <ScrollView
+        <FlatList
           horizontal
           style={styles.scrollStyle}
           showsHorizontalScrollIndicator={false}
-        >
-          <FilterItem text="Arts" selected />
-          <FilterItem text="Education" selected />
-          <FilterItem text="Games" />
-          <FilterItem text="Movies" />
-          <FilterItem text="News" />
-        </ScrollView>
+          data={categories}
+          keyExtractor={(item) => item.name}
+          renderItem={({ item }) => (
+            <FilterItem
+              text={item.name}
+              selected={item.isSelected}
+              onPress={() => updateCategory(item.name)}
+            />
+          )}
+          ListFooterComponent={<View style={{ marginLeft: 16 }} />}
+        />
         <View style={styles.pickerContainer}>
           <Picker
             selectedValue={sortSelection}
             style={styles.pickerStyle}
-            onValueChange={(e) => setSortSelection(e)}
+            onValueChange={(e) => setSort(e)}
           >
             {sortValues.map((item) => {
               return (

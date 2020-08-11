@@ -6,16 +6,16 @@ import FilterIcon from "../components/icons/filter";
 import Filter from "./feed_views/filter.view";
 
 export default function Feed() {
-  const [showFilter, setShowFilter] = useState(false);
+  const [hideFilter, setHideFilter] = useState(true);
   return (
     <SafeAreaView style={styles.container}>
       <Header
         title="Feed"
         titleAlignment="left"
         rightIcon={<FilterIcon width={24} height={24} fill="black" />}
-        rightIconEvent={() => setShowFilter(!showFilter)}
+        rightIconEvent={() => setHideFilter(!hideFilter)}
       />
-      <Filter showFilter={showFilter} />
+      <Filter hideFilter={hideFilter} />
       <Text>Feed</Text>
     </SafeAreaView>
   );
