@@ -55,6 +55,7 @@ export const feedData = [
     round_number: 5,
     respond_limit: 6,
     finish_date: "Tue Aug 15 2020 22:41:17 GMT+0300 (GMT+03:00)",
+    headerSrc: "https://picsum.photos/id/249/300/300",
   },
   {
     id: 1215165,

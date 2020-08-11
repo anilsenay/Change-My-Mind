@@ -83,39 +83,50 @@ const Footer = ({ startTime, updateTime }) => {
   );
 };
 
-export default function FeedItem({
-  title,
-  category,
-  proponent,
-  opponent,
-  startDate,
-  updateDate,
-  status,
-  roundNumber,
-  respondLimit,
-  finishDate,
-}) {
+export default function FeedItem({ itemData }) {
+  const {
+    title,
+    category,
+    proponent,
+    opponent,
+    start_date,
+    update_date,
+    status,
+    round_number,
+    respond_limit,
+    finish_date,
+    headerSrc,
+  } = itemData;
   return (
     <View style={styles.container}>
       <View style={styles.itemContainer}>
-        <CategoryHeader categoryName={category} />
-        <Text style={styles.title} numberOfLines={2}>
-          {title}
-        </Text>
-        <UsersView proponent={proponent} opponent={opponent} />
-        <Footer startTime={startDate} updateTime={updateDate} />
-        <View style={styles.footerButton}>
-          {status === "open" && !opponent?.username && (
-            <Text style={styles.footerBtnText}>Change His/Her Mind!</Text>
-          )}
-          {status === "open" && opponent?.username && (
-            <Text style={styles.footerBtnText}>Vote</Text>
-          )}
-          {status === "closed" && (
-            <Text style={styles.footerBtnText}>
-              This discussion has been over
-            </Text>
-          )}
+        {headerSrc && (
+          <Image
+            source={{ uri: headerSrc }}
+            resizeMode="cover"
+            style={styles.headerImage}
+          />
+        )}
+        <View style={styles.itemArea}>
+          <CategoryHeader categoryName={category} />
+          <Text style={styles.title} numberOfLines={2}>
+            {title}
+          </Text>
+          <UsersView proponent={proponent} opponent={opponent} />
+          <Footer startTime={start_date} updateTime={update_date} />
+          <View style={styles.footerButton}>
+            {status === "open" && !opponent?.username && (
+              <Text style={styles.footerBtnText}>Change His/Her Mind!</Text>
+            )}
+            {status === "open" && opponent?.username && (
+              <Text style={styles.footerBtnText}>Vote</Text>
+            )}
+            {status === "closed" && (
+              <Text style={styles.footerBtnText}>
+                This discussion has been over
+              </Text>
+            )}
+          </View>
         </View>
       </View>
     </View>
@@ -130,7 +141,6 @@ const styles = StyleSheet.create({
   itemContainer: {
     width: "100%",
     backgroundColor: "white",
-    paddingHorizontal: 16,
     borderWidth: 1,
     borderRadius: 12,
     borderColor: Colors.lightGrey,
@@ -143,6 +153,9 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
 
     elevation: 5,
+  },
+  itemArea: {
+    paddingHorizontal: 16,
   },
   categoryView: {
     flexDirection: "row",
@@ -226,5 +239,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textTransform: "uppercase",
     fontWeight: "bold",
+  },
+  headerImage: {
+    width: "100%",
+    height: 200,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
   },
 });

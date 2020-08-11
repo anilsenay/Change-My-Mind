@@ -11,20 +11,7 @@ export default function FeedItems() {
       showsVerticalScrollIndicator={false}
       data={feedData}
       keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => (
-        <FeedItem
-          title={item.title}
-          category={item.category}
-          proponent={item.proponent}
-          opponent={item.opponent}
-          startDate={item.start_date}
-          updateDate={item.update_date}
-          status={item.status}
-          roundNumber={item.round_number}
-          respondLimit={item.respond_limit}
-          finishDate={item.finish_date}
-        />
-      )}
+      renderItem={({ item }) => <FeedItem itemData={item} />}
       ListFooterComponent={<View style={{ marginBottom: 16 }} />}
     />
   );
