@@ -99,36 +99,40 @@ export default function FeedItem({ itemData }) {
   } = itemData;
   return (
     <View style={styles.container}>
-      <View style={styles.itemContainer}>
-        {headerSrc && (
-          <Image
-            source={{ uri: headerSrc }}
-            resizeMode="cover"
-            style={styles.headerImage}
-          />
-        )}
-        <View style={styles.itemArea}>
-          <CategoryHeader categoryName={category} />
-          <Text style={styles.title} numberOfLines={2}>
-            {title}
-          </Text>
-          <UsersView proponent={proponent} opponent={opponent} />
-          <Footer startTime={start_date} updateTime={update_date} />
-          <View style={styles.footerButton}>
-            {status === "open" && !opponent?.username && (
-              <Text style={styles.footerBtnText}>Change His/Her Mind!</Text>
-            )}
-            {status === "open" && opponent?.username && (
-              <Text style={styles.footerBtnText}>Vote</Text>
-            )}
-            {status === "closed" && (
-              <Text style={styles.footerBtnText}>
-                This discussion has been over
-              </Text>
-            )}
+      <TouchableWithoutFeedback
+        onPress={() => console.log("container pressed")}
+      >
+        <View style={styles.itemContainer}>
+          {headerSrc && (
+            <Image
+              source={{ uri: headerSrc }}
+              resizeMode="cover"
+              style={styles.headerImage}
+            />
+          )}
+          <View style={styles.itemArea}>
+            <CategoryHeader categoryName={category} />
+            <Text style={styles.title} numberOfLines={2}>
+              {title}
+            </Text>
+            <UsersView proponent={proponent} opponent={opponent} />
+            <Footer startTime={start_date} updateTime={update_date} />
+            <View style={styles.footerButton}>
+              {status === "open" && !opponent?.username && (
+                <Text style={styles.footerBtnText}>Change His/Her Mind!</Text>
+              )}
+              {status === "open" && opponent?.username && (
+                <Text style={styles.footerBtnText}>Vote</Text>
+              )}
+              {status === "closed" && (
+                <Text style={styles.footerBtnText}>
+                  This discussion has been over
+                </Text>
+              )}
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </View>
   );
 }

@@ -9,6 +9,7 @@ import Feed from "../screens/feed.screen";
 import Explore from "../screens/explore.screen";
 import Notifications from "../screens/notification.screen";
 import Profile from "../screens/profile.screen";
+import Create from "../screens/create.screen";
 
 import Root from "../index";
 import { MyTabBar } from "./tabBar";
@@ -36,6 +37,11 @@ export function GlobalNavigation() {
       <Stack.Screen
         name="Feed"
         component={TabScreens}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Create"
+        component={Create}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
