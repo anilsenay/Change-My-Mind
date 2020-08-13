@@ -18,7 +18,9 @@ const Stack = createStackNavigator();
 
 export function GlobalNavigation() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{ gestureEnabled: true, gestureDirection: "vertical" }}
+    >
       <Stack.Screen
         name="Root"
         component={Root}
