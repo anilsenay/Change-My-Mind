@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TextInput, Picker } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView } from "react-native-gesture-handler";
 import { pop } from "../navigation/root_navigation";
 
 import { Formik } from "formik";
@@ -10,12 +11,18 @@ import Header from "../components/header";
 import BackIcon from "../components/icons/back";
 import { Colors } from "../consts/colors";
 import GradientButton from "../components/gradient_button";
+import CustomModal from "../components/modal";
 
 import { categories } from "../consts/filter_categories";
-import { ScrollView } from "react-native-gesture-handler";
+import ErrorModal from "./create_views/error_modal.view";
 
 export default function Create() {
   const [blur, setBlur] = useState();
+  const [modalVisable, setModalVisible] = useState(false);
+
+  const submitEvent = (values) => {
+    console.log(values);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -34,30 +41,29 @@ export default function Create() {
           voting_period: "",
           argument: "",
         }}
-        onSubmit={(values) => console.log(values)}
         validationSchema={yup.object().shape({
           topic: yup
-            .string("Please set a topic title for your discussion")
-            .min(3, "Topic text must be minimum 3 character")
+            .string("* Please set a topic title for your discussion")
+            .min(3, "* Topic text must be minimum 3 character")
             .required("* Topic is a required field"),
           respond_hour: yup
             .number("")
-            .min(1, "Respond hour limit must be minimum 1 hour")
+            .min(1, "* Respond hour limit must be minimum 1 hour")
             .required("* Respond Hour Limit is a required field"),
           respond_minute: yup
             .number("")
-            .max(59, "Respond minute limit can be maximum 59 minutes.")
+            .max(59, "* Respond minute limit can be maximum 59 minutes.")
             .required("* Respond Minute Limit is a required field"),
           voting_period: yup
             .number("")
-            .max(30, "People should vote within 30 days maximum.")
+            .max(30, "* People should vote within 30 days maximum.")
             .required("* Voting Period is a required field"),
           argument: yup
-            .string("Please write your argument to start a discussion")
-            .min(10, "Your argument is too short")
+            .string("* Please write your argument to start a discussion")
+            .min(10, "* Your argument is too short")
             .max(
               5000,
-              "Your argument can be maximum 5000 character for each round"
+              "* Your argument can be maximum 5000 character for each round"
             )
             .required("* Argument is a required field"),
         })}
@@ -205,8 +211,18 @@ export default function Create() {
               style={{ marginTop: 40, marginBottom: 60 }}
               text="Start Discussion"
               title="Submit"
-              onPress={() => console.log(errors)}
+              onPress={() =>
+                touched.topic && isValid
+                  ? submitEvent(values)
+                  : setModalVisible(true)
+              }
             />
+            <CustomModal
+              visible={modalVisable}
+              setModalVisible={setModalVisible}
+            >
+              <ErrorModal errors={errors} />
+            </CustomModal>
           </ScrollView>
         )}
       </Formik>
