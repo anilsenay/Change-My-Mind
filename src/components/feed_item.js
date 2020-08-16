@@ -7,7 +7,7 @@ import {
   Image,
   TouchableWithoutFeedback,
 } from "react-native";
-import { Colors } from "../consts/colors";
+import { navigate } from "../navigation/root_navigation";
 
 import {
   formatDistanceToNowStrict,
@@ -16,6 +16,7 @@ import {
   isThisYear,
 } from "date-fns";
 
+import { Colors } from "../consts/colors";
 import { categoriesWithEmoji } from "../consts/filter_categories";
 
 const User = ({ username, imageSrc }) => {
@@ -100,7 +101,7 @@ export default function FeedItem({ itemData }) {
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback
-        onPress={() => console.log("container pressed")}
+        onPress={() => navigate("Discussion", { data: itemData })}
       >
         <View style={styles.itemContainer}>
           {headerSrc && (

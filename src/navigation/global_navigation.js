@@ -13,14 +13,13 @@ import Create from "../screens/create.screen";
 
 import Root from "../index";
 import { MyTabBar } from "./tabBar";
+import Discussion from "../screens/discussion";
 
 const Stack = createStackNavigator();
 
 export function GlobalNavigation() {
   return (
-    <Stack.Navigator
-      screenOptions={{ gestureEnabled: true, gestureDirection: "vertical" }}
-    >
+    <Stack.Navigator>
       <Stack.Screen
         name="Root"
         component={Root}
@@ -44,6 +43,11 @@ export function GlobalNavigation() {
       <Stack.Screen
         name="Create"
         component={Create}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Discussion"
+        component={Discussion}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
