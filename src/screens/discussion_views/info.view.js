@@ -1,7 +1,15 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+} from "react-native";
 import { Colors } from "../../consts/colors";
 import Users from "./users.view";
+import BackIcon from "../../components/icons/back";
+import Collapsible from "react-native-collapsible";
 
 const InfoText = ({ label, text }) => {
   return (
@@ -13,6 +21,7 @@ const InfoText = ({ label, text }) => {
 };
 
 export default function Info({ data }) {
+  const [hideInfo, setHideInfo] = useState(false);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{data.title}</Text>
@@ -21,24 +30,37 @@ export default function Info({ data }) {
         proponent={data.proponent}
         round={data.round_number}
       />
-      <View style={styles.infoContainer}>
-        <View style={styles.infoInnerContainer}>
-          <InfoText label="Started" text={"28.05.2020" || data.start_date} />
-          <InfoText label="Category" text={data.category} />
-          <InfoText label="Status" text="Open" />
+      <Collapsible collapsed={hideInfo}>
+        <View style={styles.infoContainer}>
+          <View style={styles.infoInnerContainer}>
+            <InfoText label="Started" text={"28.05.2020" || data.start_date} />
+            <InfoText label="Category" text={data.category} />
+            <InfoText label="Status" text="Open" />
+          </View>
+          <View style={styles.infoInnerContainer}>
+            <InfoText
+              label="Last Update"
+              text={"10 hours before" || data.start_date}
+            />
+            <InfoText label="Respond Limit" text={data.respond_limit} />
+            <InfoText
+              label="Expires In"
+              text={"8 days 16 hours" || data.start_date}
+            />
+          </View>
         </View>
-        <View style={styles.infoInnerContainer}>
-          <InfoText
-            label="Last Update"
-            text={"10 hours before" || data.start_date}
-          />
-          <InfoText label="Respond Limit" text={data.respond_limit} />
-          <InfoText
-            label="Expires In"
-            text={"8 days 16 hours" || data.start_date}
-          />
-        </View>
-      </View>
+      </Collapsible>
+      <TouchableOpacity
+        style={styles.hideButton}
+        onPress={() => setHideInfo(!hideInfo)}
+      >
+        <BackIcon
+          width={24}
+          height={24}
+          fill="white"
+          style={{ transform: [{ rotate: hideInfo ? "270deg" : "90deg" }] }}
+        />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -48,6 +70,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.purple + "AA",
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
+    marginBottom: 8,
   },
   infoContainer: {
     paddingHorizontal: 12,
@@ -73,6 +96,7 @@ const styles = StyleSheet.create({
   infoTextLabel: {
     color: "white",
     fontWeight: "bold",
+    justifyContent: "center",
     fontSize: 18,
     borderBottomColor: "white",
     borderBottomWidth: 2,
@@ -83,5 +107,10 @@ const styles = StyleSheet.create({
     marginVertical: 6,
     marginHorizontal: 6,
     borderRadius: 10,
+  },
+  hideButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 8,
   },
 });
