@@ -46,8 +46,6 @@ export default function Info({ data }) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.purple + "AA",
-    borderTopWidth: 1,
-    borderTopColor: Colors.lightGrey,
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
   },
