@@ -54,11 +54,11 @@ const Argument = ({ photo, type }) => {
   );
 };
 
-export default function Round({ opponent, proponent }) {
+export default function Round({ roundNumber, opponent, proponent }) {
   return (
     <View style={styles.container}>
       <View style={{ alignItems: "center", marginBottom: 8 }}>
-        <Text style={styles.title}>Round 1</Text>
+        <Text style={styles.title}>Round {roundNumber}</Text>
       </View>
       <Argument photo={opponent.imageSrc} type="opponent" />
       <View style={styles.vsContainer}>
@@ -75,7 +75,6 @@ const styles = StyleSheet.create({
     borderTopColor: Colors.lightGrey,
     borderTopWidth: 2,
     marginTop: 30,
-    marginBottom: 30,
   },
   title: {
     fontSize: 24,
