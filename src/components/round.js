@@ -11,7 +11,7 @@ are not better equipped because of preschool. They may develop social
 skills and hand paintin4g skills sooner, however children that miss
 preschool will quickly catch up before they finish the first grade.`;
 
-const Argument = ({ photo, type }) => {
+const Argument = ({ photo, type, isLiked, isDisliked }) => {
   return (
     <View style={{ paddingHorizontal: 16 }}>
       <View style={styles.argContainer}>
@@ -27,8 +27,8 @@ const Argument = ({ photo, type }) => {
               <VoteIcon
                 width={24}
                 height={24}
-                fill={Colors.grey}
-                secondaryColor={Colors.lightGrey}
+                fill="black"
+                secondaryColor={isLiked ? Colors.green : Colors.lightGrey}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -37,8 +37,8 @@ const Argument = ({ photo, type }) => {
               <VoteIcon
                 width={24}
                 height={24}
-                fill={Colors.grey}
-                secondaryColor={Colors.lightGrey}
+                fill="black"
+                secondaryColor={isDisliked ? Colors.orange : Colors.lightGrey}
               />
             </TouchableOpacity>
             <Text style={styles.footerDate}>18.08.2020 - 23:53</Text>
