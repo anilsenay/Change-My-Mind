@@ -37,6 +37,7 @@ export default function Info({ data }) {
             <InfoText label="Category" text={data.category} />
             <InfoText label="Status" text="Open" />
           </View>
+          <View style={styles.seperatorLine} />
           <View style={styles.infoInnerContainer}>
             <InfoText
               label="Last Update"
@@ -76,6 +77,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     flexDirection: "row",
     marginVertical: 4,
+    justifyContent: "center",
+    alignItems: "center",
   },
   infoInnerContainer: {
     flex: 1,
@@ -112,5 +115,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 8,
+  },
+  seperatorLine: {
+    width: 1,
+    height: "92%",
+    backgroundColor: "white",
   },
 });
