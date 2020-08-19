@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
-import { Colors } from "../../consts/colors";
+import { Colors } from "../consts/colors";
 
 export default function Dots({ ...props }) {
   return (

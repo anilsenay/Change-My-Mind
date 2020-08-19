@@ -6,8 +6,7 @@ import { pop } from "../navigation/root_navigation";
 
 import Header from "../components/header";
 import BackIcon from "../components/icons/back";
-import Dots from "./discussion_views/dots.view";
-import Users from "./discussion_views/users.view";
+import Dots from "../components/vertical_dots";
 import Info from "./discussion_views/info.view";
 import Rounds from "./discussion_views/rounds.view";
 import { Colors } from "../consts/colors";

@@ -4,15 +4,14 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Picker,
   FlatList,
 } from "react-native";
-
-import { Colors } from "../../consts/colors";
-
 import Collapsible from "react-native-collapsible";
 
-import BackIcon from "../../components/icons/back";
+import { Colors } from "../../consts/colors";
+import { sortValues } from "../../consts/sort_values";
+
+import Picker from "../../components/picker";
 
 import filterHook from "../../hooks/filter.hook";
 
@@ -27,17 +26,6 @@ const FilterItem = ({ text, selected, onPress }) => {
     </TouchableOpacity>
   );
 };
-
-const sortValues = [
-  { label: "Started: New to Old", value: "started-new-to-old" },
-  { label: "Started: Old to New", value: "started-old-to-new" },
-  { label: "Updated: New to Old", value: "updated-new-to-old" },
-  { label: "Updated: Old to New", value: "updated-old-to-new" },
-  { label: "Votes: Most to Least", value: "votes-most-to-least" },
-  { label: "Votes: Least to Most", value: "votes-least-to-most" },
-  { label: "Popular: Most to Least", value: "popular-most-to-least" },
-  { label: "Popular: Least to Most", value: "popular-lest-to-most" },
-];
 
 export default function Filter({ hideFilter }) {
   const { useFilterState, setSort, updateCategory } = filterHook();
@@ -61,30 +49,11 @@ export default function Filter({ hideFilter }) {
           )}
           ListFooterComponent={<View style={{ marginLeft: 16 }} />}
         />
-        <View style={styles.pickerContainer}>
-          <Picker
-            selectedValue={sortSelection}
-            style={styles.pickerStyle}
-            onValueChange={(e) => setSort(e)}
-          >
-            {sortValues.map((item) => {
-              return (
-                <Picker.Item
-                  key={item.value}
-                  label={item.label}
-                  value={item.value}
-                  color={Colors.grey}
-                />
-              );
-            })}
-          </Picker>
-          <BackIcon
-            width={20}
-            height={20}
-            fill={Colors.grey}
-            style={styles.pickerIcon}
-          />
-        </View>
+        <Picker
+          selectedValue={sortSelection}
+          onValueChange={(e) => setSort(e)}
+          data={sortValues}
+        />
       </View>
     </Collapsible>
   );
@@ -129,23 +98,5 @@ const styles = StyleSheet.create({
     marginRight: 8,
     fontWeight: "bold",
     color: "white",
-  },
-  pickerContainer: {
-    marginHorizontal: 16,
-    marginVertical: 16,
-    borderWidth: 1,
-    borderColor: Colors.grey + "88",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  pickerStyle: {
-    height: 36,
-    width: "100%",
-    backgroundColor: Colors.purple + "11",
-  },
-  pickerIcon: {
-    position: "absolute",
-    right: 16,
-    transform: [{ rotateZ: "270deg" }],
   },
 });

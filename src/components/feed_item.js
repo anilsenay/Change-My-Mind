@@ -21,7 +21,9 @@ import { categoriesWithEmoji } from "../consts/filter_categories";
 
 const User = ({ username, imageSrc }) => {
   return (
-    <TouchableWithoutFeedback onPress={() => console.log("pressed")}>
+    <TouchableWithoutFeedback
+      onPress={() => navigate("Profile", { username: username })}
+    >
       <View style={styles.userContainer}>
         <Image
           source={{ uri: imageSrc }}
