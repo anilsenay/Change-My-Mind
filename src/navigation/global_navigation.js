@@ -10,6 +10,7 @@ import Explore from "../screens/explore.screen";
 import Notifications from "../screens/notification.screen";
 import Profile from "../screens/profile.screen";
 import Create from "../screens/create.screen";
+import MyProfile from "../screens/my_profile.screen";
 
 import Root from "../index";
 import { MyTabBar } from "./tabBar";
@@ -50,6 +51,11 @@ export function GlobalNavigation() {
         component={Discussion}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="Profile"
+        component={Profile}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }
@@ -64,7 +70,7 @@ const TabScreens = () => {
       <Tab.Screen name="Explore" component={Explore} />
       <Tab.Screen name="Create" component={Feed} />
       <Tab.Screen name="Notifications" component={Notifications} />
-      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen name="MyProfile" component={MyProfile} />
     </Tab.Navigator>
   );
 };

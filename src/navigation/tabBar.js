@@ -80,7 +80,7 @@ export function MyTabBar({ state, descriptors, navigation }) {
                 fill={isFocused ? Colors.purple : Colors.grey}
               />
             )}
-            {label === "Profile" && (
+            {label === "MyProfile" && (
               <ProfileButton
                 height={22}
                 width={22}
