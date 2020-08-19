@@ -18,37 +18,7 @@ import {
 
 import { Colors } from "../consts/colors";
 import { categoriesWithEmoji } from "../consts/filter_categories";
-
-const User = ({ username, imageSrc }) => {
-  return (
-    <TouchableWithoutFeedback
-      onPress={() => navigate("Profile", { username: username })}
-    >
-      <View style={styles.userContainer}>
-        <Image
-          source={{ uri: imageSrc }}
-          resizeMode="contain"
-          style={styles.userImage}
-        />
-        <Text style={styles.usernameText} numberOfLines={1}>
-          {username}
-        </Text>
-      </View>
-    </TouchableWithoutFeedback>
-  );
-};
-
-const UsersView = ({ proponent, opponent }) => {
-  return (
-    <View style={styles.userViewContainer}>
-      <User username={proponent.username} imageSrc={proponent.imageSrc} />
-      <View style={{ marginHorizontal: 6 }}>
-        <Text style={styles.vsText}>VS</Text>
-      </View>
-      <User username={opponent.username} imageSrc={opponent.imageSrc} />
-    </View>
-  );
-};
+import VsView from "./vs_view";
 
 const CategoryHeader = ({ categoryName }) => {
   return (
@@ -118,7 +88,7 @@ export default function FeedItem({ itemData }) {
             <Text style={styles.title} numberOfLines={2}>
               {title}
             </Text>
-            <UsersView proponent={proponent} opponent={opponent} />
+            <VsView proponent={proponent} opponent={opponent} />
             <Footer startTime={start_date} updateTime={update_date} />
             <View style={styles.footerButton}>
               {status === "open" && !opponent?.username && (

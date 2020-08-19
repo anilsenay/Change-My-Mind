@@ -1,13 +1,15 @@
 import React from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import { StyleSheet, Text, View, FlatList, ScrollView } from "react-native";
 
 import { Colors } from "../../consts/colors";
 import { sortValues } from "../../consts/sort_values";
+import { profileItems } from "../../consts/profile_item_data";
 
 import filterHook from "../../hooks/filter.hook";
 
 import Picker from "../../components/picker";
 import Debate from "../../components/profile_debate";
+import VsView from "../../components/vs_view";
 
 export default function Debates() {
   const { useFilterState, setSort } = filterHook();
@@ -22,15 +24,11 @@ export default function Debates() {
         onValueChange={(e) => setSort(e)}
         data={sortValues}
       />
-
-      <FlatList
-        style={styles.debates}
-        showsVerticalScrollIndicator={false}
-        data={null}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <Debate itemData={item} />}
-        ListFooterComponent={<View style={{ marginBottom: 16 }} />}
-      />
+      <ScrollView style={styles.debates} showsVerticalScrollIndicator={false}>
+        {profileItems.map((item) => {
+          return <Debate key={item.id.toString()} itemData={item} />;
+        })}
+      </ScrollView>
     </View>
   );
 }

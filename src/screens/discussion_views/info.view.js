@@ -1,15 +1,17 @@
 import React, { useState } from "react";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import Collapsible from "react-native-collapsible";
+
 import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableWithoutFeedback,
-  TouchableOpacity,
-} from "react-native";
+  formatDistanceToNowStrict,
+  differenceInDays,
+  format,
+  isThisYear,
+} from "date-fns";
+
 import { Colors } from "../../consts/colors";
 import Users from "./users.view";
 import BackIcon from "../../components/icons/back";
-import Collapsible from "react-native-collapsible";
 
 const InfoText = ({ label, text }) => {
   return (
@@ -33,7 +35,18 @@ export default function Info({ data }) {
       <Collapsible collapsed={hideInfo}>
         <View style={styles.infoContainer}>
           <View style={styles.infoInnerContainer}>
-            <InfoText label="Started" text={"28.05.2020" || data.start_date} />
+            <InfoText
+              label="Started"
+              text={
+                isThisYear(new Date(data.start_date))
+                  ? differenceInDays(new Date(), new Date(data.start_date)) <= 7
+                    ? format(new Date(data.start_date), "dd MMMM")
+                    : formatDistanceToNowStrict(new Date(data.start_date), {
+                        addSuffix: true,
+                      })
+                  : format(new Date(data.start_date), "dd.LL.yyyy")
+              }
+            />
             <InfoText label="Category" text={data.category} />
             <InfoText label="Status" text="Open" />
           </View>
@@ -41,7 +54,9 @@ export default function Info({ data }) {
           <View style={styles.infoInnerContainer}>
             <InfoText
               label="Last Update"
-              text={"10 hours before" || data.start_date}
+              text={formatDistanceToNowStrict(new Date(data.update_date), {
+                addSuffix: true,
+              })}
             />
             <InfoText label="Respond Limit" text={data.respond_limit} />
             <InfoText

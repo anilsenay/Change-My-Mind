@@ -1,12 +1,14 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
+import { Colors } from "../consts/colors";
+import { pop } from "../navigation/root_navigation";
 
 import Header from "../components/header";
 import BackIcon from "../components/icons/back";
 import Dots from "../components/vertical_dots";
-import { Colors } from "../consts/colors";
-import UserInfo from "./profile_views/userinfo.view";
+
 import TopView from "./profile_views/top.view";
 import Debates from "./profile_views/debates";
 
@@ -25,8 +27,10 @@ export default function Profile({ route }) {
           borderBottomColor: Colors.lightGrey,
         }}
       />
-      <TopView />
-      <Debates />
+      <ScrollView>
+        <TopView />
+        <Debates />
+      </ScrollView>
     </SafeAreaView>
   );
 }
