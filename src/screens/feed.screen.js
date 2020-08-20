@@ -1,13 +1,16 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import Header from "../components/header";
+import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
+import Header from "../components/header";
 import FilterIcon from "../components/icons/filter";
+
 import Filter from "./feed_views/filter.view";
 import FeedItems from "./feed_views/feed.items.view";
 
 export default function Feed() {
   const [hideFilter, setHideFilter] = useState(true);
+
   return (
     <SafeAreaView style={styles.container}>
       <Header
