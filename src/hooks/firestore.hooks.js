@@ -32,4 +32,41 @@ async function registerUser(
     });
 }
 
-export { registerUser };
+async function createDebate(
+  title,
+  category,
+  proponent,
+  round_number,
+  respond_limit
+) {
+  return await firebase.firestore().collection("Debate").add({
+    title,
+    category,
+    proponent,
+    opponent: null,
+    start_date: new Date(),
+    update_date: new Date(),
+    status: "open",
+    round_number,
+    respond_limit,
+    finish_date: null,
+    rounds: [],
+  });
+}
+
+async function createRound(proponent, proponent_msg) {
+  return await firebase.firestore().collection("Debate").add({
+    proponent,
+    proponent_msg,
+    opponent: null,
+    opponent_msg: null,
+    proponent_date: new Date(),
+    opponent_date: null,
+    proponent_like: 0,
+    opponent_like: 0,
+    proponent_dislike: 0,
+    opponent_dislike: 0,
+  });
+}
+
+export { registerUser, createDebate, createRound };
