@@ -154,6 +154,40 @@ async function updateRound(uid, data) {
     .update({ ...data });
 }
 
+// Temporary hooks to get all data from database, they will be removed later
+async function getAllUser() {
+  (await firebase.firestore().collection("Users"))
+    .get()
+    .then((querySnapshot) => {
+      const data = querySnapshot.docs.map((doc) => {
+        return { id: doc.id, ...doc.data() };
+      });
+      console.log(data); // setState will be added here
+    });
+}
+
+async function getAllDebate(setDebates) {
+  (await firebase.firestore().collection("Debate"))
+    .get()
+    .then((querySnapshot) => {
+      const data = querySnapshot.docs.map((doc) => {
+        return { id: doc.id, ...doc.data() };
+      });
+      setDebates(data); // setState will be added here
+    });
+}
+
+async function getAllRound() {
+  (await firebase.firestore().collection("Rounds"))
+    .get()
+    .then((querySnapshot) => {
+      const data = querySnapshot.docs.map((doc) => {
+        return { id: doc.id, ...doc.data() };
+      });
+      console.log(data); // setState will be added here
+    });
+}
+
 export {
   getCurrentUserId,
   registerUser,
@@ -165,4 +199,8 @@ export {
   updateUser,
   updateDebate,
   updateRound,
+  // temporary hooks
+  getAllUser,
+  getAllDebate,
+  getAllRound,
 };
