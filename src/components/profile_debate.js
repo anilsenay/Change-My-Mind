@@ -60,6 +60,9 @@ const styles = StyleSheet.create({
     padding: 12,
     borderLeftColor: Colors.grey,
     borderLeftWidth: 4,
+    borderBottomLeftRadius: 4,
+    borderTopLeftRadius: 4,
+    marginLeft: 1,
   },
   infoContainer: {
     flexDirection: "row",

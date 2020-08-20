@@ -27,7 +27,7 @@ export default function Profile({ route }) {
           borderBottomColor: Colors.lightGrey,
         }}
       />
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <TopView />
         <Debates />
       </ScrollView>
