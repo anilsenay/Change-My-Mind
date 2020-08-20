@@ -15,7 +15,7 @@ const Argument = ({ photo, type, isLiked, isDisliked }) => {
   return (
     <View style={{ paddingHorizontal: 16 }}>
       <View style={styles.argContainer}>
-        {type === "opponent" && (
+        {type === "proponent" && (
           <View style={styles.photoContainer}>
             <Image source={{ uri: photo }} style={styles.userImage} />
           </View>
@@ -44,7 +44,7 @@ const Argument = ({ photo, type, isLiked, isDisliked }) => {
             <Text style={styles.footerDate}>18.08.2020 - 23:53</Text>
           </View>
         </View>
-        {type === "proponent" && (
+        {type === "opponent" && (
           <View style={styles.photoContainerReverse}>
             <Image source={{ uri: photo }} style={styles.userImage} />
           </View>
@@ -60,12 +60,12 @@ export default function Round({ roundNumber, opponent, proponent }) {
       <View style={{ alignItems: "center", marginBottom: 8 }}>
         <Text style={styles.title}>Round {roundNumber}</Text>
       </View>
-      <Argument photo={opponent.imageSrc} type="opponent" />
+      <Argument photo={proponent.imageSrc} type="proponent" />
       <View style={styles.vsContainer}>
         <View style={styles.vsSeperator} />
         <Text style={styles.vsText}>VS</Text>
       </View>
-      <Argument photo={proponent.imageSrc} type="proponent" />
+      <Argument photo={opponent.imageSrc} type="opponent" />
     </View>
   );
 }

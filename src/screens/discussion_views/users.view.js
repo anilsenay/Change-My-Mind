@@ -14,7 +14,7 @@ const User = ({ username, photo, type }) => {
 export default function Users({ opponent, proponent, round }) {
   return (
     <View style={styles.container}>
-      <User username={opponent.username} photo={opponent.imageSrc} />
+      <User username={proponent.username} photo={proponent.imageSrc} />
       <View style={styles.textsContainer}>
         <Text
           style={{ fontSize: 24, fontWeight: "bold", color: Colors.darkPurple }}
@@ -23,7 +23,7 @@ export default function Users({ opponent, proponent, round }) {
         </Text>
         <Text style={{ color: Colors.grey }}>{round} Rounds</Text>
       </View>
-      <User username={proponent.username} photo={proponent.imageSrc} />
+      <User username={opponent.username} photo={opponent.imageSrc} />
     </View>
   );
 }
