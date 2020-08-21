@@ -10,19 +10,21 @@ import {
 import { navigate } from "../navigation/root_navigation";
 import { Colors } from "../consts/colors";
 
-const User = ({ username, imageSrc }) => {
+const User = ({ data }) => {
   return (
     <TouchableWithoutFeedback
-      onPress={() => navigate("Profile", { username: username })}
+      onPress={() =>
+        navigate("Profile", { uid: data.id, username: data.username })
+      }
     >
       <View style={styles.userContainer}>
         <Image
-          source={{ uri: imageSrc }}
+          source={{ uri: data?.imageSrc }}
           resizeMode="contain"
           style={styles.userImage}
         />
         <Text style={styles.usernameText} numberOfLines={1}>
-          {username}
+          {data.username}
         </Text>
       </View>
     </TouchableWithoutFeedback>
@@ -32,14 +34,12 @@ const User = ({ username, imageSrc }) => {
 export default function VsView({ proponent, opponent }) {
   return (
     <View style={styles.userViewContainer}>
-      {proponent?.username && (
-        <User username={proponent.username} imageSrc={proponent.imageSrc} />
-      )}
+      {proponent?.username && <User data={proponent} />}
       <View>
         <Text style={styles.vsText}>VS</Text>
       </View>
       {opponent?.username ? (
-        <User username={opponent.username} imageSrc={opponent.imageSrc} />
+        <User data={opponent} />
       ) : (
         <View style={styles.emptyUser}>
           <Text style={styles.waitingText}>Waiting for Opponent</Text>

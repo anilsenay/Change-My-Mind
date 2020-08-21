@@ -20,7 +20,7 @@ import { Colors } from "../consts/colors";
 import { categoriesWithEmoji } from "../consts/filter_categories";
 import VsView from "./vs_view";
 
-import { getUser } from "../hooks/firestore.hooks";
+import { getUser } from "../hooks/user.hooks";
 
 const CategoryHeader = ({ categoryName }) => {
   return (
@@ -71,25 +71,10 @@ export default function FeedItem({ itemData }) {
     headerSrc,
   } = itemData;
 
-  const [fetchProponent, setProponent] = useState(null);
-  const [fetchOpponent, setOpponent] = useState(null);
   const [rounds, setRounds] = useState(null);
 
-  useEffect(() => {
-    getUser(proponent).then((response) => {
-      setProponent(response);
-    });
-    opponent &&
-      getUser(opponent).then((response) => {
-        setOpponent(response);
-      });
-  }, []);
-
-  const convertDate = (date) => {
-    return date
-      ? new Date(date.seconds * 1000 + date.nanoseconds / (10 ^ 6))
-      : null;
-  };
+  const proponentData = getUser(proponent).data;
+  const opponentData = getUser(opponent).data;
 
   return (
     <View style={styles.container}>
@@ -98,11 +83,8 @@ export default function FeedItem({ itemData }) {
           navigate("Discussion", {
             data: {
               ...itemData,
-              proponent: fetchProponent,
-              opponent: fetchOpponent,
-              start_date: convertDate(start_date),
-              update_date: convertDate(update_date),
-              finish_date: convertDate(finish_date),
+              proponent: proponentData,
+              opponent: opponentData,
             },
           })
         }
@@ -120,20 +102,8 @@ export default function FeedItem({ itemData }) {
             <Text style={styles.title} numberOfLines={2}>
               {title}
             </Text>
-            <VsView proponent={fetchProponent} opponent={fetchOpponent} />
-            <Footer
-              startTime={
-                new Date(
-                  start_date.seconds * 1000 + start_date.nanoseconds / (10 ^ 6)
-                )
-              }
-              updateTime={
-                new Date(
-                  update_date.seconds * 1000 +
-                    update_date.nanoseconds / (10 ^ 6)
-                )
-              }
-            />
+            <VsView proponent={proponentData} opponent={opponentData} />
+            <Footer startTime={start_date} updateTime={update_date} />
             <View style={styles.footerButton}>
               <Text style={styles.footerBtnText}>
                 {status === "open"

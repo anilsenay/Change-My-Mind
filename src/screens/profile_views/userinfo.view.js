@@ -12,30 +12,27 @@ const InfoItem = ({ data, text }) => {
   );
 };
 
-export default function UserInfo() {
+export default function UserInfo({ userData }) {
   return (
     <>
       <View style={styles.container}>
         <View style={styles.infoContainer}>
-          <Image
-            source={{ uri: "https://picsum.photos/200" }}
-            style={styles.userImage}
-          />
+          <Image source={{ uri: userData.imageSrc }} style={styles.userImage} />
           <View style={styles.infoVertical}>
-            <InfoItem data={null} text="Debates" />
-            <InfoItem data={null} text="Won" />
+            <InfoItem data={userData.debates.length} text="Debates" />
+            <InfoItem data={userData.stats.won} text="Won" />
           </View>
           <View style={styles.infoVertical}>
-            <InfoItem data={null} text="Followers" />
-            <InfoItem data={null} text="Lost" />
+            <InfoItem data={userData.followers.length} text="Followers" />
+            <InfoItem data={userData.stats.lost} text="Lost" />
           </View>
           <View style={styles.infoVertical}>
-            <InfoItem data={null} text="Following" />
-            <InfoItem data={null} text="Ongoing" />
+            <InfoItem data={userData.following.length} text="Following" />
+            <InfoItem data={userData.stats.ongoing} text="Ongoing" />
           </View>
         </View>
-        <Text style={styles.usernameText}>Name Surname</Text>
-        <Text style={styles.biographyText}>Biography</Text>
+        <Text style={styles.usernameText}>{userData.profile_name}</Text>
+        <Text style={styles.biographyText}>{userData.biography}</Text>
       </View>
     </>
   );

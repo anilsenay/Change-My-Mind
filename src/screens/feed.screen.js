@@ -9,7 +9,6 @@ import Filter from "./feed_views/filter.view";
 import FeedItems from "./feed_views/feed.items.view";
 
 import debatesHook from "../hooks/debates.hook";
-import { getUser } from "../hooks/firestore.hooks";
 
 export default function Feed() {
   const [hideFilter, setHideFilter] = useState(true);

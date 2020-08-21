@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, ActivityIndicator, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Colors } from "../consts/colors";
@@ -12,8 +12,14 @@ import Dots from "../components/vertical_dots";
 import TopView from "./profile_views/top.view";
 import Debates from "./profile_views/debates";
 
+import { getUser } from "../hooks/user.hooks";
+import { getDebates } from "../hooks/debate.hooks";
+
 export default function Profile({ route }) {
-  const { username } = route?.params;
+  const { uid, username } = route?.params;
+
+  const userData = getUser(uid).data;
+
   return (
     <SafeAreaView style={styles.container}>
       <Header
@@ -27,10 +33,19 @@ export default function Profile({ route }) {
           borderBottomColor: Colors.lightGrey,
         }}
       />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <TopView />
-        <Debates />
-      </ScrollView>
+      {userData ? (
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <TopView userData={userData} />
+          <Debates debates={userData.debates} />
+        </ScrollView>
+      ) : (
+        <ActivityIndicator
+          size="large"
+          animating={true}
+          color="grey"
+          style={{ marginTop: 40 }}
+        />
+      )}
     </SafeAreaView>
   );
 }

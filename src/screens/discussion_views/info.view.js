@@ -58,7 +58,10 @@ export default function Info({ data }) {
                 addSuffix: true,
               })}
             />
-            <InfoText label="Respond Limit" text={data.respond_limit} />
+            <InfoText
+              label="Respond Limit"
+              text={`${data.respond_limit / 60} hours`}
+            />
             <InfoText
               label="Expires In"
               text={"8 days 16 hours" || data.start_date}

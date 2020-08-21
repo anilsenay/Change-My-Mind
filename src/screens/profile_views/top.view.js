@@ -4,28 +4,36 @@ import { Colors } from "../../consts/colors";
 import ProfileButton from "../../components/profile_button";
 import UserInfo from "./userinfo.view";
 
-export default function TopView() {
+import { getCurrentUserId } from "../../hooks/user.hooks";
+
+export default function TopView({ userData }) {
   return (
     <View>
-      <UserInfo />
+      <UserInfo userData={userData} />
 
       <View style={styles.footer}>
         <View style={styles.buttonsContainer}>
-          <ProfileButton text="Follow" style={{ marginRight: 16 }} />
-          {/* <ProfileButton
-            text="Unfollow"
-            style={{
-              marginRight: 16,
-              backgroundColor: Colors.purple + "AA",
-              borderColor: Colors.darkPurple,
-            }}
-            textStyle={{ color: "white" }}
-          /> */}
-          <ProfileButton text="Message" />
+          {userData.id === getCurrentUserId() ? (
+            <ProfileButton text="Edit Profile" />
+          ) : (
+            <>
+              <ProfileButton text="Follow" style={{ marginRight: 16 }} />
+              {/* <ProfileButton
+                text="Unfollow"
+                style={{
+                  marginRight: 16,
+                  backgroundColor: Colors.purple + "AA",
+                  borderColor: Colors.darkPurple,
+                }}
+                textStyle={{ color: "white" }}
+              /> */}
+              <ProfileButton text="Message" />
+            </>
+          )}
         </View>
         <View style={styles.rankContainer}>
           <Text style={styles.rankText}>Rank: Beginner</Text>
-          <Text style={styles.pointsText}>Points: 0</Text>
+          <Text style={styles.pointsText}>Points: {userData.stats.points}</Text>
         </View>
       </View>
     </View>

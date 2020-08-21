@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, ScrollView } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { pop } from "../navigation/root_navigation";
@@ -7,12 +7,24 @@ import { pop } from "../navigation/root_navigation";
 import Header from "../components/header";
 import BackIcon from "../components/icons/back";
 import Dots from "../components/vertical_dots";
+
 import Info from "./discussion_views/info.view";
 import Rounds from "./discussion_views/rounds.view";
+
 import { Colors } from "../consts/colors";
+
+import { getDebate } from "../hooks/debate.hooks";
+import { getUser } from "../hooks/user.hooks";
 
 export default function Discussion({ route }) {
   const { data } = route?.params;
+
+  const newData = {
+    ...getDebate(data.id).data,
+    proponent: data.proponent,
+    opponent: data.opponent,
+  };
+  console.log(newData);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -30,7 +42,7 @@ export default function Discussion({ route }) {
         showsVerticalScrollIndicator={false}
         style={styles.scrollStyle}
       >
-        <Info data={data} />
+        <Info data={newData.id ? newData : data} />
         <Rounds opponent={data.opponent} proponent={data.proponent} />
       </ScrollView>
     </SafeAreaView>

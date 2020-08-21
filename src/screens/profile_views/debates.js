@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, FlatList, ScrollView } from "react-native";
 
 import { Colors } from "../../consts/colors";
 import { sortValues } from "../../consts/sort_values";
-import { profileItems } from "../../consts/profile_item_data";
 
 import filterHook from "../../hooks/filter.hook";
 
@@ -11,9 +10,14 @@ import Picker from "../../components/picker";
 import Debate from "../../components/profile_debate";
 import VsView from "../../components/vs_view";
 
-export default function Debates() {
+import { getDebates } from "../../hooks/debate.hooks";
+
+export default function Debates({ debates }) {
   const { useFilterState, setSort } = filterHook();
   const { sortSelection } = useFilterState();
+
+  const { data } = debates.length > 0 ? getDebates(debates) : [];
+  console.log(data);
 
   return (
     <View style={styles.container}>
@@ -25,7 +29,7 @@ export default function Debates() {
         data={sortValues}
       />
       <ScrollView style={styles.debates} showsVerticalScrollIndicator={false}>
-        {profileItems.map((item) => {
+        {data?.map((item) => {
           return <Debate key={item.id.toString()} itemData={item} />;
         })}
       </ScrollView>
@@ -48,5 +52,6 @@ const styles = StyleSheet.create({
   debates: {
     borderTopColor: Colors.lightGrey,
     borderTopWidth: 1,
+    marginBottom: 10,
   },
 });

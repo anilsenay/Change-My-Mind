@@ -13,14 +13,20 @@ const debatesHook = () => {
     return debatesState;
   };
 
-  const getAllDebates = (value) => {
+  const getAllDebates = () => {
     firebase
       .firestore()
       .collection("Debate")
       .get()
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => {
-          return { id: doc.id, ...doc.data() };
+          return {
+            id: doc.id,
+            ...doc.data(),
+            start_date: doc.data().start_date.toDate(),
+            update_date: doc.data().update_date.toDate(),
+            finish_date: doc.data().finish_date?.toDate(),
+          };
         });
         debatesDispatch({
           type: "SET_DEBATES",
