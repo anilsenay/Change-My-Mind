@@ -2,6 +2,7 @@ import React from "react";
 
 import * as firebase from "firebase";
 import "firebase/firestore";
+import { id } from "date-fns/locale";
 
 function getCurrentUserId() {
   return firebase.auth().currentUser.uid;
@@ -73,23 +74,20 @@ async function createRound(proponent, proponent_msg) {
   });
 }
 
-async function getUser(uid = getCurrentUserId()) {
-  return await firebase
-    .firestore()
-    .collection("Users")
-    .doc(uid)
-    .get()
-    .then((doc) => {
-      if (doc.exists) {
-        console.log("Document data:", doc.data());
-      } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
-      }
-    })
-    .catch(function (error) {
-      console.log("Error getting document:", error);
-    });
+function getUser(uid = getCurrentUserId()) {
+  return new Promise((resolve, reject) => {
+    firebase
+      .firestore()
+      .collection("Users")
+      .doc(uid)
+      .get()
+      .then((doc) => {
+        resolve({ id: doc.id, ...doc.data() });
+      })
+      .catch(function (error) {
+        reject(error);
+      });
+  });
 }
 
 async function getDebate(uid) {

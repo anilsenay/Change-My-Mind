@@ -32,24 +32,32 @@ const User = ({ username, imageSrc }) => {
 export default function VsView({ proponent, opponent }) {
   return (
     <View style={styles.userViewContainer}>
-      <User username={proponent.username} imageSrc={proponent.imageSrc} />
-      <View style={{ marginHorizontal: 6 }}>
+      {proponent?.username && (
+        <User username={proponent.username} imageSrc={proponent.imageSrc} />
+      )}
+      <View>
         <Text style={styles.vsText}>VS</Text>
       </View>
-      <User username={opponent.username} imageSrc={opponent.imageSrc} />
+      {opponent?.username ? (
+        <User username={opponent.username} imageSrc={opponent.imageSrc} />
+      ) : (
+        <View style={styles.emptyUser}>
+          <Text style={styles.waitingText}>Waiting for Opponent</Text>
+        </View>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   userViewContainer: {
+    justifyContent: "center",
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 16,
   },
   userContainer: {
-    marginRight: "auto",
-    marginLeft: "auto",
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
@@ -71,5 +79,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: Colors.grey + "66",
     marginHorizontal: 8,
+  },
+  emptyUser: {
+    flex: 1,
+  },
+  waitingText: {
+    textAlign: "center",
+    fontWeight: "bold",
+    color: Colors.grey,
   },
 });

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -8,8 +8,18 @@ import FilterIcon from "../components/icons/filter";
 import Filter from "./feed_views/filter.view";
 import FeedItems from "./feed_views/feed.items.view";
 
+import debatesHook from "../hooks/debates.hook";
+import { getUser } from "../hooks/firestore.hooks";
+
 export default function Feed() {
   const [hideFilter, setHideFilter] = useState(true);
+
+  const { getAllDebates, useDebatesState } = debatesHook();
+  const { debates } = useDebatesState();
+
+  useEffect(() => {
+    getAllDebates();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -20,7 +30,7 @@ export default function Feed() {
         rightIconEvent={() => setHideFilter(!hideFilter)}
       />
       <Filter hideFilter={hideFilter} />
-      <FeedItems />
+      {debates.isFetched && <FeedItems data={debates.results} />}
     </SafeAreaView>
   );
 }

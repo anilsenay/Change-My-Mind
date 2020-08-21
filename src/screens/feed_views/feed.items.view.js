@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, RefreshControl, FlatList } from "react-native";
 import FeedItem from "../../components/feed_item";
 
 import { feedData } from "../../consts/feed_item_data";
 
-export default function FeedItems() {
+export default function FeedItems({ data }) {
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = React.useCallback(() => {
@@ -12,13 +12,13 @@ export default function FeedItems() {
 
     setTimeout(() => setRefreshing(false), 2000); // working like fake fetching
   }, []);
-
+  console.log(data);
   return (
     <FlatList
       style={styles.container}
       showsVerticalScrollIndicator={false}
-      data={feedData}
-      keyExtractor={(item) => item.id.toString()}
+      data={data}
+      keyExtractor={(item) => item.id}
       renderItem={({ item }) => <FeedItem itemData={item} />}
       ListFooterComponent={<View style={{ marginBottom: 16 }} />}
       refreshControl={

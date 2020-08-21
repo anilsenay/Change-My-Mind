@@ -13,7 +13,6 @@ import { Colors } from "../consts/colors";
 
 export default function Discussion({ route }) {
   const { data } = route?.params;
-  console.log(data);
 
   return (
     <SafeAreaView style={styles.container}>

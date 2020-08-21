@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -19,6 +19,8 @@ import {
 import { Colors } from "../consts/colors";
 import { categoriesWithEmoji } from "../consts/filter_categories";
 import VsView from "./vs_view";
+
+import { getUser } from "../hooks/firestore.hooks";
 
 const CategoryHeader = ({ categoryName }) => {
   return (
@@ -64,16 +66,46 @@ export default function FeedItem({ itemData }) {
     opponent,
     start_date,
     update_date,
-    status,
-    round_number,
-    respond_limit,
     finish_date,
+    status,
     headerSrc,
   } = itemData;
+
+  const [fetchProponent, setProponent] = useState(null);
+  const [fetchOpponent, setOpponent] = useState(null);
+  const [rounds, setRounds] = useState(null);
+
+  useEffect(() => {
+    getUser(proponent).then((response) => {
+      setProponent(response);
+    });
+    opponent &&
+      getUser(opponent).then((response) => {
+        setOpponent(response);
+      });
+  }, []);
+
+  const convertDate = (date) => {
+    return date
+      ? new Date(date.seconds * 1000 + date.nanoseconds / (10 ^ 6))
+      : null;
+  };
+
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback
-        onPress={() => navigate("Discussion", { data: itemData })}
+        onPress={() =>
+          navigate("Discussion", {
+            data: {
+              ...itemData,
+              proponent: fetchProponent,
+              opponent: fetchOpponent,
+              start_date: convertDate(start_date),
+              update_date: convertDate(update_date),
+              finish_date: convertDate(finish_date),
+            },
+          })
+        }
       >
         <View style={styles.itemContainer}>
           {headerSrc && (
@@ -88,20 +120,28 @@ export default function FeedItem({ itemData }) {
             <Text style={styles.title} numberOfLines={2}>
               {title}
             </Text>
-            <VsView proponent={proponent} opponent={opponent} />
-            <Footer startTime={start_date} updateTime={update_date} />
+            <VsView proponent={fetchProponent} opponent={fetchOpponent} />
+            <Footer
+              startTime={
+                new Date(
+                  start_date.seconds * 1000 + start_date.nanoseconds / (10 ^ 6)
+                )
+              }
+              updateTime={
+                new Date(
+                  update_date.seconds * 1000 +
+                    update_date.nanoseconds / (10 ^ 6)
+                )
+              }
+            />
             <View style={styles.footerButton}>
-              {status === "open" && !opponent?.username && (
-                <Text style={styles.footerBtnText}>Change His/Her Mind!</Text>
-              )}
-              {status === "open" && opponent?.username && (
-                <Text style={styles.footerBtnText}>Vote</Text>
-              )}
-              {status === "closed" && (
-                <Text style={styles.footerBtnText}>
-                  This discussion has been over
-                </Text>
-              )}
+              <Text style={styles.footerBtnText}>
+                {status === "open"
+                  ? opponent
+                    ? "Vote"
+                    : "Change His/Her Mind!"
+                  : "This discussion has been over"}
+              </Text>
             </View>
           </View>
         </View>
