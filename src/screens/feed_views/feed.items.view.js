@@ -12,7 +12,6 @@ export default function FeedItems({ data }) {
 
     setTimeout(() => setRefreshing(false), 2000); // working like fake fetching
   }, []);
-  console.log(data);
   return (
     <FlatList
       style={styles.container}

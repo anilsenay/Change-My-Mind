@@ -15,17 +15,19 @@ import Debates from "./profile_views/debates";
 import { getUser } from "../hooks/user.hooks";
 import { getDebates } from "../hooks/debate.hooks";
 
-export default function Profile({ route }) {
-  const { uid, username } = route?.params;
+export default function Profile({ route, user }) {
+  const { uid, username } = route?.params ? route?.params : user;
 
   const userData = getUser(uid).data;
+
+  console.log(route?.params);
 
   return (
     <SafeAreaView style={styles.container}>
       <Header
         title={username || "User not found!"}
         textStyle={{ fontSize: 18 }}
-        leftIcon={<BackIcon width={24} height={24} fill="black" />}
+        leftIcon={!user && <BackIcon width={24} height={24} fill="black" />}
         leftIconEvent={() => pop()}
         rightIcon={<Dots onPress={() => console.log("dots")} />}
         backgroundStyle={{

@@ -13,7 +13,7 @@ export default function TopView({ userData }) {
 
       <View style={styles.footer}>
         <View style={styles.buttonsContainer}>
-          {userData.id === getCurrentUserId() ? (
+          {userData.uid === getCurrentUserId() ? (
             <ProfileButton text="Edit Profile" />
           ) : (
             <>

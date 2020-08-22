@@ -14,7 +14,7 @@ const User = ({ data }) => {
   return (
     <TouchableWithoutFeedback
       onPress={() =>
-        navigate("Profile", { uid: data.id, username: data.username })
+        navigate("Profile", { uid: data.uid, username: data.username })
       }
     >
       <View style={styles.userContainer}>

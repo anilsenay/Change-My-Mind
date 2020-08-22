@@ -19,7 +19,7 @@ const getUser = (uid) => {
         .doc(uid)
         .get()
         .then((doc) => {
-          setData({ id: doc.id, ...doc.data() });
+          setData({ uid: doc.id, ...doc.data() });
         })
         .catch(function (error) {
           setError(error);
