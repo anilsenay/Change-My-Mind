@@ -23,7 +23,13 @@ export default function Users({ opponent, proponent, round }) {
         </Text>
         <Text style={{ color: Colors.grey }}>{round} Rounds</Text>
       </View>
-      <User username={opponent.username} photo={opponent.imageSrc} />
+      {opponent?.username ? (
+        <User username={opponent.username} photo={opponent.imageSrc} />
+      ) : (
+        <View style={styles.emptyUser}>
+          <Text style={styles.waitingText}>Waiting for Opponent</Text>
+        </View>
+      )}
     </View>
   );
 }
@@ -55,5 +61,15 @@ const styles = StyleSheet.create({
   textsContainer: {
     alignItems: "center",
     marginHorizontal: 16,
+  },
+  emptyUser: {
+    justifyContent: "center",
+    width: 100,
+    height: 100,
+  },
+  waitingText: {
+    textAlign: "center",
+    fontWeight: "bold",
+    color: Colors.grey,
   },
 });

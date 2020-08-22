@@ -14,7 +14,6 @@ import Rounds from "./discussion_views/rounds.view";
 import { Colors } from "../consts/colors";
 
 import { getDebate } from "../hooks/debate.hooks";
-import { getUser } from "../hooks/user.hooks";
 
 export default function Discussion({ route }) {
   const { data } = route?.params;
@@ -43,7 +42,11 @@ export default function Discussion({ route }) {
         style={styles.scrollStyle}
       >
         <Info data={newData.id ? newData : data} />
-        <Rounds opponent={data.opponent} proponent={data.proponent} />
+        <Rounds
+          opponent={data.opponent}
+          proponent={data.proponent}
+          rounds={newData.rounds ? newData.rounds : null}
+        />
       </ScrollView>
     </SafeAreaView>
   );

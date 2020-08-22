@@ -1,17 +1,14 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import { format } from "date-fns";
+
 import { Colors } from "../consts/colors";
 import VoteIcon from "./icons/vote";
 
-const argumentTextEx = `Parents should not send their children to preschool for several
-reasons. First and foremost, the year is better spent with a full-time
-parent. In addition, most children will learn very little at
-preschool. Contrary to claims made by preschool advocates, children
-are not better equipped because of preschool. They may develop social
-skills and hand paintin4g skills sooner, however children that miss
-preschool will quickly catch up before they finish the first grade.`;
+import { getCurrentUserId } from "../hooks/user.hooks";
 
-const Argument = ({ photo, type, isLiked, isDisliked }) => {
+const Argument = ({ photo, type, isLiked, isDisliked, argument, date }) => {
+  console.log(date);
   return (
     <View style={{ paddingHorizontal: 16 }}>
       <View style={styles.argContainer}>
@@ -21,7 +18,7 @@ const Argument = ({ photo, type, isLiked, isDisliked }) => {
           </View>
         )}
         <View style={styles.textContainer}>
-          <Text style={styles.argumentText}>{argumentTextEx}</Text>
+          <Text style={styles.argumentText}>{argument}</Text>
           <View style={styles.argumentFooter}>
             <TouchableOpacity style={styles.voteIcon}>
               <VoteIcon
@@ -41,7 +38,9 @@ const Argument = ({ photo, type, isLiked, isDisliked }) => {
                 secondaryColor={isDisliked ? Colors.orange : Colors.lightGrey}
               />
             </TouchableOpacity>
-            <Text style={styles.footerDate}>18.08.2020 - 23:53</Text>
+            <Text style={styles.footerDate}>
+              {format(new Date(date), "dd-MM-yyyy - HH:mm")}
+            </Text>
           </View>
         </View>
         {type === "opponent" && (
@@ -54,18 +53,36 @@ const Argument = ({ photo, type, isLiked, isDisliked }) => {
   );
 };
 
-export default function Round({ roundNumber, opponent, proponent }) {
+export default function Round({ roundNumber, opponent, proponent, data }) {
   return (
     <View style={styles.container}>
       <View style={{ alignItems: "center", marginBottom: 8 }}>
         <Text style={styles.title}>Round {roundNumber}</Text>
       </View>
-      <Argument photo={proponent.imageSrc} type="proponent" />
+      <Argument
+        photo={proponent.imageSrc}
+        type="proponent"
+        argument={data?.proponent_msg}
+        date={data.proponent_date}
+        isLiked={data?.proponent_like.includes(getCurrentUserId())}
+        isDisliked={data?.proponent_dislike.includes(getCurrentUserId())}
+      />
       <View style={styles.vsContainer}>
         <View style={styles.vsSeperator} />
         <Text style={styles.vsText}>VS</Text>
       </View>
-      <Argument photo={opponent.imageSrc} type="opponent" />
+      {opponent ? (
+        <Argument
+          photo={opponent.imageSrc}
+          type="opponent"
+          date={data.opponent_date}
+          argument={data?.opponent_msg}
+          isLiked={data?.opponent_like.includes(getCurrentUserId())}
+          isDisliked={data?.opponent_dislike.includes(getCurrentUserId())}
+        />
+      ) : (
+        <Text style={styles.waitingText}>Waiting for opponent's argument</Text>
+      )}
     </View>
   );
 }
@@ -150,6 +167,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     backgroundColor: "white",
     paddingHorizontal: 8,
+    color: Colors.grey,
+  },
+  waitingText: {
+    fontSize: 16,
+    marginTop: 20,
+    marginBottom: 40,
+    textAlign: "center",
     color: Colors.grey,
   },
 });
