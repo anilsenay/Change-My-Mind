@@ -7,6 +7,7 @@ import {
   debatesReducer,
   debatesInitialState,
 } from "../reducers/debates.reducer";
+import { globalReducer, globalInitialState } from "../reducers/global.reducer";
 
 const AppContext = React.createContext();
 const AppContextDispatch = React.createContext();
@@ -20,18 +21,24 @@ const AppProvider = ({ children }) => {
     debatesReducer,
     debatesInitialState
   );
+  const [globalState, globalDispatch] = useReducer(
+    globalReducer,
+    globalInitialState
+  );
 
   return (
     <AppContext.Provider
       value={{
         filterState,
         debatesState,
+        globalState,
       }}
     >
       <AppContextDispatch.Provider
         value={{
           filterDispatch,
           debatesDispatch,
+          globalDispatch,
         }}
       >
         {children}
