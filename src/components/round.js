@@ -7,8 +7,37 @@ import VoteIcon from "./icons/vote";
 
 import { getCurrentUserId } from "../hooks/user.hooks";
 
-const Argument = ({ photo, type, isLiked, isDisliked, argument, date }) => {
-  console.log(date);
+const LikeButton = ({ reverse, isActive, type, count }) => {
+  return (
+    <View
+      style={{
+        alignItems: "center",
+        marginRight: 16,
+      }}
+    >
+      <TouchableOpacity style={styles.voteIcon}>
+        <VoteIcon
+          width={24}
+          height={24}
+          fill="black"
+          style={reverse && { transform: [{ rotate: "180deg" }] }}
+          secondaryColor={
+            isActive
+              ? type === "like"
+                ? Colors.green
+                : Colors.orange
+              : Colors.lightGrey
+          }
+        />
+      </TouchableOpacity>
+      <Text style={styles.likeCounter}>{count}</Text>
+    </View>
+  );
+};
+
+const Argument = ({ photo, type, like_dislike_data, argument, date }) => {
+  const isLiked = like_dislike_data.likes.includes(getCurrentUserId());
+  const isDisliked = like_dislike_data.dislikes.includes(getCurrentUserId());
   return (
     <View style={{ paddingHorizontal: 16 }}>
       <View style={styles.argContainer}>
@@ -20,24 +49,18 @@ const Argument = ({ photo, type, isLiked, isDisliked, argument, date }) => {
         <View style={styles.textContainer}>
           <Text style={styles.argumentText}>{argument}</Text>
           <View style={styles.argumentFooter}>
-            <TouchableOpacity style={styles.voteIcon}>
-              <VoteIcon
-                width={24}
-                height={24}
-                fill="black"
-                secondaryColor={isLiked ? Colors.green : Colors.lightGrey}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.voteIcon, { transform: [{ rotate: "180deg" }] }]}
-            >
-              <VoteIcon
-                width={24}
-                height={24}
-                fill="black"
-                secondaryColor={isDisliked ? Colors.orange : Colors.lightGrey}
-              />
-            </TouchableOpacity>
+            <LikeButton
+              isActive={isLiked}
+              type="like"
+              count={like_dislike_data.likes.length}
+            />
+            <LikeButton
+              isActive={isDisliked}
+              type="dislike"
+              count={like_dislike_data.dislikes.length}
+              reverse
+            />
+
             <Text style={styles.footerDate}>
               {format(new Date(date), "dd-MM-yyyy - HH:mm")}
             </Text>
@@ -64,6 +87,10 @@ export default function Round({ roundNumber, opponent, proponent, data }) {
         type="proponent"
         argument={data?.proponent_msg}
         date={data.proponent_date}
+        like_dislike_data={{
+          likes: data.proponent_like,
+          dislikes: data.proponent_dislike,
+        }}
         isLiked={data?.proponent_like.includes(getCurrentUserId())}
         isDisliked={data?.proponent_dislike.includes(getCurrentUserId())}
       />
@@ -77,6 +104,10 @@ export default function Round({ roundNumber, opponent, proponent, data }) {
           type="opponent"
           date={data.opponent_date}
           argument={data?.opponent_msg}
+          like_dislike_data={{
+            likes: data.opponent_like,
+            dislikes: data.opponent_dislike,
+          }}
           isLiked={data?.opponent_like.includes(getCurrentUserId())}
           isDisliked={data?.opponent_dislike.includes(getCurrentUserId())}
         />
@@ -133,17 +164,16 @@ const styles = StyleSheet.create({
     marginRight: "auto",
   },
   argumentFooter: {
-    paddingTop: 16,
+    paddingTop: 20,
     flexDirection: "row",
     marginRight: "auto",
-    alignItems: "center",
+    alignItems: "flex-end",
     width: "100%",
   },
   voteIcon: {
     padding: 8,
     backgroundColor: Colors.purple + "55",
     borderRadius: 100,
-    marginRight: 16,
   },
   footerDate: {
     marginLeft: "auto",
@@ -174,6 +204,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 40,
     textAlign: "center",
+    color: Colors.grey,
+  },
+  likeCounter: {
+    fontSize: 12,
     color: Colors.grey,
   },
 });
