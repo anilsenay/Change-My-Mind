@@ -5,8 +5,13 @@ import ProfileButton from "../../components/profile_button";
 import UserInfo from "./userinfo.view";
 
 import { getCurrentUserId } from "../../hooks/user.hooks";
+import globalHook from "../../hooks/global.hook";
 
 export default function TopView({ userData }) {
+  const { useGlobalState } = globalHook();
+  const { user } = useGlobalState();
+
+  const isFollowing = user?.following.includes(userData.uid);
   return (
     <View>
       <UserInfo userData={userData} />
@@ -17,16 +22,19 @@ export default function TopView({ userData }) {
             <ProfileButton text="Edit Profile" />
           ) : (
             <>
-              <ProfileButton text="Follow" style={{ marginRight: 16 }} />
-              {/* <ProfileButton
-                text="Unfollow"
-                style={{
-                  marginRight: 16,
-                  backgroundColor: Colors.purple + "AA",
-                  borderColor: Colors.darkPurple,
-                }}
-                textStyle={{ color: "white" }}
-              /> */}
+              {!isFollowing ? (
+                <ProfileButton text="Follow" style={{ marginRight: 16 }} />
+              ) : (
+                <ProfileButton
+                  text="Unfollow"
+                  style={{
+                    marginRight: 16,
+                    backgroundColor: Colors.purple + "AA",
+                    borderColor: Colors.darkPurple,
+                  }}
+                  textStyle={{ color: "white" }}
+                />
+              )}
               <ProfileButton text="Message" />
             </>
           )}

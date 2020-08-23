@@ -35,9 +35,9 @@ const LikeButton = ({ reverse, isActive, type, count }) => {
   );
 };
 
-const Argument = ({ photo, type, like_dislike_data, argument, date }) => {
-  const isLiked = like_dislike_data.likes.includes(getCurrentUserId());
-  const isDisliked = like_dislike_data.dislikes.includes(getCurrentUserId());
+const Argument = ({ photo, type, likesData, argument, date }) => {
+  const isLiked = likesData.likes.includes(getCurrentUserId());
+  const isDisliked = likesData.dislikes.includes(getCurrentUserId());
   return (
     <View style={{ paddingHorizontal: 16 }}>
       <View style={styles.argContainer}>
@@ -52,12 +52,12 @@ const Argument = ({ photo, type, like_dislike_data, argument, date }) => {
             <LikeButton
               isActive={isLiked}
               type="like"
-              count={like_dislike_data.likes.length}
+              count={likesData.likes.length}
             />
             <LikeButton
               isActive={isDisliked}
               type="dislike"
-              count={like_dislike_data.dislikes.length}
+              count={likesData.dislikes.length}
               reverse
             />
 
@@ -87,7 +87,7 @@ export default function Round({ roundNumber, opponent, proponent, data }) {
         type="proponent"
         argument={data?.proponent_msg}
         date={data.proponent_date}
-        like_dislike_data={{
+        likesData={{
           likes: data.proponent_like,
           dislikes: data.proponent_dislike,
         }}
@@ -104,7 +104,7 @@ export default function Round({ roundNumber, opponent, proponent, data }) {
           type="opponent"
           date={data.opponent_date}
           argument={data?.opponent_msg}
-          like_dislike_data={{
+          likesData={{
             likes: data.opponent_like,
             dislikes: data.opponent_dislike,
           }}
