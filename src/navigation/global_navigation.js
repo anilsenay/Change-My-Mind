@@ -20,7 +20,7 @@ const Stack = createStackNavigator();
 
 export function GlobalNavigation() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator animation="fade">
       <Stack.Screen
         name="Root"
         component={Root}
