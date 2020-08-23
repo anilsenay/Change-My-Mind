@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, ActivityIndicator, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -13,14 +13,18 @@ import TopView from "./profile_views/top.view";
 import Debates from "./profile_views/debates";
 
 import { getUser } from "../hooks/user.hooks";
-import { getDebates } from "../hooks/debate.hooks";
+import globalHook from "../hooks/global.hook";
 
 export default function Profile({ route, user }) {
   const { uid, username } = route?.params ? route?.params : user;
 
   const userData = getUser(uid).data;
 
-  console.log(route?.params);
+  const { setLoggedUser } = globalHook();
+
+  useEffect(() => {
+    user && userData && setLoggedUser(userData);
+  }, [userData]);
 
   return (
     <SafeAreaView style={styles.container}>
