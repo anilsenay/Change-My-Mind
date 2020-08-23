@@ -17,7 +17,7 @@ export default function Root({ navigation }) {
     Animated.timing(scaleValue, {
       toValue: 1,
       useNativeDriver: true,
-      duration: 1000,
+      duration: 800,
     }).start(() => {
       navigation.replace("Feed", { uid: user.uid });
     });
@@ -69,7 +69,7 @@ export default function Root({ navigation }) {
           { transform: [{ scale: scaleValueInterpolation }] },
         ]}
       >
-        <Text
+        <Animated.Text
           style={{
             fontSize: 24,
             color: Colors.purple,
@@ -78,7 +78,7 @@ export default function Root({ navigation }) {
           }}
         >
           Change My Mind
-        </Text>
+        </Animated.Text>
       </Animated.View>
     </View>
   );
