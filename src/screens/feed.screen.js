@@ -10,24 +10,17 @@ import FeedItems from "./feed_views/feed.items.view";
 
 import debatesHook from "../hooks/debates.hook";
 import globalHook from "../hooks/global.hook";
-import { getUser } from "../hooks/user.hooks";
+import { getUser, getCurrentUserId } from "../hooks/user.hooks";
 
-export default function Feed({ route }) {
+export default function Feed() {
   const [hideFilter, setHideFilter] = useState(true);
-
-  const { getAllDebates, useDebatesState } = debatesHook();
-  const { debates } = useDebatesState();
 
   const { setLoggedUser } = globalHook();
 
-  const loggedUser = getUser(route.params?.uid).data;
+  const loggedUser = getUser(getCurrentUserId()).data;
   useEffect(() => {
     loggedUser && setLoggedUser(loggedUser);
   }, [loggedUser]);
-
-  useEffect(() => {
-    getAllDebates();
-  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -38,7 +31,7 @@ export default function Feed({ route }) {
         rightIconEvent={() => setHideFilter(!hideFilter)}
       />
       <Filter hideFilter={hideFilter} />
-      {debates.isFetched && <FeedItems data={debates.results} />}
+      <FeedItems />
     </SafeAreaView>
   );
 }

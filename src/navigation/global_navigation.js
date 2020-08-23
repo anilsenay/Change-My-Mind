@@ -63,11 +63,10 @@ export function GlobalNavigation() {
 const Tab = createBottomTabNavigator();
 
 const TabScreens = ({ ...props }) => {
-  const FeedComponent = () => <Feed {...props} />;
   return (
     <Tab.Navigator tabBar={(props) => <MyTabBar {...props} />}>
       {/* tabBar={(props) => <MyTabBar {...props} />} */}
-      <Tab.Screen name="Feed" component={FeedComponent} />
+      <Tab.Screen name="Feed" component={Feed} />
       <Tab.Screen name="Explore" component={Explore} />
       <Tab.Screen name="Create" component={Feed} />
       <Tab.Screen name="Notifications" component={Notifications} />
