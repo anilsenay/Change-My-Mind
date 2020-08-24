@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { pop } from "../navigation/root_navigation";
@@ -37,17 +37,26 @@ export default function Discussion({ route }) {
           borderBottomColor: Colors.lightGrey,
         }}
       />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={styles.scrollStyle}
-      >
-        <Info data={newData.id ? newData : data} />
-        <Rounds
-          opponent={data.opponent}
-          proponent={data.proponent}
-          rounds={newData.rounds ? newData.rounds : null}
+      {newData?.title ? (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={styles.scrollStyle}
+        >
+          <Info data={newData.id ? newData : data} />
+          <Rounds
+            opponent={data.opponent}
+            proponent={data.proponent}
+            rounds={newData.rounds ? newData.rounds : null}
+          />
+        </ScrollView>
+      ) : (
+        <ActivityIndicator
+          size="large"
+          animating={true}
+          color="grey"
+          style={{ marginTop: 40 }}
         />
-      </ScrollView>
+      )}
     </SafeAreaView>
   );
 }

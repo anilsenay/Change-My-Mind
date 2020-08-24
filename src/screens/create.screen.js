@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TextInput, Picker } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
-import { pop } from "../navigation/root_navigation";
+import { pop, replace } from "../navigation/root_navigation";
 
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -16,12 +16,38 @@ import CustomModal from "../components/modal";
 import { categories } from "../consts/filter_categories";
 import ErrorModal from "./create_views/error_modal.view";
 
+import { createDebate, getDebate } from "../hooks/debate.hooks";
+import { getCurrentUserId } from "../hooks/user.hooks";
+import globaHook from "../hooks/global.hook";
+
 export default function Create() {
   const [blur, setBlur] = useState();
   const [modalVisable, setModalVisible] = useState(false);
 
+  const { useGlobalState } = globaHook();
+
+  const currentUserId = getCurrentUserId();
+
   const submitEvent = (values) => {
-    console.log(values);
+    const navigateEvent = (id) => {
+      replace("Discussion", {
+        data: {
+          id: id,
+          proponent: useGlobalState().user,
+          opponent: null,
+        },
+      });
+    };
+
+    createDebate(
+      {
+        ...values,
+        proponent: currentUserId,
+      },
+      navigateEvent
+    );
+
+    // created notification
   };
 
   return (

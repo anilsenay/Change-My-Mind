@@ -8,7 +8,6 @@ import FilterIcon from "../components/icons/filter";
 import Filter from "./feed_views/filter.view";
 import FeedItems from "./feed_views/feed.items.view";
 
-import debatesHook from "../hooks/debates.hook";
 import globalHook from "../hooks/global.hook";
 import { getUser, getCurrentUserId } from "../hooks/user.hooks";
 

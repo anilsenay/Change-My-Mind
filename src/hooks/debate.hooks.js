@@ -2,26 +2,65 @@ import * as firebase from "firebase";
 import "firebase/firestore";
 import { useEffect, useState } from "react";
 
-async function createDebate(
-  title,
-  category,
-  proponent,
-  round_number,
-  respond_limit
-) {
-  return await firebase.firestore().collection("Debate").add({
-    title,
+function createDebate({ ...values }, finalEvent) {
+  console.log(values);
+  const {
+    topic,
     category,
     proponent,
-    opponent: null,
-    start_date: new Date(),
-    update_date: new Date(),
-    status: "open",
-    round_number,
-    respond_limit,
-    finish_date: null,
-    rounds: [],
-  });
+    respond_hour,
+    respond_minute,
+    rounds,
+    voting_period,
+    argument,
+  } = values;
+  firebase
+    .firestore()
+    .collection("Rounds")
+    .add({
+      proponent,
+      proponent_msg: argument,
+      opponent: null,
+      opponent_msg: null,
+      proponent_date: new Date(),
+      opponent_date: null,
+      proponent_like: [],
+      opponent_like: [],
+      proponent_dislike: [],
+      opponent_dislike: [],
+    })
+    .then((docRef) => {
+      firebase
+        .firestore()
+        .collection("Debate")
+        .add({
+          title: topic,
+          category,
+          proponent,
+          opponent: null,
+          start_date: new Date(),
+          update_date: new Date(),
+          status: "open",
+          round_number: rounds,
+          respond_limit: respond_hour * 60 + +respond_minute,
+          finish_date: null,
+          voting_period,
+          rounds: [docRef.id],
+        })
+        .then((docRef) => {
+          firebase
+            .firestore()
+            .collection("Users")
+            .doc(proponent)
+            .update({
+              debates: firebase.firestore.FieldValue.arrayUnion(docRef.id),
+            })
+            .then(() => finalEvent(docRef.id));
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    });
 }
 
 const getDebate = (uid) => {

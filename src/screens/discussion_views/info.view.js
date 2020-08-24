@@ -60,7 +60,9 @@ export default function Info({ data }) {
             />
             <InfoText
               label="Respond Limit"
-              text={`${data.respond_limit / 60} hours`}
+              text={`${(data.respond_limit / 60) | 0} hours ${
+                data.respond_limit % 60
+              } minutes`}
             />
             <InfoText
               label="Expires In"

@@ -2,19 +2,36 @@ import * as firebase from "firebase";
 import "firebase/firestore";
 import { useEffect, useState } from "react";
 
-async function createRound(proponent, proponent_msg) {
-  return await firebase.firestore().collection("Rounds").add({
-    proponent,
-    proponent_msg,
-    opponent: null,
-    opponent_msg: null,
-    proponent_date: new Date(),
-    opponent_date: null,
-    proponent_like: 0,
-    opponent_like: 0,
-    proponent_dislike: 0,
-    opponent_dislike: 0,
-  });
+// this function is not using for creating debate anymore, maybe i will use this for new rounds later
+function createRound(proponent, proponent_msg) {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    firebase
+      .firestore()
+      .collection("Rounds")
+      .add({
+        proponent,
+        proponent_msg,
+        opponent: null,
+        opponent_msg: null,
+        proponent_date: new Date(),
+        opponent_date: null,
+        proponent_like: 0,
+        opponent_like: 0,
+        proponent_dislike: 0,
+        opponent_dislike: 0,
+      })
+      .then((doc) => {
+        setData(doc.id);
+      })
+      .catch(function (error) {
+        setError(error);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+  return { loading, data, error };
 }
 
 const getRound = (uid) => {

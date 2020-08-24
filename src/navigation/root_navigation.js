@@ -18,3 +18,7 @@ export function popToTop(number) {
 export function pop(name, params) {
   navigationRef.current?.dispatch(StackActions.popToTop());
 }
+
+export function replace(name, params) {
+  navigationRef.current?.dispatch(StackActions.replace(name, params));
+}
