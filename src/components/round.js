@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { format } from "date-fns";
 
@@ -6,8 +6,14 @@ import { Colors } from "../consts/colors";
 import VoteIcon from "./icons/vote";
 
 import { getCurrentUserId } from "../hooks/user.hooks";
+import {
+  addLike,
+  addDislike,
+  deleteDislike,
+  deleteLike,
+} from "../hooks/round.hook";
 
-const LikeButton = ({ reverse, isActive, type, count }) => {
+const LikeButton = ({ reverse, isActive, type, count, onPress }) => {
   return (
     <View
       style={{
@@ -15,7 +21,7 @@ const LikeButton = ({ reverse, isActive, type, count }) => {
         marginRight: 16,
       }}
     >
-      <TouchableOpacity style={styles.voteIcon}>
+      <TouchableOpacity style={styles.voteIcon} onPress={onPress}>
         <VoteIcon
           width={24}
           height={24}
@@ -35,9 +41,34 @@ const LikeButton = ({ reverse, isActive, type, count }) => {
   );
 };
 
-const Argument = ({ photo, type, likesData, argument, date }) => {
-  const isLiked = likesData.likes.includes(getCurrentUserId());
-  const isDisliked = likesData.dislikes.includes(getCurrentUserId());
+const Argument = ({ photo, type, likesData, argument, date, roundId }) => {
+  const [isLiked, setLiked] = useState(
+    likesData.likes.includes(getCurrentUserId())
+  );
+  const [isDisliked, setDisliked] = useState(
+    likesData.dislikes.includes(getCurrentUserId())
+  );
+
+  const likeEvent = () => {
+    if (isLiked) {
+      deleteLike(roundId, type);
+      setLiked(false);
+    } else {
+      addLike(roundId, type);
+      setLiked(true);
+    }
+  };
+
+  const dislikeEvent = () => {
+    if (isDisliked) {
+      deleteDislike(roundId, type);
+      setDisliked(false);
+    } else {
+      addDislike(roundId, type);
+      setDisliked(true);
+    }
+  };
+
   return (
     <View style={{ paddingHorizontal: 16 }}>
       <View style={styles.argContainer}>
@@ -53,11 +84,13 @@ const Argument = ({ photo, type, likesData, argument, date }) => {
               isActive={isLiked}
               type="like"
               count={likesData.likes.length}
+              onPress={() => likeEvent(roundId, type)}
             />
             <LikeButton
               isActive={isDisliked}
               type="dislike"
               count={likesData.dislikes.length}
+              onPress={() => dislikeEvent(roundId, type)}
               reverse
             />
 
@@ -91,8 +124,7 @@ export default function Round({ roundNumber, opponent, proponent, data }) {
           likes: data.proponent_like,
           dislikes: data.proponent_dislike,
         }}
-        isLiked={data?.proponent_like.includes(getCurrentUserId())}
-        isDisliked={data?.proponent_dislike.includes(getCurrentUserId())}
+        roundId={data.id}
       />
       <View style={styles.vsContainer}>
         <View style={styles.vsSeperator} />
@@ -108,8 +140,7 @@ export default function Round({ roundNumber, opponent, proponent, data }) {
             likes: data.opponent_like,
             dislikes: data.opponent_dislike,
           }}
-          isLiked={data?.opponent_like.includes(getCurrentUserId())}
-          isDisliked={data?.opponent_dislike.includes(getCurrentUserId())}
+          roundId={data.id}
         />
       ) : (
         <Text style={styles.waitingText}>Waiting for opponent's argument</Text>

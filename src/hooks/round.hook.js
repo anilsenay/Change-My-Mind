@@ -102,4 +102,93 @@ async function updateRound(uid, data) {
     .update({ ...data });
 }
 
-export { createRound, getRound, updateRound, getRounds };
+function addLike(uid, user) {
+  firebase
+    .firestore()
+    .collection("Rounds")
+    .doc(uid)
+    .update(
+      user === "proponent"
+        ? {
+            proponent_like: firebase.firestore.FieldValue.arrayUnion(
+              firebase.auth().currentUser.uid
+            ),
+          }
+        : {
+            opponent_like: firebase.firestore.FieldValue.arrayUnion(
+              firebase.auth().currentUser.uid
+            ),
+          }
+    );
+}
+
+function deleteLike(uid, user) {
+  firebase
+    .firestore()
+    .collection("Rounds")
+    .doc(uid)
+    .update(
+      user === "proponent"
+        ? {
+            proponent_like: firebase.firestore.FieldValue.arrayRemove(
+              firebase.auth().currentUser.uid
+            ),
+          }
+        : {
+            opponent_like: firebase.firestore.FieldValue.arrayRemove(
+              firebase.auth().currentUser.uid
+            ),
+          }
+    );
+}
+
+function addDislike(uid, user) {
+  firebase
+    .firestore()
+    .collection("Rounds")
+    .doc(uid)
+    .update(
+      user === "proponent"
+        ? {
+            proponent_dislike: firebase.firestore.FieldValue.arrayUnion(
+              firebase.auth().currentUser.uid
+            ),
+          }
+        : {
+            opponent_dislike: firebase.firestore.FieldValue.arrayUnion(
+              firebase.auth().currentUser.uid
+            ),
+          }
+    );
+}
+
+function deleteDislike(uid, user) {
+  firebase
+    .firestore()
+    .collection("Rounds")
+    .doc(uid)
+    .update(
+      user === "proponent"
+        ? {
+            proponent_dislike: firebase.firestore.FieldValue.arrayRemove(
+              firebase.auth().currentUser.uid
+            ),
+          }
+        : {
+            opponent_dislike: firebase.firestore.FieldValue.arrayRemove(
+              firebase.auth().currentUser.uid
+            ),
+          }
+    );
+}
+
+export {
+  createRound,
+  getRound,
+  updateRound,
+  getRounds,
+  addLike,
+  deleteLike,
+  addDislike,
+  deleteDislike,
+};
