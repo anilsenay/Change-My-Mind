@@ -5,19 +5,30 @@ import { AppContext, AppContextDispatch } from "../contexts/app.context";
 import * as firebase from "firebase";
 import "firebase/firestore";
 
+import filterHook from "./filter.hook";
+
+import { quaryValues } from "../consts/sort_values";
+
 const debatesHook = () => {
   const { debatesState } = useContext(AppContext);
   const { debatesDispatch } = useContext(AppContextDispatch);
+
+  const { useFilterState, getSortValues } = filterHook();
 
   const useDebatesState = () => {
     return debatesState;
   };
 
-  const getAllDebates = () => {
+  const getAllDebates = (order_data) => {
+    const { sortSelection } = useFilterState();
+    const { orderBy, order } = order_data
+      ? quaryValues[order_data]
+      : quaryValues[sortSelection];
+    console.log("getall: ", orderBy, order);
     firebase
       .firestore()
       .collection("Debate")
-      .orderBy("update_date", "desc")
+      .orderBy(orderBy, order)
       .limit(5)
       .get()
       .then((querySnapshot) => {
@@ -30,45 +41,61 @@ const debatesHook = () => {
             finish_date: doc.data().finish_date?.toDate(),
           };
         });
+        const lastData = querySnapshot.docs[querySnapshot.docs.length - 1];
+
         debatesDispatch({
           type: "SET_DEBATES",
           payload: data,
+        });
+        debatesDispatch({
+          type: "SET_DEBATES_LAST",
+          payload: lastData,
         });
       });
   };
 
   const fetchMoreDebates = () => {
-    firebase
-      .firestore()
-      .collection("Debate")
-      .orderBy("update_date", "desc")
-      .startAfter(debatesState.debates.results.slice(-1)[0].update_date)
-      .limit(5)
-      .get()
-      .then((querySnapshot) => {
-        const data = querySnapshot.docs.map((doc) => {
-          return {
-            id: doc.id,
-            ...doc.data(),
-            start_date: doc.data().start_date.toDate(),
-            update_date: doc.data().update_date.toDate(),
-            finish_date: doc.data().finish_date?.toDate(),
-          };
+    const { orderBy, order } = getSortValues();
+    debatesState.lastData &&
+      firebase
+        .firestore()
+        .collection("Debate")
+        .orderBy(orderBy, order)
+        .startAfter(debatesState.lastData)
+        .limit(5)
+        .get()
+        .then((querySnapshot) => {
+          const data = querySnapshot.docs.map((doc) => {
+            return {
+              id: doc.id,
+              ...doc.data(),
+              start_date: doc.data().start_date.toDate(),
+              update_date: doc.data().update_date.toDate(),
+              finish_date: doc.data().finish_date?.toDate(),
+            };
+          });
+          const lastData = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+          debatesDispatch({
+            type: "SET_DEBATES",
+            payload: [...debatesState.debates.results, ...data],
+          });
+          debatesDispatch({
+            type: "SET_DEBATES_LAST",
+            payload: lastData,
+          });
         });
-        debatesDispatch({
-          type: "SET_DEBATES",
-          payload: [...debatesState.debates.results, ...data],
-        });
-      });
   };
 
   const loadNewDebates = (currentData, setLoading) => {
+    const { orderBy, order } = getSortValues();
+
     console.log(currentData);
     firebase
       .firestore()
       .collection("Debate")
-      .orderBy("update_date", "desc")
-      .endBefore(currentData.results[0].update_date)
+      .orderBy(orderBy, order)
+      .endBefore(currentData.results[0][orderBy])
       .get()
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => {

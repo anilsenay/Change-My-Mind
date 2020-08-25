@@ -3,6 +3,8 @@ const debatesInitialState = {
     isFetched: false,
     results: [],
   },
+  lastData: null,
+
   current_debate: {
     isFetched: false,
     data: null,
@@ -15,6 +17,11 @@ const debatesReducer = (state, action) => {
       return {
         ...state,
         debates: { results: [...action.payload], isFetched: true },
+      };
+    case "SET_DEBATES_LAST":
+      return {
+        ...state,
+        lastData: action.payload,
       };
     case "SET_CURRENT_DEBATE":
       return {

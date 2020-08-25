@@ -14,6 +14,7 @@ import { sortValues } from "../../consts/sort_values";
 import Picker from "../../components/picker";
 
 import filterHook from "../../hooks/filter.hook";
+import debatesHook from "../../hooks/debates.hook";
 
 const FilterItem = ({ text, selected, onPress }) => {
   return (
@@ -28,9 +29,21 @@ const FilterItem = ({ text, selected, onPress }) => {
 };
 
 export default function Filter({ hideFilter }) {
-  const { useFilterState, setSort, updateCategory } = filterHook();
+  const {
+    useFilterState,
+    setSort,
+    updateCategory,
+    getSortValues,
+  } = filterHook();
   const { categories, sortSelection } = useFilterState();
+  const { getAllDebates } = debatesHook();
 
+  const sortEvent = (order) => {
+    getAllDebates(order);
+    setSort(order);
+  };
+
+  console.log(getSortValues());
   return (
     <Collapsible collapsed={hideFilter}>
       <View style={styles.container}>
@@ -51,7 +64,7 @@ export default function Filter({ hideFilter }) {
         />
         <Picker
           selectedValue={sortSelection}
-          onValueChange={(e) => setSort(e)}
+          onValueChange={(e) => sortEvent(e)}
           data={sortValues}
         />
       </View>

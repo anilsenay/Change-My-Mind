@@ -47,6 +47,7 @@ function createDebate({ ...values }, finalEvent) {
           voting_period,
           rounds: [docRef.id],
           total_view: 1,
+          total_vote: 0,
         })
         .then((docRef) => {
           firebase
