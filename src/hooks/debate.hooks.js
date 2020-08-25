@@ -46,6 +46,7 @@ function createDebate({ ...values }, finalEvent) {
           finish_date: null,
           voting_period,
           rounds: [docRef.id],
+          total_view: 1,
         })
         .then((docRef) => {
           firebase
@@ -132,4 +133,12 @@ async function updateDebate(uid, data) {
     .update({ ...data });
 }
 
-export { createDebate, getDebate, updateDebate, getDebates };
+async function increaseView(uid) {
+  return await firebase
+    .firestore()
+    .collection("Debate")
+    .doc(uid)
+    .update({ total_view: firebase.firestore.FieldValue.increment(1) });
+}
+
+export { createDebate, getDebate, updateDebate, getDebates, increaseView };

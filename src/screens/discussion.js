@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, ScrollView, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -13,7 +13,7 @@ import Rounds from "./discussion_views/rounds.view";
 
 import { Colors } from "../consts/colors";
 
-import { getDebate } from "../hooks/debate.hooks";
+import { getDebate, increaseView } from "../hooks/debate.hooks";
 
 export default function Discussion({ route }) {
   const { data } = route?.params;
@@ -24,6 +24,10 @@ export default function Discussion({ route }) {
     opponent: data.opponent,
   };
   console.log(newData);
+
+  useEffect(() => {
+    increaseView(data.id);
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
