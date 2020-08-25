@@ -48,14 +48,22 @@ const Argument = ({ photo, type, likesData, argument, date, roundId }) => {
   const [isDisliked, setDisliked] = useState(
     likesData.dislikes.includes(getCurrentUserId())
   );
+  const [likes, setLikes] = useState(likesData.likes);
+  const [dislikes, setDislikes] = useState(likesData.dislikes);
 
   const likeEvent = () => {
     if (isLiked) {
       deleteLike(roundId, type);
       setLiked(false);
+      setLikes(
+        likes.filter((item) => {
+          item !== getCurrentUserId();
+        })
+      );
     } else {
       addLike(roundId, type);
       setLiked(true);
+      setLikes([...likes, getCurrentUserId()]);
     }
   };
 
@@ -63,9 +71,15 @@ const Argument = ({ photo, type, likesData, argument, date, roundId }) => {
     if (isDisliked) {
       deleteDislike(roundId, type);
       setDisliked(false);
+      setDislikes(
+        dislikes.filter((item) => {
+          item !== getCurrentUserId();
+        })
+      );
     } else {
       addDislike(roundId, type);
       setDisliked(true);
+      setDislikes([...dislikes, getCurrentUserId()]);
     }
   };
 
@@ -83,13 +97,13 @@ const Argument = ({ photo, type, likesData, argument, date, roundId }) => {
             <LikeButton
               isActive={isLiked}
               type="like"
-              count={likesData.likes.length}
+              count={likes.length}
               onPress={() => likeEvent(roundId, type)}
             />
             <LikeButton
               isActive={isDisliked}
               type="dislike"
-              count={likesData.dislikes.length}
+              count={dislikes.length}
               onPress={() => dislikeEvent(roundId, type)}
               reverse
             />
