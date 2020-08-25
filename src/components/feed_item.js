@@ -82,7 +82,7 @@ export default function FeedItem({ itemData }) {
         onPress={() =>
           navigate("Discussion", {
             data: {
-              ...itemData,
+              id: itemData.id,
               proponent: proponentData,
               opponent: opponentData,
             },

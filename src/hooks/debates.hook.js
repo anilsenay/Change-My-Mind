@@ -89,11 +89,44 @@ const debatesHook = () => {
       .finally(() => setLoading(false));
   };
 
+  const getDebate = (uid) => {
+    firebase
+      .firestore()
+      .collection("Debate")
+      .doc(uid)
+      .get()
+      .then((doc) => {
+        const data = {
+          id: doc.id,
+          ...doc.data(),
+          start_date: doc.data().start_date.toDate(),
+          update_date: doc.data().update_date.toDate(),
+          finish_date: doc.data().finish_date?.toDate(),
+        };
+        debatesDispatch({
+          type: "SET_CURRENT_DEBATE",
+          payload: data,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const removeDebateState = () => {
+    debatesDispatch({
+      type: "REMOVE_CURRENT_DEBATE",
+      payload: null,
+    });
+  };
+
   return {
     useDebatesState,
     getAllDebates,
     fetchMoreDebates,
     loadNewDebates,
+    getDebate,
+    removeDebateState,
   };
 };
 

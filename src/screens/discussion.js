@@ -13,20 +13,31 @@ import Rounds from "./discussion_views/rounds.view";
 
 import { Colors } from "../consts/colors";
 
-import { getDebate, increaseView } from "../hooks/debate.hooks";
+import { increaseView } from "../hooks/debate.hooks";
+import debatesHook from "../hooks/debates.hook";
 
 export default function Discussion({ route }) {
   const { data } = route?.params;
 
-  const newData = {
-    ...getDebate(data.id).data,
+  const { getDebate, removeDebateState, useDebatesState } = debatesHook();
+  const { current_debate } = useDebatesState();
+
+  const newData = current_debate?.isFetched && {
+    ...current_debate.data,
     proponent: data.proponent,
     opponent: data.opponent,
   };
   console.log(newData);
 
   useEffect(() => {
+    getDebate(data.id);
     increaseView(data.id);
+
+    return removeDebateState();
+  }, []);
+
+  useEffect(() => {
+    return () => removeDebateState();
   }, []);
 
   return (
