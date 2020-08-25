@@ -62,10 +62,37 @@ const debatesHook = () => {
       });
   };
 
+  const loadNewDebates = (setLoading) => {
+    firebase
+      .firestore()
+      .collection("Debate")
+      .orderBy("update_date", "desc")
+      .endBefore(debatesState.debates.results[0].update_date)
+      .get()
+      .then((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            ...doc.data(),
+            start_date: doc.data().start_date.toDate(),
+            update_date: doc.data().update_date.toDate(),
+            finish_date: doc.data().finish_date?.toDate(),
+          };
+        });
+        debatesDispatch({
+          type: "SET_DEBATES",
+          payload: [...data, ...debatesState.debates.results],
+        });
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false));
+  };
+
   return {
     useDebatesState,
     getAllDebates,
     fetchMoreDebates,
+    loadNewDebates,
   };
 };
 

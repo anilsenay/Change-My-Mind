@@ -15,7 +15,12 @@ import debatesHook from "../../hooks/debates.hook";
 export default function FeedItems({ data }) {
   const [refreshing, setRefreshing] = useState(false);
 
-  const { getAllDebates, fetchMoreDebates, useDebatesState } = debatesHook();
+  const {
+    getAllDebates,
+    fetchMoreDebates,
+    loadNewDebates,
+    useDebatesState,
+  } = debatesHook();
   const { debates } = useDebatesState();
 
   useEffect(() => {
@@ -25,7 +30,7 @@ export default function FeedItems({ data }) {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
 
-    setTimeout(() => setRefreshing(false), 2000); // working like fake fetching
+    loadNewDebates(setRefreshing);
   }, []);
 
   if (!debates || !debates.isFetched) {
