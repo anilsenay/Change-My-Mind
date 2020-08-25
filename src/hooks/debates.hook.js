@@ -62,12 +62,13 @@ const debatesHook = () => {
       });
   };
 
-  const loadNewDebates = (setLoading) => {
+  const loadNewDebates = (currentData, setLoading) => {
+    console.log(currentData);
     firebase
       .firestore()
       .collection("Debate")
       .orderBy("update_date", "desc")
-      .endBefore(debatesState.debates.results[0].update_date)
+      .endBefore(currentData.results[0].update_date)
       .get()
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => {
@@ -81,7 +82,7 @@ const debatesHook = () => {
         });
         debatesDispatch({
           type: "SET_DEBATES",
-          payload: [...data, ...debatesState.debates.results],
+          payload: [...data, ...currentData.results],
         });
       })
       .catch((err) => console.log(err))

@@ -27,11 +27,14 @@ export default function FeedItems({ data }) {
     getAllDebates();
   }, []);
 
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
+  const onRefresh = React.useCallback(
+    (debates) => {
+      setRefreshing(true);
 
-    loadNewDebates(setRefreshing);
-  }, []);
+      loadNewDebates(debates, setRefreshing); // (currentData, afterLoadingEvent)
+    },
+    [refreshing]
+  );
 
   if (!debates || !debates.isFetched) {
     return (
@@ -57,7 +60,10 @@ export default function FeedItems({ data }) {
           renderItem={({ item }) => <FeedItem itemData={item} />}
           ListFooterComponent={<View style={{ marginBottom: 16 }} />}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => onRefresh(debates)}
+            />
           }
           onEndReachedThreshold={0.01}
           onEndReached={() => {
