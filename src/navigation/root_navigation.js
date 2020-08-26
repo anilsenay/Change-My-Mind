@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StackActions } from "@react-navigation/native";
+import { StackActions, TabActions } from "@react-navigation/native";
 
 export const navigationRef = React.createRef();
 
@@ -21,4 +21,8 @@ export function pop(name, params) {
 
 export function replace(name, params) {
   navigationRef.current?.dispatch(StackActions.replace(name, params));
+}
+
+export function navigateTab(name) {
+  navigationRef.current?.dispatch(TabActions.jumpTo(name));
 }

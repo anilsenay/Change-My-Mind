@@ -3,7 +3,7 @@ import { StyleSheet, ActivityIndicator, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Colors } from "../consts/colors";
-import { pop } from "../navigation/root_navigation";
+import { pop, navigateTab } from "../navigation/root_navigation";
 
 import Header from "../components/header";
 import BackIcon from "../components/icons/back";
@@ -12,19 +12,21 @@ import Dots from "../components/vertical_dots";
 import TopView from "./profile_views/top.view";
 import Debates from "./profile_views/debates";
 
-import { getUser } from "../hooks/user.hooks";
-import globalHook from "../hooks/global.hook";
+import { getUser, getCurrentUserId } from "../hooks/user.hooks";
 
 export default function Profile({ route, user }) {
-  const { uid, username } = route?.params ? route?.params : user;
+  const { uid, username } = route?.params;
 
   const userData = getUser(uid).data;
 
-  const { setLoggedUser } = globalHook();
-
   useEffect(() => {
-    user && userData && setLoggedUser(userData);
-  }, [userData]);
+    uid === getCurrentUserId() && pop();
+  }, []);
+  useEffect(() => {
+    return () => {
+      uid === getCurrentUserId() && navigateTab("MyProfile");
+    };
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>

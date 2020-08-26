@@ -7,14 +7,18 @@ import {
   Image,
 } from "react-native";
 
-import { navigate } from "../navigation/root_navigation";
+import { navigate, navigateTab } from "../navigation/root_navigation";
 import { Colors } from "../consts/colors";
+
+import { getCurrentUserId } from "../hooks/user.hooks";
 
 const User = ({ data }) => {
   return (
     <TouchableWithoutFeedback
       onPress={() =>
-        navigate("Profile", { uid: data.uid, username: data.username })
+        getCurrentUserId() === data.uid
+          ? navigateTab("MyProfile")
+          : navigate("Profile", { uid: data.uid, username: data.username })
       }
     >
       <View style={styles.userContainer}>
