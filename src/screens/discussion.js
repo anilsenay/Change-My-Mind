@@ -1,5 +1,10 @@
-import React, { useEffect } from "react";
-import { StyleSheet, ScrollView, ActivityIndicator } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  ScrollView,
+  ActivityIndicator,
+  RefreshControl,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { pop } from "../navigation/root_navigation";
@@ -17,6 +22,8 @@ import { increaseView } from "../hooks/debate.hooks";
 import debatesHook from "../hooks/debates.hook";
 
 export default function Discussion({ route }) {
+  const [isRefreshed, setRefreshed] = useState(false);
+
   const { data } = route?.params;
 
   const { getDebate, removeDebateState, useDebatesState } = debatesHook();
@@ -34,11 +41,15 @@ export default function Discussion({ route }) {
     increaseView(data.id);
 
     return removeDebateState();
-  }, []);
+  }, [isRefreshed]);
 
   useEffect(() => {
     return () => removeDebateState();
   }, []);
+
+  const refreshEvent = () => {
+    setRefreshed(!isRefreshed);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -56,6 +67,9 @@ export default function Discussion({ route }) {
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={styles.scrollStyle}
+          refreshControl={
+            <RefreshControl refreshing={false} onRefresh={refreshEvent} />
+          }
         >
           <Info data={newData.id ? newData : data} />
           <Rounds
