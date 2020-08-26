@@ -12,6 +12,7 @@ import {
   deleteDislike,
   deleteLike,
 } from "../hooks/round.hook";
+import debatesHook from "../hooks/debates.hook";
 
 const LikeButton = ({ reverse, isActive, type, count, onPress }) => {
   return (
@@ -42,6 +43,10 @@ const LikeButton = ({ reverse, isActive, type, count, onPress }) => {
 };
 
 const Argument = ({ photo, type, likesData, argument, date, roundId }) => {
+  const { useDebatesState } = debatesHook();
+  const { current_debate } = useDebatesState();
+  const debateId = current_debate.data.id;
+
   const [isLiked, setLiked] = useState(
     likesData.likes.includes(getCurrentUserId())
   );
@@ -53,7 +58,7 @@ const Argument = ({ photo, type, likesData, argument, date, roundId }) => {
 
   const likeEvent = () => {
     if (isLiked) {
-      deleteLike(roundId, type);
+      deleteLike(roundId, type, debateId);
       setLiked(false);
       setLikes(
         likes.filter((item) => {
@@ -61,7 +66,7 @@ const Argument = ({ photo, type, likesData, argument, date, roundId }) => {
         })
       );
     } else {
-      addLike(roundId, type);
+      addLike(roundId, type, debateId);
       setLiked(true);
       setLikes([...likes, getCurrentUserId()]);
     }
@@ -69,7 +74,7 @@ const Argument = ({ photo, type, likesData, argument, date, roundId }) => {
 
   const dislikeEvent = () => {
     if (isDisliked) {
-      deleteDislike(roundId, type);
+      deleteDislike(roundId, type, debateId);
       setDisliked(false);
       setDislikes(
         dislikes.filter((item) => {
@@ -77,7 +82,7 @@ const Argument = ({ photo, type, likesData, argument, date, roundId }) => {
         })
       );
     } else {
-      addDislike(roundId, type);
+      addDislike(roundId, type, debateId);
       setDisliked(true);
       setDislikes([...dislikes, getCurrentUserId()]);
     }

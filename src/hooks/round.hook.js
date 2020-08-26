@@ -2,6 +2,8 @@ import * as firebase from "firebase";
 import "firebase/firestore";
 import { useEffect, useState } from "react";
 
+import { increaseVote, decreaseVote } from "./debate.hooks";
+
 // this function is not using for creating debate anymore, maybe i will use this for new rounds later
 function createRound(proponent, proponent_msg) {
   const [data, setData] = useState(null);
@@ -102,7 +104,7 @@ async function updateRound(uid, data) {
     .update({ ...data });
 }
 
-function addLike(uid, user) {
+function addLike(uid, user, debateId) {
   firebase
     .firestore()
     .collection("Rounds")
@@ -119,10 +121,11 @@ function addLike(uid, user) {
               firebase.auth().currentUser.uid
             ),
           }
-    );
+    )
+    .finally(() => increaseVote(debateId));
 }
 
-function deleteLike(uid, user) {
+function deleteLike(uid, user, debateId) {
   firebase
     .firestore()
     .collection("Rounds")
@@ -139,10 +142,11 @@ function deleteLike(uid, user) {
               firebase.auth().currentUser.uid
             ),
           }
-    );
+    )
+    .finally(() => decreaseVote(debateId));
 }
 
-function addDislike(uid, user) {
+function addDislike(uid, user, debateId) {
   firebase
     .firestore()
     .collection("Rounds")
@@ -159,10 +163,11 @@ function addDislike(uid, user) {
               firebase.auth().currentUser.uid
             ),
           }
-    );
+    )
+    .finally(() => increaseVote(debateId));
 }
 
-function deleteDislike(uid, user) {
+function deleteDislike(uid, user, debateId) {
   firebase
     .firestore()
     .collection("Rounds")
@@ -179,7 +184,8 @@ function deleteDislike(uid, user) {
               firebase.auth().currentUser.uid
             ),
           }
-    );
+    )
+    .finally(() => decreaseVote(debateId));
 }
 
 export {

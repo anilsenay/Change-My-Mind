@@ -146,4 +146,27 @@ async function increaseView(uid) {
     .update({ total_view: firebase.firestore.FieldValue.increment(1) });
 }
 
-export { createDebate, getDebate, updateDebate, getDebates, increaseView };
+async function increaseVote(uid) {
+  return await firebase
+    .firestore()
+    .collection("Debate")
+    .doc(uid)
+    .update({ total_vote: firebase.firestore.FieldValue.increment(1) });
+}
+async function decreaseVote(uid) {
+  return await firebase
+    .firestore()
+    .collection("Debate")
+    .doc(uid)
+    .update({ total_vote: firebase.firestore.FieldValue.increment(-1) });
+}
+
+export {
+  createDebate,
+  getDebate,
+  updateDebate,
+  getDebates,
+  increaseView,
+  increaseVote,
+  decreaseVote,
+};
