@@ -9,8 +9,6 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Formik } from "formik";
-import * as yup from "yup";
 
 import { pop } from "../navigation/root_navigation";
 import { Colors } from "../consts/colors";
