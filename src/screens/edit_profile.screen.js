@@ -51,8 +51,7 @@ export default function EditProfile() {
       if (values.username.length > 20) {
         setErrors({
           ...errors,
-          username:
-            errors.username + "* Username can be maximum 20 character\n",
+          username: "* Username can be maximum 20 character\n",
         });
       }
     } else if (field === "profile_name") {
@@ -69,9 +68,7 @@ export default function EditProfile() {
       if (values.profile_name.length > 20) {
         setErrors({
           ...errors,
-          profile_name:
-            errors.profile_name +
-            "* Profile Name can be maximum 20 character\n",
+          profile_name: "* Profile Name can be maximum 20 character\n",
         });
       }
     } else if (field === "biography") {
