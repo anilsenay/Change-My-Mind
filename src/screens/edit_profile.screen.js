@@ -18,11 +18,12 @@ import TickIcon from "../components/icons/tick";
 import Header from "../components/header";
 
 import globalHook from "../hooks/global.hook";
+import { updateUser } from "../hooks/user.hooks";
 
 export default function EditProfile() {
   const [focus, setFocus] = useState();
 
-  const { useGlobalState } = globalHook();
+  const { useGlobalState, setLoggedUser } = globalHook();
   const { user } = useGlobalState();
 
   const [values, setValues] = useState({
@@ -94,7 +95,11 @@ export default function EditProfile() {
   };
 
   const submitEvent = () => {
-    checkField() && console.log(values);
+    if (checkField()) {
+      updateUser(values);
+      setLoggedUser({ ...user, ...values });
+      pop();
+    }
   };
 
   return (

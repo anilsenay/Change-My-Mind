@@ -29,4 +29,12 @@ const getUser = (uid) => {
   return { loading, data, error };
 };
 
-export { getCurrentUserId, getUser };
+function updateUser(data) {
+  return firebase
+    .firestore()
+    .collection("Users")
+    .doc(firebase.auth().currentUser.uid)
+    .update({ ...data });
+}
+
+export { getCurrentUserId, getUser, updateUser };
