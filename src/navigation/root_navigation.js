@@ -12,11 +12,11 @@ export function push(...args) {
 }
 
 export function popToTop(number) {
-  navigationRef.current?.dispatch(StackActions.pop(number));
+  navigationRef.current?.dispatch(StackActions.popToTop(number));
 }
 
 export function pop(name, params) {
-  navigationRef.current?.dispatch(StackActions.popToTop());
+  navigationRef.current?.dispatch(StackActions.pop());
 }
 
 export function replace(name, params) {
