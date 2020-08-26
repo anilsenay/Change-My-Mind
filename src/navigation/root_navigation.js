@@ -11,12 +11,12 @@ export function push(...args) {
   navigationRef.current?.dispatch(StackActions.push(...args));
 }
 
-export function popToTop(number) {
-  navigationRef.current?.dispatch(StackActions.popToTop(number));
+export function popToTop() {
+  navigationRef.current?.dispatch(StackActions.popToTop());
 }
 
-export function pop(name, params) {
-  navigationRef.current?.dispatch(StackActions.pop());
+export function pop(number) {
+  navigationRef.current?.dispatch(StackActions.pop(number));
 }
 
 export function replace(name, params) {
