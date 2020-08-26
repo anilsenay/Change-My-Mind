@@ -18,7 +18,7 @@ import TickIcon from "../components/icons/tick";
 import Header from "../components/header";
 
 import globalHook from "../hooks/global.hook";
-import { updateUser } from "../hooks/user.hooks";
+import { updateUser, isUsernameExist } from "../hooks/user.hooks";
 
 export default function EditProfile() {
   const [focus, setFocus] = useState();
@@ -55,6 +55,14 @@ export default function EditProfile() {
           username: "* Username can be maximum 20 character\n",
         });
       }
+      isUsernameExist(values.username).then((query) => {
+        query.docs.length !== 0 &&
+          values.username !== user.username &&
+          setErrors({
+            ...errors,
+            username: "* This username is already exists!\n",
+          });
+      });
     } else if (field === "profile_name") {
       setErrors({
         ...errors,
@@ -84,22 +92,23 @@ export default function EditProfile() {
         });
       }
     } else {
-      return (
-        values.username.length >= 3 &&
-        values.username.length <= 20 &&
-        values.profile_name.length >= 3 &&
-        values.profile_name.length <= 20
-      );
+      return !errors.username && !errors.profile_name && !errors.biography;
     }
+
     return undefined;
   };
 
   const submitEvent = () => {
-    if (checkField()) {
-      updateUser(values);
-      setLoggedUser({ ...user, ...values });
-      pop();
-    }
+    isUsernameExist(values.username).then((query) => {
+      if (
+        (query.docs.length === 0 || values.username === user.username) &&
+        checkField()
+      ) {
+        updateUser(values);
+        setLoggedUser({ ...user, ...values });
+        pop();
+      }
+    });
   };
 
   return (

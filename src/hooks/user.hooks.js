@@ -37,4 +37,12 @@ function updateUser(data) {
     .update({ ...data });
 }
 
-export { getCurrentUserId, getUser, updateUser };
+const isUsernameExist = (username) => {
+  return firebase
+    .firestore()
+    .collection("Users")
+    .where("username", "==", username)
+    .get();
+};
+
+export { getCurrentUserId, getUser, updateUser, isUsernameExist };
