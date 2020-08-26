@@ -45,4 +45,49 @@ const isUsernameExist = (username) => {
     .get();
 };
 
-export { getCurrentUserId, getUser, updateUser, isUsernameExist };
+const followUser = (uid) => {
+  firebase
+    .firestore()
+    .collection("Users")
+    .doc(firebase.auth().currentUser.uid)
+    .update({ following: firebase.firestore.FieldValue.arrayUnion(uid) })
+    .then(() => {
+      firebase
+        .firestore()
+        .collection("Users")
+        .doc(uid)
+        .update({
+          followers: firebase.firestore.FieldValue.arrayUnion(
+            firebase.auth().currentUser.uid
+          ),
+        });
+    });
+};
+
+const unfollowUser = (uid) => {
+  firebase
+    .firestore()
+    .collection("Users")
+    .doc(firebase.auth().currentUser.uid)
+    .update({ following: firebase.firestore.FieldValue.arrayRemove(uid) })
+    .then(() => {
+      firebase
+        .firestore()
+        .collection("Users")
+        .doc(uid)
+        .update({
+          followers: firebase.firestore.FieldValue.arrayRemove(
+            firebase.auth().currentUser.uid
+          ),
+        });
+    });
+};
+
+export {
+  getCurrentUserId,
+  getUser,
+  updateUser,
+  isUsernameExist,
+  followUser,
+  unfollowUser,
+};

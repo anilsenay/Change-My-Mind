@@ -6,12 +6,28 @@ import UserInfo from "./userinfo.view";
 
 import { navigate } from "../../navigation/root_navigation";
 
-import { getCurrentUserId } from "../../hooks/user.hooks";
+import {
+  getCurrentUserId,
+  followUser,
+  unfollowUser,
+} from "../../hooks/user.hooks";
 import globalHook from "../../hooks/global.hook";
 
 export default function TopView({ userData }) {
-  const { useGlobalState } = globalHook();
+  const { useGlobalState, setLoggedUser } = globalHook();
   const { user } = useGlobalState();
+
+  const followEvent = () => {
+    setLoggedUser({ ...user, following: [...user.following, userData.uid] });
+    followUser(userData.uid);
+  };
+  const unfollowEvent = () => {
+    setLoggedUser({
+      ...user,
+      following: user.following.filter((item) => item !== userData.uid),
+    });
+    unfollowUser(userData.uid);
+  };
 
   const isFollowing = user?.following.includes(userData.uid);
   return (
@@ -28,7 +44,11 @@ export default function TopView({ userData }) {
           ) : (
             <>
               {!isFollowing ? (
-                <ProfileButton text="Follow" style={{ marginRight: 16 }} />
+                <ProfileButton
+                  text="Follow"
+                  style={{ marginRight: 16 }}
+                  onPress={followEvent}
+                />
               ) : (
                 <ProfileButton
                   text="Unfollow"
@@ -38,6 +58,7 @@ export default function TopView({ userData }) {
                     borderColor: Colors.darkPurple,
                   }}
                   textStyle={{ color: "white" }}
+                  onPress={unfollowEvent}
                 />
               )}
               <ProfileButton text="Message" />
