@@ -104,7 +104,11 @@ const getDebates = (debateArray) => {
       firebase
         .firestore()
         .collection("Debate")
-        .where(firebase.firestore.FieldPath.documentId(), "in", debateArray)
+        .where(
+          firebase.firestore.FieldPath.documentId(),
+          "in",
+          debateArray.slice(0, 10)
+        )
         .get()
         .then((query) => {
           const fetchedData = query.docs.map((doc) => {
