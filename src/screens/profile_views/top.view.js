@@ -4,6 +4,8 @@ import { Colors } from "../../consts/colors";
 import ProfileButton from "../../components/profile_button";
 import UserInfo from "./userinfo.view";
 
+import { navigate } from "../../navigation/root_navigation";
+
 import { getCurrentUserId } from "../../hooks/user.hooks";
 import globalHook from "../../hooks/global.hook";
 
@@ -19,7 +21,10 @@ export default function TopView({ userData }) {
       <View style={styles.footer}>
         <View style={styles.buttonsContainer}>
           {userData.uid === getCurrentUserId() ? (
-            <ProfileButton text="Edit Profile" />
+            <ProfileButton
+              text="Edit Profile"
+              onPress={() => navigate("Edit Profile")}
+            />
           ) : (
             <>
               {!isFollowing ? (
