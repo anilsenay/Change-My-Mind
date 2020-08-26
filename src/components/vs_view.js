@@ -10,7 +10,7 @@ import {
 import { navigate, navigateTab } from "../navigation/root_navigation";
 import { Colors } from "../consts/colors";
 
-import { getCurrentUserId } from "../hooks/user.hooks";
+import { getCurrentUserId, getUser } from "../hooks/user.hooks";
 
 const User = ({ data }) => {
   return (
@@ -36,14 +36,23 @@ const User = ({ data }) => {
 };
 
 export default function VsView({ proponent, opponent }) {
+  const proponentData = proponent?.username
+    ? proponent
+    : getUser(proponent).data;
+  const opponentData = opponent
+    ? opponent?.username
+      ? opponent
+      : getUser(opponent).data
+    : null;
+
   return (
     <View style={styles.userViewContainer}>
-      {proponent?.username && <User data={proponent} />}
+      {proponentData?.username && <User data={proponentData} />}
       <View>
         <Text style={styles.vsText}>VS</Text>
       </View>
-      {opponent?.username ? (
-        <User data={opponent} />
+      {opponentData?.username ? (
+        <User data={opponentData} />
       ) : (
         <View style={styles.emptyUser}>
           <Text style={styles.waitingText}>Waiting for Opponent</Text>
@@ -86,8 +95,10 @@ const styles = StyleSheet.create({
   },
   emptyUser: {
     flex: 1,
+    alignItems: "center",
   },
   waitingText: {
+    width: 80,
     textAlign: "center",
     fontWeight: "bold",
     color: Colors.grey,

@@ -65,10 +65,11 @@ const styles = StyleSheet.create({
     marginLeft: 1,
   },
   infoContainer: {
-    flexDirection: "row",
+    flexDirection: "column",
     marginRight: 8,
   },
   footer: {
+    marginTop: -8,
     flexDirection: "row",
     justifyContent: "space-between",
   },
@@ -80,6 +81,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     marginRight: 4,
+    marginBottom: 12,
+    textAlign: "center",
   },
   footerText: {
     color: Colors.grey,
