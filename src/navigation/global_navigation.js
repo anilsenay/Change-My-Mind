@@ -12,6 +12,7 @@ import Profile from "../screens/profile.screen";
 import Create from "../screens/create.screen";
 import MyProfile from "../screens/my_profile.screen";
 import EditProfile from "../screens/edit_profile.screen";
+import Settings from "../screens/settings.screen";
 
 import Root from "../index";
 import { MyTabBar } from "./tabBar";
@@ -60,6 +61,11 @@ export function GlobalNavigation() {
       <Stack.Screen
         name="Edit Profile"
         component={EditProfile}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Settings"
+        component={Settings}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

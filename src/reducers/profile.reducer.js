@@ -23,7 +23,7 @@ const profileReducer = (state, action) => {
       return {
         ...state,
         debates: {
-          data: [...new Set(state.debates.data.concat(action.payload))],
+          data: state.debates.data.concat(action.payload),
           isFetched: true,
         },
       };

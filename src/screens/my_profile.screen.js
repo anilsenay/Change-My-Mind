@@ -9,11 +9,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useIsFocused } from "@react-navigation/native";
 
 import { Colors } from "../consts/colors";
-import { pop } from "../navigation/root_navigation";
+import { navigate } from "../navigation/root_navigation";
 
 import Header from "../components/header";
-import BackIcon from "../components/icons/back";
-import Dots from "../components/vertical_dots";
+import SettingsIcon from "../components/icons/settings";
 
 import TopView from "./profile_views/top.view";
 import Debates from "./profile_views/debates";
@@ -31,9 +30,8 @@ export default function MyProfile() {
       <Header
         title={user.username || "User not found!"}
         textStyle={{ fontSize: 18 }}
-        leftIcon={!user && <BackIcon width={24} height={24} fill="black" />}
-        leftIconEvent={() => pop()}
-        rightIcon={<Dots onPress={() => console.log("dots")} />}
+        rightIcon={<SettingsIcon width={24} height={24} fill="black" />}
+        rightIconEvent={() => navigate("Settings")}
         backgroundStyle={{
           borderBottomWidth: 1,
           borderBottomColor: Colors.lightGrey,

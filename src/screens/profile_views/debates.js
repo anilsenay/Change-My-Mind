@@ -24,7 +24,7 @@ export default function Debates({ debates }) {
   // console.log("profile debates:", data);
 
   useEffect(() => {
-    getProfileDebates(debates.slice(0, 10));
+    !isFetched && getProfileDebates(debates.slice(0, 10));
   }, []);
 
   const loadMore = () => {
