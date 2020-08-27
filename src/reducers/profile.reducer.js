@@ -5,6 +5,10 @@ const profileInitialState = {
     isFetched: false,
     data: null,
   },
+  debates: {
+    isFetched: false,
+    data: null,
+  },
 };
 
 const profileReducer = (state, action) => {
@@ -15,10 +19,16 @@ const profileReducer = (state, action) => {
         ...state,
         profile: { data: action.payload, isFetched: true },
       };
+    case "SET_PROFILE_DEBATES":
+      return {
+        ...state,
+        debates: { data: action.payload, isFetched: true },
+      };
     case "REMOVE_PROFILE_STATE":
       return {
         ...state,
         profile: { data: null, isFetched: false },
+        debates: { data: null, isFetched: false },
       };
 
     default:

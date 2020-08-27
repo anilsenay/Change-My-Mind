@@ -32,6 +32,37 @@ const debatesHook = () => {
         });
   };
 
+  const getProfileDebates = (debatesArray) => {
+    debatesArray.length > 0 &&
+      firebase
+        .firestore()
+        .collection("Debate")
+        .where(
+          firebase.firestore.FieldPath.documentId(),
+          "in",
+          debatesArray.slice(0, 10)
+        )
+        .get()
+        .then((query) => {
+          const fetchedData = query.docs.map((doc) => {
+            return {
+              id: doc.id,
+              ...doc.data(),
+              start_date: doc.data().start_date.toDate(),
+              update_date: doc.data().update_date.toDate(),
+              finish_date: doc.data().finish_date?.toDate(),
+            };
+          });
+          profileDispatch({
+            type: "SET_PROFILE_DEBATES",
+            payload: fetchedData,
+          });
+        })
+        .catch(function (error) {
+          setError(error);
+        });
+  };
+
   const removeProfileState = () => {
     profileDispatch({
       type: "REMOVE_PROFILE_STATE",
@@ -43,6 +74,7 @@ const debatesHook = () => {
     useProfileState,
     getProfile,
     removeProfileState,
+    getProfileDebates,
   };
 };
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, ActivityIndicator, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useIsFocused } from "@react-navigation/native";
 
 import { Colors } from "../consts/colors";
 import { pop } from "../navigation/root_navigation";
@@ -18,6 +19,8 @@ export default function MyProfile() {
   const { useGlobalState } = globalHook();
   const { user } = useGlobalState();
 
+  const isFocused = useIsFocused();
+
   return (
     <SafeAreaView style={styles.container}>
       <Header
@@ -34,7 +37,7 @@ export default function MyProfile() {
       {user ? (
         <ScrollView showsVerticalScrollIndicator={false}>
           <TopView userData={user} />
-          <Debates debates={user.debates} />
+          {isFocused && <Debates debates={user.debates} />}
         </ScrollView>
       ) : (
         <ActivityIndicator

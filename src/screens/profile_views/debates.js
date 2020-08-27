@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, View, FlatList, ScrollView } from "react-native";
 
 import { Colors } from "../../consts/colors";
@@ -11,13 +11,21 @@ import Debate from "../../components/profile_debate";
 import VsView from "../../components/vs_view";
 
 import { getDebates } from "../../hooks/debate.hooks";
+import profileHook from "../../hooks/profile.hook";
 
 export default function Debates({ debates }) {
   const { useFilterState, setSort } = filterHook();
   const { sortSelection } = useFilterState();
 
-  const { data } = debates.length > 0 ? getDebates(debates) : [];
-  console.log("profile debates:", data);
+  const { getProfileDebates, useProfileState } = profileHook();
+  const { data, isFetched } = useProfileState().debates;
+
+  // const { data } = debates.length > 0 ? getDebates(debates) : [];
+  // console.log("profile debates:", data);
+
+  useEffect(() => {
+    getProfileDebates(debates);
+  }, []);
 
   return (
     <View style={styles.container}>
