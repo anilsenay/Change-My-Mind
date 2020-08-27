@@ -37,11 +37,7 @@ const debatesHook = () => {
       firebase
         .firestore()
         .collection("Debate")
-        .where(
-          firebase.firestore.FieldPath.documentId(),
-          "in",
-          debatesArray.slice(0, 10)
-        )
+        .where(firebase.firestore.FieldPath.documentId(), "in", debatesArray)
         .get()
         .then((query) => {
           const fetchedData = query.docs.map((doc) => {

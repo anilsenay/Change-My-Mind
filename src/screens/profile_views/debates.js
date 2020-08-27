@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, FlatList, ScrollView } from "react-native";
 
 import { Colors } from "../../consts/colors";
@@ -24,8 +24,16 @@ export default function Debates({ debates }) {
   // console.log("profile debates:", data);
 
   useEffect(() => {
-    getProfileDebates(debates);
+    getProfileDebates(debates.slice(0, 10));
   }, []);
+
+  const loadMore = () => {
+    const arraySize = data.length;
+    if (arraySize % 10 === 0) {
+      const newArray = debates.slice(arraySize, arraySize + 10);
+      getProfileDebates(newArray);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -36,11 +44,18 @@ export default function Debates({ debates }) {
         onValueChange={(e) => setSort(e)}
         data={sortValues}
       />
-      <ScrollView style={styles.debates} showsVerticalScrollIndicator={false}>
-        {data?.map((item) => {
-          return <Debate key={item.id.toString()} itemData={item} />;
-        })}
-      </ScrollView>
+
+      <FlatList
+        style={styles.debates}
+        showsVerticalScrollIndicator={false}
+        data={data}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <Debate itemData={item} />}
+        onEndReachedThreshold={0.01}
+        onEndReached={() => {
+          loadMore();
+        }}
+      />
     </View>
   );
 }

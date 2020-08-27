@@ -1,5 +1,10 @@
 import React from "react";
-import { StyleSheet, ActivityIndicator, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  ActivityIndicator,
+  ScrollView,
+  FlatList,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useIsFocused } from "@react-navigation/native";
 
@@ -35,10 +40,11 @@ export default function MyProfile() {
         }}
       />
       {user ? (
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <TopView userData={user} />
-          {isFocused && <Debates debates={user.debates} />}
-        </ScrollView>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          ListHeaderComponent={<TopView userData={user} />}
+          ListFooterComponent={isFocused && <Debates debates={user.debates} />}
+        />
       ) : (
         <ActivityIndicator
           size="large"

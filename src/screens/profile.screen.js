@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   ScrollView,
   RefreshControl,
+  FlatList,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -43,6 +44,7 @@ export default function Profile({ route, user }) {
 
   const refreshEvent = () => {
     setRefreshed(!isRefreshed);
+    console.log("refreshed");
   };
 
   return (
@@ -59,15 +61,19 @@ export default function Profile({ route, user }) {
         }}
       />
       {userData ? (
-        <ScrollView
+        <FlatList
           showsVerticalScrollIndicator={false}
+          ListHeaderComponent={
+            <TopView
+              userData={newData || userData}
+              refreshEvent={refreshEvent}
+            />
+          }
+          ListFooterComponent={<Debates debates={userData.debates} />}
           refreshControl={
             <RefreshControl refreshing={false} onRefresh={refreshEvent} />
           }
-        >
-          <TopView userData={newData || userData} refreshEvent={refreshEvent} />
-          <Debates debates={userData.debates} />
-        </ScrollView>
+        />
       ) : (
         <ActivityIndicator
           size="large"
