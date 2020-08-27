@@ -1,5 +1,10 @@
-import React, { useEffect } from "react";
-import { StyleSheet, ActivityIndicator, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  ActivityIndicator,
+  ScrollView,
+  RefreshControl,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Colors } from "../consts/colors";
@@ -13,11 +18,32 @@ import TopView from "./profile_views/top.view";
 import Debates from "./profile_views/debates";
 
 import { getUser } from "../hooks/user.hooks";
+import profileHook from "../hooks/profile.hook";
 
 export default function Profile({ route, user }) {
-  const { uid, username } = route?.params;
+  const [isRefreshed, setRefreshed] = useState(false);
 
+  const { uid, username } = route?.params;
   const userData = getUser(uid).data;
+
+  const { getProfile, useProfileState, removeProfileState } = profileHook();
+  const { profile } = useProfileState();
+
+  const newData = profile?.isFetched ? profile.data : null;
+
+  useEffect(() => {
+    getProfile(uid);
+
+    return removeProfileState();
+  }, [isRefreshed]);
+
+  useEffect(() => {
+    return () => removeProfileState();
+  }, []);
+
+  const refreshEvent = () => {
+    setRefreshed(!isRefreshed);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -33,8 +59,13 @@ export default function Profile({ route, user }) {
         }}
       />
       {userData ? (
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <TopView userData={userData} />
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={false} onRefresh={refreshEvent} />
+          }
+        >
+          <TopView userData={newData || userData} refreshEvent={refreshEvent} />
           <Debates debates={userData.debates} />
         </ScrollView>
       ) : (

@@ -17,7 +17,7 @@ export default function Debates({ debates }) {
   const { sortSelection } = useFilterState();
 
   const { data } = debates.length > 0 ? getDebates(debates) : [];
-  console.log(data);
+  console.log("profile debates:", data);
 
   return (
     <View style={styles.container}>

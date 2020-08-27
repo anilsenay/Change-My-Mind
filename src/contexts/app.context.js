@@ -7,6 +7,10 @@ import {
   debatesReducer,
   debatesInitialState,
 } from "../reducers/debates.reducer";
+import {
+  profileReducer,
+  profileInitialState,
+} from "../reducers/profile.reducer";
 import { globalReducer, globalInitialState } from "../reducers/global.reducer";
 
 const AppContext = React.createContext();
@@ -25,13 +29,17 @@ const AppProvider = ({ children }) => {
     globalReducer,
     globalInitialState
   );
-
+  const [profileState, profileDispatch] = useReducer(
+    profileReducer,
+    profileInitialState
+  );
   return (
     <AppContext.Provider
       value={{
         filterState,
         debatesState,
         globalState,
+        profileState,
       }}
     >
       <AppContextDispatch.Provider
@@ -39,6 +47,7 @@ const AppProvider = ({ children }) => {
           filterDispatch,
           debatesDispatch,
           globalDispatch,
+          profileDispatch,
         }}
       >
         {children}

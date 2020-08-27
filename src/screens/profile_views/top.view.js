@@ -13,13 +13,14 @@ import {
 } from "../../hooks/user.hooks";
 import globalHook from "../../hooks/global.hook";
 
-export default function TopView({ userData }) {
+export default function TopView({ userData, refreshEvent }) {
   const { useGlobalState, setLoggedUser } = globalHook();
   const { user } = useGlobalState();
 
   const followEvent = () => {
     setLoggedUser({ ...user, following: [...user.following, userData.uid] });
     followUser(userData.uid);
+    refreshEvent();
   };
   const unfollowEvent = () => {
     setLoggedUser({
@@ -27,6 +28,7 @@ export default function TopView({ userData }) {
       following: user.following.filter((item) => item !== userData.uid),
     });
     unfollowUser(userData.uid);
+    refreshEvent();
   };
 
   const isFollowing = user?.following.includes(userData.uid);
