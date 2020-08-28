@@ -47,7 +47,11 @@ export default function VsView({ proponent, opponent }) {
 
   return (
     <View style={styles.userViewContainer}>
-      {proponentData?.username && <User data={proponentData} />}
+      {proponentData?.username ? (
+        <User data={proponentData} />
+      ) : (
+        <View style={styles.emptyUser} />
+      )}
       <View>
         <Text style={styles.vsText}>VS</Text>
       </View>
