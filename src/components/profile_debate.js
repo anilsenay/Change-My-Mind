@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
 import {
   formatDistanceToNowStrict,
   differenceInDays,
@@ -10,8 +10,13 @@ import {
 import { Colors } from "../consts/colors";
 
 import VsView from "./vs_view";
+import { getUser } from "../hooks/user.hooks";
+import { navigate } from "../navigation/root_navigation";
 
 export default function Debate({ itemData }) {
+  const proponentData = getUser(itemData.proponent).data;
+  const opponentData = getUser(itemData.opponent).data;
+
   const borderColor =
     itemData.status === "Opponent won"
       ? Colors.red
@@ -19,35 +24,47 @@ export default function Debate({ itemData }) {
       ? Colors.green
       : Colors.grey;
   return (
-    <View style={[styles.container, { borderLeftColor: borderColor }]}>
-      <View style={styles.infoContainer}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title} numberOfLines={3}>
-            {itemData.title}
+    <TouchableWithoutFeedback
+      onPress={() =>
+        navigate("Discussion", {
+          data: {
+            id: itemData.id,
+            proponent: proponentData,
+            opponent: opponentData,
+          },
+        })
+      }
+    >
+      <View style={[styles.container, { borderLeftColor: borderColor }]}>
+        <View style={styles.infoContainer}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title} numberOfLines={3}>
+              {itemData.title}
+            </Text>
+          </View>
+          <VsView proponent={itemData.proponent} opponent={itemData.opponent} />
+        </View>
+
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>
+            Started:{" "}
+            {isThisYear(new Date(itemData.start_date))
+              ? differenceInDays(new Date(), new Date(itemData.start_date)) <= 7
+                ? format(new Date(itemData.start_date), "dd MMMM")
+                : formatDistanceToNowStrict(new Date(itemData.start_date), {
+                    addSuffix: true,
+                  })
+              : format(new Date(itemData.start_date), "dd.LL.yyyy")}
+          </Text>
+          <Text style={styles.footerText}>
+            Updated:{" "}
+            {formatDistanceToNowStrict(new Date(itemData.update_date), {
+              addSuffix: true,
+            })}
           </Text>
         </View>
-        <VsView proponent={itemData.proponent} opponent={itemData.opponent} />
       </View>
-
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>
-          Started:{" "}
-          {isThisYear(new Date(itemData.start_date))
-            ? differenceInDays(new Date(), new Date(itemData.start_date)) <= 7
-              ? format(new Date(itemData.start_date), "dd MMMM")
-              : formatDistanceToNowStrict(new Date(itemData.start_date), {
-                  addSuffix: true,
-                })
-            : format(new Date(itemData.start_date), "dd.LL.yyyy")}
-        </Text>
-        <Text style={styles.footerText}>
-          Updated:{" "}
-          {formatDistanceToNowStrict(new Date(itemData.update_date), {
-            addSuffix: true,
-          })}
-        </Text>
-      </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 

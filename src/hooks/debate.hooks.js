@@ -56,6 +56,9 @@ function createDebate({ ...values }, finalEvent) {
             .doc(proponent)
             .update({
               debates: firebase.firestore.FieldValue.arrayUnion(docRef.id),
+              stats: {
+                ongoing: firebase.firestore.FieldValue.increment(1),
+              },
             })
             .then(() => finalEvent(docRef.id));
         })
