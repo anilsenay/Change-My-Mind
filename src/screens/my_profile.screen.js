@@ -28,7 +28,7 @@ export default function MyProfile() {
   return (
     <SafeAreaView style={styles.container}>
       <Header
-        title={user.username || "User not found!"}
+        title={user?.username || "Loading..."}
         textStyle={{ fontSize: 18 }}
         rightIcon={<SettingsIcon width={24} height={24} fill="black" />}
         rightIconEvent={() => navigate("Settings")}
