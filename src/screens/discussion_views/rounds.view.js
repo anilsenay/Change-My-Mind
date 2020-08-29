@@ -4,7 +4,12 @@ import Round from "../../components/round";
 
 import { getRounds } from "../../hooks/round.hook";
 
-export default function Rounds({ opponent, proponent, rounds }) {
+export default function Rounds({
+  opponent,
+  proponent,
+  rounds,
+  setActiveRound,
+}) {
   const { data, loading } = rounds?.length > 0 ? getRounds(rounds) : [];
   console.log(data, loading, rounds);
   return (
@@ -12,13 +17,17 @@ export default function Rounds({ opponent, proponent, rounds }) {
       {data &&
         !loading &&
         data.map((round, index) => {
+          Boolean(opponent && proponent)
+            ? setActiveRound(index + 2)
+            : setActiveRound(index + 1);
           return (
             <Round
               key={"" + index}
               opponent={opponent}
               proponent={proponent}
-              roundNumber={"" + index + 1}
+              roundNumber={index + 1 + ""}
               data={round}
+              isOver={Boolean(opponent && proponent)}
             />
           );
         })}

@@ -14,6 +14,8 @@ import {
 } from "../hooks/round.hook";
 import debatesHook from "../hooks/debates.hook";
 
+import PostButton from "../screens/discussion_views/post_button.view";
+
 const LikeButton = ({ reverse, isActive, type, count, onPress }) => {
   return (
     <View
@@ -128,7 +130,13 @@ const Argument = ({ photo, type, likesData, argument, date, roundId }) => {
   );
 };
 
-export default function Round({ roundNumber, opponent, proponent, data }) {
+export default function Round({
+  roundNumber,
+  opponent,
+  proponent,
+  data,
+  isOver,
+}) {
   return (
     <View style={styles.container}>
       <View style={{ alignItems: "center", marginBottom: 8 }}>
@@ -149,7 +157,7 @@ export default function Round({ roundNumber, opponent, proponent, data }) {
         <View style={styles.vsSeperator} />
         <Text style={styles.vsText}>VS</Text>
       </View>
-      {opponent ? (
+      {data?.opponent_msg ? (
         <Argument
           photo={opponent.imageSrc}
           type="opponent"
@@ -161,6 +169,8 @@ export default function Round({ roundNumber, opponent, proponent, data }) {
           }}
           roundId={data.id}
         />
+      ) : getCurrentUserId() === opponent?.uid ? (
+        <PostButton opponentTurn />
       ) : (
         <Text style={styles.waitingText}>Waiting for opponent's argument</Text>
       )}

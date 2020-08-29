@@ -15,14 +15,17 @@ import Dots from "../components/vertical_dots";
 
 import Info from "./discussion_views/info.view";
 import Rounds from "./discussion_views/rounds.view";
+import PostButton from "./discussion_views/post_button.view";
 
 import { Colors } from "../consts/colors";
 
 import { increaseView } from "../hooks/debate.hooks";
 import debatesHook from "../hooks/debates.hook";
+import { getCurrentUserId } from "../hooks/user.hooks";
 
 export default function Discussion({ route }) {
   const [isRefreshed, setRefreshed] = useState(false);
+  const [activeRound, setActiveRound] = useState(1);
 
   const { data } = route?.params;
 
@@ -34,7 +37,7 @@ export default function Discussion({ route }) {
     proponent: data.proponent,
     opponent: data.opponent,
   };
-  console.log(newData);
+  console.log("newdata", newData);
 
   useEffect(() => {
     getDebate(data.id);
@@ -50,7 +53,7 @@ export default function Discussion({ route }) {
   const refreshEvent = () => {
     setRefreshed(!isRefreshed);
   };
-
+  console.log("active round", activeRound);
   return (
     <SafeAreaView style={styles.container}>
       <Header
@@ -76,7 +79,19 @@ export default function Discussion({ route }) {
             opponent={data.opponent}
             proponent={data.proponent}
             rounds={newData.rounds ? newData.rounds : null}
+            setActiveRound={setActiveRound}
           />
+          {getCurrentUserId() !== data.proponent.uid && !data.opponent && (
+            <PostButton joinChallenge />
+          )}
+          {(getCurrentUserId() === data.proponent.uid &&
+            newData.rounds?.length !== activeRound && (
+              <PostButton isNewRound />
+            )) ||
+            (getCurrentUserId() === data.opponent?.uid &&
+              newData.rounds?.length === activeRound && (
+                <PostButton opponentTurn />
+              ))}
         </ScrollView>
       ) : (
         <ActivityIndicator
