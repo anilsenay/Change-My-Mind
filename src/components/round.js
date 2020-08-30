@@ -130,13 +130,7 @@ const Argument = ({ photo, type, likesData, argument, date, roundId }) => {
   );
 };
 
-export default function Round({
-  roundNumber,
-  opponent,
-  proponent,
-  data,
-  isOver,
-}) {
+export default function Round({ roundNumber, opponent, proponent, data }) {
   return (
     <View style={styles.container}>
       <View style={{ alignItems: "center", marginBottom: 8 }}>

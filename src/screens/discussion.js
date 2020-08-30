@@ -21,7 +21,8 @@ import { Colors } from "../consts/colors";
 
 import { increaseView } from "../hooks/debate.hooks";
 import debatesHook from "../hooks/debates.hook";
-import { getCurrentUserId } from "../hooks/user.hooks";
+import { getCurrentUserId, getUser } from "../hooks/user.hooks";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function Discussion({ route }) {
   const [isRefreshed, setRefreshed] = useState(false);
@@ -34,8 +35,8 @@ export default function Discussion({ route }) {
 
   const newData = current_debate?.isFetched && {
     ...current_debate.data,
-    proponent: data.proponent,
-    opponent: data.opponent,
+    proponent: data.proponent || current_debate.data.proponent,
+    opponent: data.opponent || current_debate.data.opponent,
   };
   console.log("newdata", newData);
 
@@ -54,6 +55,8 @@ export default function Discussion({ route }) {
     setRefreshed(!isRefreshed);
   };
   console.log("active round", activeRound);
+  const isFocused = useIsFocused();
+
   return (
     <SafeAreaView style={styles.container}>
       <Header
@@ -66,7 +69,7 @@ export default function Discussion({ route }) {
           borderBottomColor: Colors.lightGrey,
         }}
       />
-      {newData?.title ? (
+      {newData?.title && isFocused ? (
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={styles.scrollStyle}
@@ -76,22 +79,16 @@ export default function Discussion({ route }) {
         >
           <Info data={newData.id ? newData : data} />
           <Rounds
-            opponent={data.opponent}
-            proponent={data.proponent}
+            opponent={newData.opponent || data.opponent}
+            proponent={newData.proponent || data.proponent}
             rounds={newData.rounds ? newData.rounds : null}
             setActiveRound={setActiveRound}
           />
-          {getCurrentUserId() !== data.proponent.uid && !data.opponent && (
-            <PostButton joinChallenge />
+          {getCurrentUserId() !== data.proponent.uid && !newData.opponent && (
+            <PostButton join refreshEvent={refreshEvent} />
           )}
-          {(getCurrentUserId() === data.proponent.uid &&
-            newData.rounds?.length !== activeRound && (
-              <PostButton isNewRound />
-            )) ||
-            (getCurrentUserId() === data.opponent?.uid &&
-              newData.rounds?.length === activeRound && (
-                <PostButton opponentTurn />
-              ))}
+          {getCurrentUserId() === data.proponent.uid &&
+            newData.rounds?.length !== activeRound && <PostButton isNewRound />}
         </ScrollView>
       ) : (
         <ActivityIndicator

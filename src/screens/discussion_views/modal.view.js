@@ -25,8 +25,17 @@ export default function ArgumentModal({
   text,
   sendEvent,
 }) {
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState("");
   const [blur, setBlur] = useState(false);
+  const [showError, setShowError] = useState(false);
+
+  const buttonEvent = () => {
+    if (value.length <= 5000 && value.length >= 10) sendEvent(text, value);
+    else {
+      setShowError(true);
+      setTimeout(() => setShowError(false), 5000);
+    }
+  };
 
   return (
     <Modal animationType="slide" visible={isVisible} transparent={true}>
@@ -45,11 +54,18 @@ export default function ArgumentModal({
           onFocus={() => setBlur(true)}
           value={value}
         />
+        <Text style={styles.wordCounter}>{value.length}/5000</Text>
+        {showError && (
+          <Text style={{ color: "red", marginTop: 8 }}>
+            * Your argument can be minimum 10 and maximum 5000 characters for
+            each round
+          </Text>
+        )}
         <GradientButton
           style={styles.buttonStyle}
           text="Send"
           title="Submit"
-          onPress={() => sendEvent(text)}
+          onPress={buttonEvent}
         />
       </View>
     </Modal>
@@ -65,7 +81,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
-    height: 400,
+    height: 420,
     position: "absolute",
     bottom: 0,
     padding: 16,
@@ -90,6 +106,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     height: 200,
     textAlignVertical: "top",
+    paddingBottom: 20,
   },
   inputBlur: {
     backgroundColor: "white",
@@ -118,5 +135,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 16,
     left: 16,
+  },
+  wordCounter: {
+    textAlign: "right",
+    color: "grey",
+    fontSize: 12,
+    marginTop: -20,
+    marginRight: 4,
   },
 });

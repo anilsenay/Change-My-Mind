@@ -130,10 +130,38 @@ const debatesHook = () => {
           update_date: doc.data().update_date.toDate(),
           finish_date: doc.data().finish_date?.toDate(),
         };
-        debatesDispatch({
-          type: "SET_CURRENT_DEBATE",
-          payload: data,
-        });
+        firebase
+          .firestore()
+          .collection("Users")
+          .doc(data.proponent)
+          .get()
+          .then((doc) => {
+            const proponent = { uid: doc.id, ...doc.data() };
+            data.opponent
+              ? firebase
+                  .firestore()
+                  .collection("Users")
+                  .doc(data.opponent)
+                  .get()
+                  .then((doc) => {
+                    const opponent = { uid: doc.id, ...doc.data() };
+                    debatesDispatch({
+                      type: "SET_CURRENT_DEBATE",
+                      payload: {
+                        ...data,
+                        proponent: proponent,
+                        opponent: opponent,
+                      },
+                    });
+                  })
+              : debatesDispatch({
+                  type: "SET_CURRENT_DEBATE",
+                  payload: {
+                    ...data,
+                    proponent: proponent,
+                  },
+                });
+          });
       })
       .catch(function (error) {
         console.log(error);

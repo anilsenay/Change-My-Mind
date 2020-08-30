@@ -1,17 +1,41 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
+
 import GradientButton from "../../components/gradient_button";
 import ArgumentModal from "./modal.view";
 
-export default function PostButton({
+import debatesHook from "../../hooks/debates.hook";
+import {
+  createNewRound,
   joinChallenge,
+  newArgument,
+} from "../../hooks/round.hook";
+
+export default function PostButton({
+  join,
   isNewRound,
   opponentTurn,
+  refreshEvent,
 }) {
   const [modalText, setModalText] = useState("");
 
-  const sendEvent = (type) => {
-    console.log(type);
+  const { useDebatesState } = debatesHook();
+  const { current_debate } = useDebatesState();
+
+  const sendEvent = (type, argument) => {
+    if (type === "Join challenge with an argument") {
+      joinChallenge(
+        current_debate.data.id,
+        current_debate.data.rounds[0],
+        argument
+      );
+    } else if (type === "Start new round") {
+      createNewRound(current_debate.data.id, argument);
+    } else if (type === "Write your argument") {
+      newArgument(current_debate.data.rounds.slice(-1)[0], argument);
+    }
+    setModalText("");
+    refreshEvent();
   };
 
   return (
@@ -22,7 +46,7 @@ export default function PostButton({
         text={modalText}
         sendEvent={sendEvent}
       />
-      {joinChallenge && (
+      {join && (
         <GradientButton
           style={{ borderRadius: 8 }}
           text="JOIN THE CHALLENGE"
@@ -35,7 +59,7 @@ export default function PostButton({
           style={{ borderRadius: 8 }}
           text="START NEW ROUND"
           title="Submit"
-          onPress={() => setModalText("Start New Round")}
+          onPress={() => setModalText("Start new round")}
         />
       )}
       {opponentTurn && (

@@ -188,6 +188,61 @@ function deleteDislike(uid, user, debateId) {
     .finally(() => decreaseVote(debateId));
 }
 
+function newArgument(uid, argument) {
+  // current user as opponent
+  firebase.firestore().collection("Rounds").doc(uid).update({
+    opponent: firebase.auth().currentUser.uid,
+    opponent_date: new Date(),
+    opponent_msg: argument,
+  });
+}
+
+function createNewRound(uid, proponent_msg) {
+  // current user posting new round(after round 1) as proponent
+  firebase
+    .firestore()
+    .collection("Rounds")
+    .add({
+      proponent: firebase.auth().currentUser.uid,
+      proponent_msg,
+      opponent: null,
+      opponent_msg: null,
+      proponent_date: new Date(),
+      opponent_date: null,
+      proponent_like: 0,
+      opponent_like: 0,
+      proponent_dislike: 0,
+      opponent_dislike: 0,
+    })
+    .then((doc) => {
+      firebase
+        .firestore()
+        .collection("Debate")
+        .doc(uid)
+        .update({
+          rounds: firebase.firestore.FieldValue.arrayUnion(doc.id),
+        });
+    });
+}
+
+function joinChallenge(debate, round, opponent_msg) {
+  // current user join debate as opponent
+  firebase
+    .firestore()
+    .collection("Debate")
+    .doc(debate)
+    .update({
+      opponent: firebase.auth().currentUser.uid,
+    })
+    .then(() => {
+      firebase.firestore().collection("Rounds").doc(round).update({
+        opponent: firebase.auth().currentUser.uid,
+        opponent_date: new Date(),
+        opponent_msg,
+      });
+    });
+}
+
 export {
   createRound,
   getRound,
@@ -197,4 +252,7 @@ export {
   deleteLike,
   addDislike,
   deleteDislike,
+  createNewRound,
+  joinChallenge,
+  newArgument,
 };
