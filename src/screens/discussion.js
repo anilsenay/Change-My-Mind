@@ -86,13 +86,13 @@ export default function Discussion({ route }) {
             round_number={newData.round_number}
             setActiveRound={setActiveRound}
           />
+          <FinishView />
+
           {getCurrentUserId() !== data.proponent.uid && !newData.opponent && (
             <PostButton join refreshEvent={refreshEvent} />
           )}
           {getCurrentUserId() === data.proponent.uid &&
             newData.rounds?.length !== activeRound && <PostButton isNewRound />}
-
-          <FinishView />
         </ScrollView>
       ) : (
         <ActivityIndicator

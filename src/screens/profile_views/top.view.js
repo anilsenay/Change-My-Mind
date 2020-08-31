@@ -69,7 +69,7 @@ export default function TopView({ userData, refreshEvent }) {
         </View>
         <View style={styles.rankContainer}>
           <Text style={styles.rankText}>Rank: Beginner</Text>
-          <Text style={styles.pointsText}>Points: {userData.stats.points}</Text>
+          <Text style={styles.pointsText}>Points: {userData.points}</Text>
         </View>
       </View>
     </View>

@@ -110,7 +110,7 @@ export default function FeedItem({ itemData }) {
                   ? opponent
                     ? "Vote"
                     : "CHANGE HIS/HER MIND!"
-                  : "This discussion has been over"}
+                  : "THIS DEBATE HAS BEEN OVER"}
               </Text>
             </View>
           </View>

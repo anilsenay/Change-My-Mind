@@ -164,6 +164,34 @@ async function decreaseVote(uid) {
     .update({ total_vote: firebase.firestore.FieldValue.increment(-1) });
 }
 
+async function setDebateWin(uid, winner_id, loser_id, status) {
+  return await firebase
+    .firestore()
+    .collection("Debate")
+    .doc(uid)
+    .update({ status })
+    .then(() => {
+      firebase
+        .firestore()
+        .collection("Users")
+        .doc(winner_id)
+        .update({
+          lost: firebase.firestore.FieldValue.increment(1),
+          points: firebase.firestore.FieldValue.increment(10),
+        });
+    })
+    .then(() => {
+      firebase
+        .firestore()
+        .collection("Users")
+        .doc(loser_id)
+        .update({
+          won: firebase.firestore.FieldValue.increment(1),
+          points: firebase.firestore.FieldValue.increment(-2),
+        });
+    });
+}
+
 export {
   createDebate,
   getDebate,
@@ -172,4 +200,5 @@ export {
   increaseView,
   increaseVote,
   decreaseVote,
+  setDebateWin,
 };

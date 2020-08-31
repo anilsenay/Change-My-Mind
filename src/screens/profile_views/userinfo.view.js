@@ -20,15 +20,15 @@ export default function UserInfo({ userData }) {
           <Image source={{ uri: userData.imageSrc }} style={styles.userImage} />
           <View style={styles.infoVertical}>
             <InfoItem data={userData.debates.length} text="Debates" />
-            <InfoItem data={userData.stats.won} text="Won" />
+            <InfoItem data={userData.won} text="Won" />
           </View>
           <View style={styles.infoVertical}>
             <InfoItem data={userData.followers.length} text="Followers" />
-            <InfoItem data={userData.stats.lost} text="Lost" />
+            <InfoItem data={userData.lost} text="Lost" />
           </View>
           <View style={styles.infoVertical}>
             <InfoItem data={userData.following.length} text="Following" />
-            <InfoItem data={userData.stats.ongoing} text="Ongoing" />
+            <InfoItem data={userData.ongoing} text="Ongoing" />
           </View>
         </View>
         <Text style={styles.usernameText}>{userData.profile_name}</Text>
