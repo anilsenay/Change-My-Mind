@@ -175,6 +175,13 @@ const debatesHook = () => {
     });
   };
 
+  const setRounds = (data) => {
+    debatesDispatch({
+      type: "SET_CURRENT_ROUNDS",
+      payload: data,
+    });
+  };
+
   return {
     useDebatesState,
     getAllDebates,
@@ -182,6 +189,7 @@ const debatesHook = () => {
     loadNewDebates,
     getDebate,
     removeDebateState,
+    setRounds,
   };
 };
 

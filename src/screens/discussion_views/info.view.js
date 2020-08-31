@@ -70,9 +70,11 @@ export default function Info({ data }) {
             <InfoText
               label="Expires In"
               text={
-                formatDistanceToNowStrict(new Date(data.finish_date), {
-                  addSuffix: true,
-                }) || "—"
+                (data?.finish_date &&
+                  formatDistanceToNowStrict(new Date(data?.finish_date), {
+                    addSuffix: true,
+                  })) ||
+                "—"
               }
             />
           </View>

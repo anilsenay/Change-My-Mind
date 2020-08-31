@@ -83,6 +83,7 @@ export default function Discussion({ route }) {
             opponent={newData.opponent || data.opponent}
             proponent={newData.proponent || data.proponent}
             rounds={newData.rounds ? newData.rounds : null}
+            round_number={newData.round_number}
             setActiveRound={setActiveRound}
           />
           {getCurrentUserId() !== data.proponent.uid && !newData.opponent && (
@@ -90,7 +91,8 @@ export default function Discussion({ route }) {
           )}
           {getCurrentUserId() === data.proponent.uid &&
             newData.rounds?.length !== activeRound && <PostButton isNewRound />}
-          {newData.round_number + 1 === activeRound && <FinishView />}
+
+          <FinishView />
         </ScrollView>
       ) : (
         <ActivityIndicator
