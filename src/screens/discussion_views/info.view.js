@@ -48,7 +48,10 @@ export default function Info({ data }) {
               }
             />
             <InfoText label="Category" text={data.category} />
-            <InfoText label="Status" text="Open" />
+            <InfoText
+              label="Voting Period"
+              text={data.voting_period + " days" || "—"}
+            />
           </View>
           <View style={styles.seperatorLine} />
           <View style={styles.infoInnerContainer}>
@@ -64,10 +67,7 @@ export default function Info({ data }) {
                 data.respond_limit % 60
               } minutes`}
             />
-            <InfoText
-              label="Expires In"
-              text={"8 days 16 hours" || data.start_date}
-            />
+            <InfoText label="Expires In" text={data.finish_date || "—"} />
           </View>
         </View>
       </Collapsible>
