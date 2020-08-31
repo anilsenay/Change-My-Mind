@@ -23,6 +23,7 @@ import { increaseView } from "../hooks/debate.hooks";
 import debatesHook from "../hooks/debates.hook";
 import { getCurrentUserId, getUser } from "../hooks/user.hooks";
 import { useIsFocused } from "@react-navigation/native";
+import FinishView from "./discussion_views/finish.view";
 
 export default function Discussion({ route }) {
   const [isRefreshed, setRefreshed] = useState(false);
@@ -89,6 +90,7 @@ export default function Discussion({ route }) {
           )}
           {getCurrentUserId() === data.proponent.uid &&
             newData.rounds?.length !== activeRound && <PostButton isNewRound />}
+          {newData.round_number + 1 === activeRound && <FinishView />}
         </ScrollView>
       ) : (
         <ActivityIndicator
