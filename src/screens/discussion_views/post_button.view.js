@@ -28,7 +28,8 @@ export default function PostButton({
       const finish_date = add(new Date(), {
         days: current_debate.data.voting_period,
         minutes:
-          (current_debate.data.rounds - 1) * current_debate.data.respond_limit,
+          (current_debate.data.round_number - 1) *
+          current_debate.data.respond_limit,
       });
       joinChallenge(
         current_debate.data.id,

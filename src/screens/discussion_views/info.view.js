@@ -67,7 +67,14 @@ export default function Info({ data }) {
                 data.respond_limit % 60
               } minutes`}
             />
-            <InfoText label="Expires In" text={data.finish_date || "—"} />
+            <InfoText
+              label="Expires In"
+              text={
+                formatDistanceToNowStrict(new Date(data.finish_date), {
+                  addSuffix: true,
+                }) || "—"
+              }
+            />
           </View>
         </View>
       </Collapsible>
