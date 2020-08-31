@@ -47,7 +47,7 @@ export default function FinishView() {
 
   if (isAfter(new Date(), current_debate.data.finish_date)) {
     const winner =
-      totalProponentVote > totalOpponentVote ? "Proponent" : "Opponent";
+      totalProponentVote >= totalOpponentVote ? "Proponent" : "Opponent";
     if (current_debate.data.status === "open" && !isFinished) {
       setFinished(true);
       winner === "Proponent"

@@ -31,6 +31,7 @@ export default function Info({ data }) {
         opponent={data.opponent}
         proponent={data.proponent}
         round={data.round_number}
+        status={data.status}
       />
       <Collapsible collapsed={hideInfo}>
         <View style={styles.infoContainer}>

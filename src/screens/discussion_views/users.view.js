@@ -7,10 +7,9 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { Colors } from "../../consts/colors";
-import { navigate, navigateTab, push } from "../../navigation/root_navigation";
-import { getCurrentUserId } from "../../hooks/user.hooks";
+import { push } from "../../navigation/root_navigation";
 
-const User = ({ username, photo, uid }) => {
+const User = ({ username, photo, uid, status }) => {
   return (
     <TouchableWithoutFeedback
       onPress={() => push("Profile", { uid, username })}
@@ -18,12 +17,17 @@ const User = ({ username, photo, uid }) => {
       <View style={styles.userContainer}>
         <Image source={{ uri: photo }} style={styles.userImage} />
         <Text style={styles.usernameText}>{username}</Text>
+        {status && (
+          <Text style={status === "Won" ? styles.wonText : styles.lostText}>
+            {status}
+          </Text>
+        )}
       </View>
     </TouchableWithoutFeedback>
   );
 };
 
-export default function Users({ opponent, proponent, round }) {
+export default function Users({ opponent, proponent, round, status }) {
   console.log(proponent);
   return (
     <View style={styles.container}>
@@ -31,6 +35,13 @@ export default function Users({ opponent, proponent, round }) {
         username={proponent.username}
         photo={proponent.imageSrc}
         uid={proponent.uid}
+        status={
+          status === "Proponent won"
+            ? "Won"
+            : status === "Opponent won"
+            ? "Lost"
+            : null
+        }
       />
       <View style={styles.textsContainer}>
         <Text
@@ -45,6 +56,13 @@ export default function Users({ opponent, proponent, round }) {
           username={opponent.username}
           photo={opponent.imageSrc}
           uid={opponent.uid}
+          status={
+            status === "Opponent won"
+              ? "Won"
+              : status === "Proponent won"
+              ? "Lost"
+              : null
+          }
         />
       ) : (
         <View style={styles.emptyUser}>
@@ -92,5 +110,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     color: Colors.grey,
+  },
+  wonText: {
+    color: Colors.green,
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  lostText: {
+    color: Colors.red,
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
