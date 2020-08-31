@@ -25,8 +25,9 @@ export default function ArgumentModal({
   setVisible,
   text,
   sendEvent,
+  value,
+  setValue,
 }) {
-  const [value, setValue] = useState("");
   const [blur, setBlur] = useState(false);
   const [showError, setShowError] = useState(false);
 

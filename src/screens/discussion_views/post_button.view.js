@@ -19,6 +19,7 @@ export default function PostButton({
   refreshEvent,
 }) {
   const [modalText, setModalText] = useState("");
+  const [value, setValue] = useState("");
 
   const { useDebatesState } = debatesHook();
   const { current_debate } = useDebatesState();
@@ -53,6 +54,8 @@ export default function PostButton({
         setVisible={() => setModalText("")}
         text={modalText}
         sendEvent={sendEvent}
+        value={value}
+        setValue={setValue}
       />
       {join && (
         <GradientButton
