@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Colors } from "../../consts/colors";
 import GradientButton from "../../components/gradient_button";
+import AnimatedModal from "./animated_modal.view";
 
 const Header = ({ text }) => {
   return (
@@ -38,11 +39,11 @@ export default function ArgumentModal({
   };
 
   return (
-    <Modal animationType="slide" visible={isVisible} transparent={true}>
+    <Modal animationType="fade" visible={isVisible} transparent={true}>
       <TouchableWithoutFeedback onPress={setVisible}>
         <View style={styles.modalContainer}></View>
       </TouchableWithoutFeedback>
-      <View style={styles.container}>
+      <AnimatedModal closeModal={() => setVisible(false)}>
         <Header text={text} />
         <Text style={{ color: Colors.grey, marginVertical: 8 }}>
           Your argument
@@ -67,7 +68,7 @@ export default function ArgumentModal({
           title="Submit"
           onPress={buttonEvent}
         />
-      </View>
+      </AnimatedModal>
     </Modal>
   );
 }
