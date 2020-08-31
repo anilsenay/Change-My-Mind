@@ -225,7 +225,7 @@ function createNewRound(uid, proponent_msg) {
     });
 }
 
-function joinChallenge(debate, round, opponent_msg) {
+function joinChallenge(debate, round, opponent_msg, finish_date) {
   // current user join debate as opponent
   firebase
     .firestore()
@@ -233,6 +233,7 @@ function joinChallenge(debate, round, opponent_msg) {
     .doc(debate)
     .update({
       opponent: firebase.auth().currentUser.uid,
+      finish_date,
     })
     .then(() => {
       firebase.firestore().collection("Rounds").doc(round).update({

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
+import { add } from "date-fns";
 
 import GradientButton from "../../components/gradient_button";
 import ArgumentModal from "./modal.view";
@@ -24,10 +25,16 @@ export default function PostButton({
 
   const sendEvent = (type, argument) => {
     if (type === "Join challenge with an argument") {
+      const finish_date = add(new Date(), {
+        days: current_debate.data.voting_period,
+        minutes:
+          (current_debate.data.rounds - 1) * current_debate.data.respond_limit,
+      });
       joinChallenge(
         current_debate.data.id,
         current_debate.data.rounds[0],
-        argument
+        argument,
+        finish_date
       );
     } else if (type === "Start new round") {
       createNewRound(current_debate.data.id, argument);
