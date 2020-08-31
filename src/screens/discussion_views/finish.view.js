@@ -65,11 +65,7 @@ export default function FinishView() {
           );
     }
 
-    return (
-      <View style={styles.container}>
-        <Text></Text>
-      </View>
-    );
+    return null;
   } else if (current_debate.data.proponent.uid === getCurrentUserId()) {
     return (
       <View style={styles.container}>
