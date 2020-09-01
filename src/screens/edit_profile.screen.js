@@ -117,7 +117,11 @@ export default function EditProfile() {
 
   const choosePhoto = async () => {
     setUploading(true);
-    const { uri, cancelled } = await ImagePicker.launchImageLibraryAsync();
+    const { uri, cancelled } = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.5,
+    });
     !cancelled &&
       uploadImage(uri)
         .then((e) => {
