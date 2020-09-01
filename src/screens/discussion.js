@@ -4,6 +4,7 @@ import {
   ScrollView,
   ActivityIndicator,
   RefreshControl,
+  Text,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -83,9 +84,10 @@ export default function Discussion({ route }) {
             opponent={newData.opponent || data.opponent}
             proponent={newData.proponent || data.proponent}
             rounds={newData.rounds ? newData.rounds : null}
-            round_number={newData.round_number}
+            roundNumber={newData.round_number}
             setActiveRound={setActiveRound}
           />
+
           <FinishView />
 
           {getCurrentUserId() !== data.proponent.uid && !newData.opponent && (

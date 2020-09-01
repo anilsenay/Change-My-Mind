@@ -4,11 +4,13 @@ import Round from "../../components/round";
 
 import { getRounds } from "../../hooks/round.hook";
 import debatesHook from "../../hooks/debates.hook";
+import { Colors } from "../../consts/colors";
 
 export default function Rounds({
   opponent,
   proponent,
   rounds,
+  roundNumber,
   setActiveRound,
 }) {
   const { data, loading } = rounds?.length > 0 ? getRounds(rounds) : [];
@@ -38,7 +40,16 @@ export default function Rounds({
             />
           );
         })}
-      {!data && !loading && <Text style={styles.loadingText}>Loading...</Text>}
+      {data && !loading && roundNumber !== rounds.length && (
+        <View style={{ zIndex: 1, backgroundColor: "white" }}>
+          <Text style={styles.waitingText}>
+            Round {rounds.length + 1} has not started yet
+          </Text>
+        </View>
+      )}
+      {!data && !loading && rounds.length !== 0 && (
+        <Text style={styles.loadingText}>Loading...</Text>
+      )}
     </View>
   );
 }
@@ -50,5 +61,14 @@ const styles = StyleSheet.create({
   loadingText: {
     textAlign: "center",
     marginVertical: 8,
+  },
+  waitingText: {
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "bold",
+    paddingVertical: 16,
+    borderTopWidth: 1,
+    borderTopColor: Colors.lightGrey,
+    color: Colors.grey,
   },
 });
