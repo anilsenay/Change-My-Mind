@@ -24,7 +24,7 @@ const User = ({ data }) => {
       <View style={styles.userContainer}>
         <Image
           source={{ uri: data?.imageSrc }}
-          resizeMode="contain"
+          resizeMode="cover"
           style={styles.userImage}
         />
         <Text style={styles.usernameText} numberOfLines={1}>

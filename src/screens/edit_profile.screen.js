@@ -9,6 +9,8 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import * as firebase from "firebase";
+import * as ImagePicker from "expo-image-picker";
 
 import { pop } from "../navigation/root_navigation";
 import { Colors } from "../consts/colors";
@@ -18,10 +20,11 @@ import TickIcon from "../components/icons/tick";
 import Header from "../components/header";
 
 import globalHook from "../hooks/global.hook";
-import { updateUser, isUsernameExist } from "../hooks/user.hooks";
+import { updateUser, isUsernameExist, uploadImage } from "../hooks/user.hooks";
 
 export default function EditProfile() {
   const [focus, setFocus] = useState();
+  const [uploading, setUploading] = useState(false);
 
   const { useGlobalState, setLoggedUser } = globalHook();
   const { user } = useGlobalState();
@@ -102,13 +105,31 @@ export default function EditProfile() {
     isUsernameExist(values.username).then((query) => {
       if (
         (query.docs.length === 0 || values.username === user.username) &&
-        checkField()
+        checkField() &&
+        !uploading
       ) {
         updateUser(values);
         setLoggedUser({ ...user, ...values });
         pop();
       }
     });
+  };
+
+  const choosePhoto = async () => {
+    setUploading(true);
+    const { uri, cancelled } = await ImagePicker.launchImageLibraryAsync();
+    !cancelled &&
+      uploadImage(uri)
+        .then((e) => {
+          e.ref.getDownloadURL().then((url) => {
+            updateUser({ imageSrc: url });
+            setLoggedUser({ ...user, imageSrc: url });
+          });
+        })
+        .catch((e) => {
+          console.log(e);
+        })
+        .finally(() => setUploading(false));
   };
 
   return (
@@ -126,9 +147,7 @@ export default function EditProfile() {
         <ScrollView style={styles.formContainer}>
           <View style={styles.imageContainer}>
             <Image source={{ uri: user.imageSrc }} style={styles.userImage} />
-            <TouchableWithoutFeedback
-              onPress={() => console.log("change image")}
-            >
+            <TouchableWithoutFeedback onPress={choosePhoto}>
               <Text style={styles.photoText}>Change profile photo</Text>
             </TouchableWithoutFeedback>
           </View>

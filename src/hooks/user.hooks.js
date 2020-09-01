@@ -83,6 +83,16 @@ const unfollowUser = (uid) => {
     });
 };
 
+const uploadImage = async (uri) => {
+  const response = await fetch(uri);
+  const blob = await response.blob();
+  var ref = firebase
+    .storage()
+    .ref()
+    .child("profile_photos/" + getCurrentUserId());
+  return ref.put(blob);
+};
+
 export {
   getCurrentUserId,
   getUser,
@@ -90,4 +100,5 @@ export {
   isUsernameExist,
   followUser,
   unfollowUser,
+  uploadImage,
 };
