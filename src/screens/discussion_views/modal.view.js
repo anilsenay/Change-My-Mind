@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -28,7 +28,7 @@ export default function ArgumentModal({
   value,
   setValue,
 }) {
-  const [blur, setBlur] = useState(false);
+  const [focus, setFocus] = useState(false);
   const [showError, setShowError] = useState(false);
 
   const buttonEvent = () => {
@@ -50,10 +50,13 @@ export default function ArgumentModal({
           Your argument
         </Text>
         <TextInput
-          style={blur ? [styles.inputArea, styles.inputBlur] : styles.inputArea}
+          style={
+            focus ? [styles.inputArea, styles.inputBlur] : styles.inputArea
+          }
           multiline
           onChangeText={(e) => setValue(e)}
-          onFocus={() => setBlur(true)}
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
           value={value}
         />
         <Text style={styles.wordCounter}>{value.length}/5000</Text>
@@ -115,6 +118,7 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: Colors.purple + "AA",
     borderRadius: 10,
+    marginTop: 24,
   },
   header: {
     alignItems: "center",
