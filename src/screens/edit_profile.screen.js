@@ -9,7 +9,6 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import * as firebase from "firebase";
 import * as ImagePicker from "expo-image-picker";
 
 import { pop } from "../navigation/root_navigation";

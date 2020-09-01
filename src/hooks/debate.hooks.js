@@ -13,6 +13,7 @@ function createDebate({ ...values }, finalEvent) {
     rounds,
     voting_period,
     argument,
+    headerSrc,
   } = values;
   firebase
     .firestore()
@@ -48,6 +49,7 @@ function createDebate({ ...values }, finalEvent) {
           rounds: [docRef.id],
           total_view: 1,
           total_vote: 0,
+          headerSrc,
         })
         .then((docRef) => {
           firebase
@@ -192,6 +194,21 @@ async function setDebateWin(uid, winner_id, loser_id, status) {
     });
 }
 
+const uploadImage = async (uri) => {
+  const response = await fetch(uri);
+  const blob = await response.blob();
+  var ref = firebase
+    .storage()
+    .ref()
+    .child(
+      "debate_headers/" +
+        firebase.auth().currentUser.uid +
+        "_" +
+        new Date().getTime()
+    );
+  return ref.put(blob);
+};
+
 export {
   createDebate,
   getDebate,
@@ -201,4 +218,5 @@ export {
   increaseVote,
   decreaseVote,
   setDebateWin,
+  uploadImage,
 };

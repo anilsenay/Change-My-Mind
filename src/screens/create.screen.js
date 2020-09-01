@@ -19,10 +19,12 @@ import ErrorModal from "./create_views/error_modal.view";
 import { createDebate, getDebate } from "../hooks/debate.hooks";
 import { getCurrentUserId } from "../hooks/user.hooks";
 import globaHook from "../hooks/global.hook";
+import UploadHeader from "./create_views/upload_header.view";
 
 export default function Create() {
   const [blur, setBlur] = useState();
   const [modalVisable, setModalVisible] = useState(false);
+  const [headerImage, setHeaderImage] = useState(null);
 
   const { useGlobalState } = globaHook();
 
@@ -43,6 +45,7 @@ export default function Create() {
       {
         ...values,
         proponent: currentUserId,
+        headerSrc: headerImage && headerImage.length > 0 ? headerImage : null,
       },
       navigateEvent
     );
@@ -106,6 +109,10 @@ export default function Create() {
           errors,
         }) => (
           <ScrollView style={styles.formContainer}>
+            <UploadHeader
+              headerImage={headerImage}
+              setHeaderImage={setHeaderImage}
+            />
             <View style={styles.itemContaniner}>
               <Text style={styles.labels}>Topic</Text>
               <TextInput
@@ -265,7 +272,6 @@ const styles = StyleSheet.create({
   formContainer: {
     width: "100%",
     paddingHorizontal: 16,
-    paddingTop: 10,
   },
   itemContaniner: {
     flexDirection: "row",
