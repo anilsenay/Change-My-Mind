@@ -70,11 +70,12 @@ export default function Create() {
         validationSchema={yup.object().shape({
           topic: yup
             .string("* Please set a topic title for your discussion")
-            .min(3, "* Topic text must be minimum 3 character")
+            .min(3, "* Topic text must be minimum 3 characters")
+            .max(50, "* Topic text must be maximum 70 characters")
             .required("* Topic is a required field"),
           respond_hour: yup
             .number("")
-            .min(1, "* Respond hour limit must be minimum 1 hour")
+            .min(12, "* Respond hour limit must be minimum 12 hours")
             .required("* Respond Hour Limit is a required field"),
           respond_minute: yup
             .number("")
@@ -89,7 +90,7 @@ export default function Create() {
             .min(10, "* Your argument is too short")
             .max(
               5000,
-              "* Your argument can be maximum 5000 character for each round"
+              "* Your argument can be maximum 5000 characters for each round"
             )
             .required("* Argument is a required field"),
         })}
