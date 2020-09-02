@@ -2,21 +2,10 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
 import { navigate } from "../navigation/root_navigation";
 
-import { Colors } from "../consts/colors";
-
 import { reportDebate } from "../hooks/debate.hooks";
 import { reportUser } from "../hooks/user.hooks";
 
-const ModalButton = ({ text, textStyle = {}, noBorder, ...props }) => {
-  return (
-    <TouchableOpacity
-      style={[styles.buttonStyle, noBorder && { borderBottomWidth: 0 }]}
-      {...props}
-    >
-      <Text style={[styles.buttonText, textStyle]}>{text}</Text>
-    </TouchableOpacity>
-  );
-};
+import ModalButton from "./modal_button";
 
 export default function DebateModal({ data, cancelEvent, inDebate }) {
   console.log(data.proponent);
@@ -52,7 +41,7 @@ export default function DebateModal({ data, cancelEvent, inDebate }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.buttonContainer}>
+      <View style={styles.buttonsContainer}>
         <ModalButton
           text="Report the debate"
           textStyle={{ color: "red" }}
@@ -86,17 +75,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderRadius: 16,
   },
-  buttonContainer: {
+  buttonsContainer: {
     width: "100%",
-  },
-  buttonStyle: {
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 16,
-    borderBottomColor: Colors.lightGrey,
-    borderBottomWidth: 1,
-  },
-  buttonText: {
-    fontSize: 16,
   },
 });

@@ -18,11 +18,14 @@ import Dots from "../components/vertical_dots";
 import TopView from "./profile_views/top.view";
 import Debates from "./profile_views/debates";
 
-import { getUser } from "../hooks/user.hooks";
+import { getUser, getCurrentUserId } from "../hooks/user.hooks";
 import profileHook from "../hooks/profile.hook";
+import UserModal from "../components/user_modal";
+import CustomModal from "../components/modal";
 
 export default function Profile({ route, user }) {
   const [isRefreshed, setRefreshed] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const { uid, username } = route?.params;
   const userData = getUser(uid).data;
@@ -54,7 +57,11 @@ export default function Profile({ route, user }) {
         textStyle={{ fontSize: 18 }}
         leftIcon={!user && <BackIcon width={24} height={24} fill="black" />}
         leftIconEvent={() => pop()}
-        rightIcon={<Dots onPress={() => console.log("dots")} />}
+        rightIcon={
+          uid !== getCurrentUserId() && (
+            <Dots onPress={() => setVisible(true)} />
+          )
+        }
         backgroundStyle={{
           borderBottomWidth: 1,
           borderBottomColor: Colors.lightGrey,
@@ -81,6 +88,16 @@ export default function Profile({ route, user }) {
           color="grey"
           style={{ marginTop: 40 }}
         />
+      )}
+      {uid !== getCurrentUserId() && (
+        <CustomModal visible={visible} setModalVisible={setVisible}>
+          <UserModal
+            cancelEvent={() => setVisible(false)}
+            data={{
+              uid,
+            }}
+          />
+        </CustomModal>
       )}
     </SafeAreaView>
   );
