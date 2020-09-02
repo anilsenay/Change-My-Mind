@@ -18,7 +18,7 @@ const ModalButton = ({ text, textStyle = {}, noBorder, ...props }) => {
   );
 };
 
-export default function FeedModal({ data, cancelEvent, inDebate }) {
+export default function DebateModal({ data, cancelEvent, inDebate }) {
   console.log(data.proponent);
   const goToDebate = () => {
     navigate("Discussion", {

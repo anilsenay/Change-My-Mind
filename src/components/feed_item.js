@@ -21,7 +21,7 @@ import { categoriesWithEmoji } from "../consts/filter_categories";
 
 import VsView from "./vs_view";
 import CustomModal from "./modal";
-import FeedModal from "./feed_item_modal";
+import DebateModal from "./debate_modal";
 
 import { getUser } from "../hooks/user.hooks";
 
@@ -85,7 +85,7 @@ export default function FeedItem({ itemData }) {
   return (
     <View style={styles.container}>
       <CustomModal visible={visible} setModalVisible={setVisible}>
-        <FeedModal
+        <DebateModal
           cancelEvent={() => setVisible(false)}
           data={{
             id: itemData.id,

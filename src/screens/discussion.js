@@ -26,7 +26,7 @@ import { getCurrentUserId, getUser } from "../hooks/user.hooks";
 import { useIsFocused } from "@react-navigation/native";
 import FinishView from "./discussion_views/finish.view";
 import CustomModal from "../components/modal";
-import FeedModal from "../components/feed_item_modal";
+import DebateModal from "../components/debate_modal";
 
 export default function Discussion({ route }) {
   const [isRefreshed, setRefreshed] = useState(false);
@@ -108,7 +108,7 @@ export default function Discussion({ route }) {
         />
       )}
       <CustomModal visible={visible} setModalVisible={setVisible}>
-        <FeedModal
+        <DebateModal
           cancelEvent={() => setVisible(false)}
           data={{
             id: newData.id,
