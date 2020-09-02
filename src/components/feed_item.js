@@ -18,17 +18,23 @@ import {
 
 import { Colors } from "../consts/colors";
 import { categoriesWithEmoji } from "../consts/filter_categories";
+
 import VsView from "./vs_view";
+import CustomModal from "./modal";
+import FeedModal from "./feed_item_modal";
 
 import { getUser } from "../hooks/user.hooks";
 
-const CategoryHeader = ({ categoryName }) => {
+const CategoryHeader = ({ categoryName, setVisible }) => {
   return (
     <View style={styles.categoryView}>
       <Text style={styles.categoryText}>
         {categoriesWithEmoji[categoryName]} {" " + categoryName}
       </Text>
-      <TouchableOpacity style={styles.dotButton}>
+      <TouchableOpacity
+        style={styles.dotButton}
+        onPress={() => setVisible(true)}
+      >
         <View style={styles.dot} />
         <View style={styles.dot} />
         <View style={styles.dot} />
@@ -71,13 +77,23 @@ export default function FeedItem({ itemData }) {
     headerSrc,
   } = itemData;
 
-  const [rounds, setRounds] = useState(null);
+  const [visible, setVisible] = useState(false);
 
   const proponentData = getUser(proponent).data;
   const opponentData = getUser(opponent).data;
 
   return (
     <View style={styles.container}>
+      <CustomModal visible={visible} setModalVisible={setVisible}>
+        <FeedModal
+          cancelEvent={() => setVisible(false)}
+          data={{
+            id: itemData.id,
+            proponent: proponentData,
+            opponent: opponentData,
+          }}
+        />
+      </CustomModal>
       <TouchableWithoutFeedback
         onPress={() =>
           navigate("Discussion", {
@@ -98,7 +114,7 @@ export default function FeedItem({ itemData }) {
             />
           )}
           <View style={styles.itemArea}>
-            <CategoryHeader categoryName={category} />
+            <CategoryHeader categoryName={category} setVisible={setVisible} />
             <Text style={styles.title} numberOfLines={2}>
               {title}
             </Text>

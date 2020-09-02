@@ -209,6 +209,14 @@ const uploadImage = async (uri) => {
   return ref.put(blob);
 };
 
+const reportDebate = (id) => {
+  firebase.firestore().collection("Reports").add({
+    reported_by: firebase.auth().currentUser.uid,
+    reported_debate: id,
+    reported_date: new Date(),
+  });
+};
+
 export {
   createDebate,
   getDebate,
@@ -219,4 +227,5 @@ export {
   decreaseVote,
   setDebateWin,
   uploadImage,
+  reportDebate,
 };
