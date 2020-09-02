@@ -25,10 +25,13 @@ import debatesHook from "../hooks/debates.hook";
 import { getCurrentUserId, getUser } from "../hooks/user.hooks";
 import { useIsFocused } from "@react-navigation/native";
 import FinishView from "./discussion_views/finish.view";
+import CustomModal from "../components/modal";
+import FeedModal from "../components/feed_item_modal";
 
 export default function Discussion({ route }) {
   const [isRefreshed, setRefreshed] = useState(false);
   const [activeRound, setActiveRound] = useState(1);
+  const [visible, setVisible] = useState(false);
 
   const { data } = route?.params;
 
@@ -65,7 +68,7 @@ export default function Discussion({ route }) {
         title="Discussion"
         leftIcon={<BackIcon width={24} height={24} fill="black" />}
         leftIconEvent={() => pop()}
-        rightIcon={<Dots onPress={() => console.log("dots")} />}
+        rightIcon={<Dots onPress={() => setVisible(true)} />}
         backgroundStyle={{
           borderBottomWidth: 1,
           borderBottomColor: Colors.lightGrey,
@@ -104,6 +107,17 @@ export default function Discussion({ route }) {
           style={{ marginTop: 40 }}
         />
       )}
+      <CustomModal visible={visible} setModalVisible={setVisible}>
+        <FeedModal
+          cancelEvent={() => setVisible(false)}
+          data={{
+            id: newData.id,
+            proponent: newData.proponent || data.proponent,
+            opponent: newData.opponent || data.opponent,
+          }}
+          inDebate
+        />
+      </CustomModal>
     </SafeAreaView>
   );
 }

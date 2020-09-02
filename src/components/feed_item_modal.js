@@ -5,6 +5,7 @@ import { navigate } from "../navigation/root_navigation";
 import { Colors } from "../consts/colors";
 
 import { reportDebate } from "../hooks/debate.hooks";
+import { reportUser } from "../hooks/user.hooks";
 
 const ModalButton = ({ text, textStyle = {}, noBorder, ...props }) => {
   return (
@@ -17,14 +18,16 @@ const ModalButton = ({ text, textStyle = {}, noBorder, ...props }) => {
   );
 };
 
-export default function FeedModal({ data, cancelEvent }) {
+export default function FeedModal({ data, cancelEvent, inDebate }) {
+  console.log(data.proponent);
   const goToDebate = () => {
     navigate("Discussion", {
       data,
     });
     cancelEvent();
   };
-  const reportEvent = () => {
+
+  const reportDebateEvent = () => {
     reportDebate(data.id);
     Alert.alert(
       "Reported Succesfully",
@@ -32,16 +35,45 @@ export default function FeedModal({ data, cancelEvent }) {
     );
     cancelEvent();
   };
+
+  const reportUserEvent = (uid) => {
+    reportUser(uid);
+    Alert.alert(
+      "Reported Succesfully",
+      "Thank you for sharing with us. The debate will be examined by our team."
+    );
+    cancelEvent();
+  };
+
+  const shareEvent = () => {
+    Alert.alert("Opps", "Sharing is not supporting yet.");
+    cancelEvent();
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
         <ModalButton
           text="Report the debate"
           textStyle={{ color: "red" }}
-          onPress={reportEvent}
+          onPress={reportDebateEvent}
         />
-        <ModalButton text="Go to debate" onPress={goToDebate} />
-        <ModalButton text="Share" />
+        {!inDebate && <ModalButton text="Go to debate" onPress={goToDebate} />}
+        {inDebate && (
+          <ModalButton
+            text="Report the proponent"
+            textStyle={{ color: "red" }}
+            onPress={() => reportUserEvent(data.proponent.uid)}
+          />
+        )}
+        {inDebate && data.opponent?.uid && (
+          <ModalButton
+            text="Report the opponent"
+            textStyle={{ color: "red" }}
+            onPress={() => reportUserEvent(data.opponent.uid)}
+          />
+        )}
+        <ModalButton text="Share" onPress={shareEvent} />
         <ModalButton text="Cancel" noBorder onPress={cancelEvent} />
       </View>
     </View>

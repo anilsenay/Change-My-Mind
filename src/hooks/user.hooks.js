@@ -93,6 +93,14 @@ const uploadImage = async (uri) => {
   return ref.put(blob);
 };
 
+const reportUser = (id) => {
+  firebase.firestore().collection("Reports").add({
+    reported_by: firebase.auth().currentUser.uid,
+    reported_user: id,
+    reported_date: new Date(),
+  });
+};
+
 export {
   getCurrentUserId,
   getUser,
@@ -101,4 +109,5 @@ export {
   followUser,
   unfollowUser,
   uploadImage,
+  reportUser,
 };
