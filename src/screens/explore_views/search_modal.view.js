@@ -7,18 +7,47 @@ import {
   Button,
   TextInput,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import * as firebase from "firebase";
 
 import SearchIcon from "../../components/icons/search";
 import CloseIcon from "../../components/icons/close";
 import { Colors } from "../../consts/colors";
 import BackIcon from "../../components/icons/back";
 
+import { searchDebates } from "../../hooks/debate.hooks";
+import FeedItem from "../../components/feed_item";
+import { navigate } from "../../navigation/root_navigation";
+
 export default function SearchModal({ visible, setVisible }) {
   const [focus, setFocus] = useState(false);
-  const [blur, setBlur] = useState(false);
+  const [debates, setDebates] = useState([]);
   const inputRef = useRef(null);
+
+  const searchEvent = (keyword) => {
+    keyword.length > 0
+      ? firebase
+          .firestore()
+          .collection("Debate")
+          .where("title", ">=", keyword)
+          .where("title", "<=", keyword + "\uf8ff")
+          .get()
+          .then((query) => {
+            const data = query.docs.map((doc) => {
+              return {
+                id: doc.id,
+                ...doc.data(),
+                start_date: doc.data().start_date.toDate(),
+                update_date: doc.data().update_date.toDate(),
+                finish_date: doc.data().finish_date?.toDate(),
+              };
+            });
+            setDebates(data);
+          })
+      : setDebates([]);
+  };
 
   return (
     <Modal
@@ -46,7 +75,7 @@ export default function SearchModal({ visible, setVisible }) {
             placeholder="Search"
             style={styles.searchInput}
             onFocus={() => setFocus(true)}
-            onBlur={() => setBlur(true)}
+            onChangeText={(e) => searchEvent(e)}
             ref={inputRef}
           />
           {!focus && (
@@ -55,6 +84,17 @@ export default function SearchModal({ visible, setVisible }) {
             </TouchableOpacity>
           )}
         </View>
+
+        <FlatList
+          data={debates}
+          style={styles.itemsContainer}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <FeedItem itemData={item} onPress={() => setVisible(false)} />
+          )}
+          ListFooterComponent={<View style={{ marginBottom: 16 }} />}
+        />
       </SafeAreaView>
     </Modal>
   );
@@ -82,5 +122,8 @@ const styles = StyleSheet.create({
     marginRight: "auto",
     fontSize: 18,
     marginLeft: 8,
+  },
+  itemsContainer: {
+    paddingVertical: 16,
   },
 });

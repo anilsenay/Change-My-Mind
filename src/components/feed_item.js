@@ -64,7 +64,7 @@ const Footer = ({ startTime, updateTime }) => {
   );
 };
 
-export default function FeedItem({ itemData }) {
+export default function FeedItem({ itemData, onPress }) {
   const {
     title,
     category,
@@ -95,15 +95,16 @@ export default function FeedItem({ itemData }) {
         />
       </CustomModal>
       <TouchableWithoutFeedback
-        onPress={() =>
+        onPress={() => {
           navigate("Discussion", {
             data: {
               id: itemData.id,
               proponent: proponentData,
               opponent: opponentData,
             },
-          })
-        }
+          });
+          onPress && onPress();
+        }}
       >
         <View style={styles.itemContainer}>
           {headerSrc && (
