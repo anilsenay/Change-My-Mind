@@ -49,12 +49,13 @@ export default function Explore() {
         rightIcon={<SearchIcon width={24} height={24} fill="black" />}
         rightIconEvent={() => setVisible(true)}
       />
-      <Filter
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-      />
+
       {isFocused && (
         <ScrollView showsVerticalScrollIndicator={false}>
+          <Filter
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+          />
           {popular?.isFetched && (
             <CarouselView headerText="Popular on All" data={popular.results} />
           )}
