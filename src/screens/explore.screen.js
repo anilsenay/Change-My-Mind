@@ -7,7 +7,6 @@ import {
   ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useIsFocused } from "@react-navigation/native";
 
 import Header from "../components/header";
 import SearchIcon from "../components/icons/search";
@@ -21,8 +20,6 @@ import exploreHook from "../hooks/explore.hooks";
 export default function Explore() {
   const [visible, setVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
-
-  const isFocused = useIsFocused();
 
   const {
     getPopularDebates,
@@ -50,32 +47,30 @@ export default function Explore() {
         rightIconEvent={() => setVisible(true)}
       />
 
-      {isFocused && (
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Filter
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Filter
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
+        {popular?.isFetched && (
+          <CarouselView headerText="Popular on All" data={popular.results} />
+        )}
+        {news?.isFetched && (
+          <CarouselView headerText="News on All" data={news.results} />
+        )}
+        {mostVoted?.isFetched && (
+          <CarouselView
+            headerText="Most Voted on All"
+            data={mostVoted.results}
           />
-          {popular?.isFetched && (
-            <CarouselView headerText="Popular on All" data={popular.results} />
-          )}
-          {news?.isFetched && (
-            <CarouselView headerText="News on All" data={news.results} />
-          )}
-          {mostVoted?.isFetched && (
-            <CarouselView
-              headerText="Most Voted on All"
-              data={mostVoted.results}
-            />
-          )}
-          {newUpdated?.isFetched && (
-            <CarouselView
-              headerText="New Updated on All"
-              data={newUpdated.results}
-            />
-          )}
-        </ScrollView>
-      )}
+        )}
+        {newUpdated?.isFetched && (
+          <CarouselView
+            headerText="New Updated on All"
+            data={newUpdated.results}
+          />
+        )}
+      </ScrollView>
       <SearchModal visible={visible} setVisible={setVisible} />
     </SafeAreaView>
   );
