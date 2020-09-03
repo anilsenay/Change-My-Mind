@@ -8,6 +8,7 @@ import {
   RefreshControl,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useIsFocused } from "@react-navigation/native";
 
 import { Colors } from "../consts/colors";
 
@@ -26,6 +27,7 @@ const ListHeader = ({ text }) => {
 
 export default function Notifications() {
   const [refreshing, setRefreshing] = useState(false);
+  const isFocused = useIsFocused();
 
   const { useGlobalState, setNotifications } = globalHook();
   const { user, notifications } = useGlobalState();
@@ -64,7 +66,7 @@ export default function Notifications() {
           </View>
         }
       />
-      {notifications && (
+      {notifications && isFocused && (
         <FlatList
           style={styles.list}
           showsVerticalScrollIndicator={false}

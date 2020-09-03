@@ -64,7 +64,12 @@ const Footer = ({ startTime, updateTime }) => {
   );
 };
 
-export default function FeedItem({ itemData, onPress }) {
+export default function FeedItem({
+  itemData,
+  onPress,
+  style,
+  noHeader = false,
+}) {
   const {
     title,
     category,
@@ -83,7 +88,7 @@ export default function FeedItem({ itemData, onPress }) {
   const opponentData = getUser(opponent).data;
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <CustomModal visible={visible} setModalVisible={setVisible}>
         <DebateModal
           cancelEvent={() => setVisible(false)}
@@ -107,7 +112,7 @@ export default function FeedItem({ itemData, onPress }) {
         }}
       >
         <View style={styles.itemContainer}>
-          {headerSrc && (
+          {headerSrc && !noHeader && (
             <Image
               source={{ uri: headerSrc }}
               resizeMode="cover"

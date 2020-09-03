@@ -1,8 +1,19 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { Colors } from "../../consts/colors";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 
-export default function CarouselView({ headerText }) {
+import Carousel from "react-native-snap-carousel";
+
+import { Colors } from "../../consts/colors";
+import FeedItem from "../../components/feed_item";
+
+export default function CarouselView({ headerText, data }) {
+  console.log(data);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -11,17 +22,30 @@ export default function CarouselView({ headerText }) {
           <Text style={styles.viewAllText}>Wiew all</Text>
         </TouchableOpacity>
       </View>
+      <Carousel
+        data={data}
+        renderItem={({ item, index }) => {
+          return <FeedItem itemData={item} style={{ padding: 0 }} noHeader />;
+        }}
+        sliderWidth={Dimensions.get("window").width}
+        itemWidth={Dimensions.get("window").width - 48}
+        layout={"default"}
+        contentContainerCustomStyle={{
+          marginLeft: -4,
+        }}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    paddingVertical: 8,
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
+    paddingHorizontal: 16,
   },
   headerText: {
     fontSize: 18,

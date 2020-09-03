@@ -13,6 +13,11 @@ import {
 } from "../reducers/profile.reducer";
 import { globalReducer, globalInitialState } from "../reducers/global.reducer";
 
+import {
+  exploreReducer,
+  exploreInitialState,
+} from "../reducers/explore.reducer";
+
 const AppContext = React.createContext();
 const AppContextDispatch = React.createContext();
 
@@ -24,6 +29,10 @@ const AppProvider = ({ children }) => {
   const [debatesState, debatesDispatch] = useReducer(
     debatesReducer,
     debatesInitialState
+  );
+  const [exploreState, exploreDispatch] = useReducer(
+    exploreReducer,
+    exploreInitialState
   );
   const [globalState, globalDispatch] = useReducer(
     globalReducer,
@@ -40,6 +49,7 @@ const AppProvider = ({ children }) => {
         debatesState,
         globalState,
         profileState,
+        exploreState,
       }}
     >
       <AppContextDispatch.Provider
@@ -48,6 +58,7 @@ const AppProvider = ({ children }) => {
           debatesDispatch,
           globalDispatch,
           profileDispatch,
+          exploreDispatch,
         }}
       >
         {children}

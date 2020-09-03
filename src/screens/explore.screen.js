@@ -1,17 +1,45 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import SearchModal from "./explore_views/search_modal.view";
+import { useIsFocused } from "@react-navigation/native";
 
 import Header from "../components/header";
 import SearchIcon from "../components/icons/search";
+
+import SearchModal from "./explore_views/search_modal.view";
 import Filter from "./explore_views/filter.view";
 import CarouselView from "./explore_views/carousel.view";
 
+import exploreHook from "../hooks/explore.hooks";
+
 export default function Explore() {
   const [visible, setVisible] = useState(false);
-  const [hideFilter, setHideFilter] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
+  const isFocused = useIsFocused();
+
+  const {
+    getPopularDebates,
+    getMostVotedDebates,
+    getNewDebates,
+    getUpdatedDebates,
+    useExploreState,
+  } = exploreHook();
+
+  const { popular, news, mostVoted, newUpdated } = useExploreState();
+
+  useEffect(() => {
+    getPopularDebates(selectedCategory);
+    getMostVotedDebates(selectedCategory);
+    getNewDebates(selectedCategory);
+    getUpdatedDebates(selectedCategory);
+  }, [selectedCategory]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -21,12 +49,32 @@ export default function Explore() {
         rightIcon={<SearchIcon width={24} height={24} fill="black" />}
         rightIconEvent={() => setVisible(true)}
       />
-      <Filter hideFilter={hideFilter} />
-      <CarouselView headerText="Popular on All" />
-      <CarouselView headerText="News on All" />
-      <CarouselView headerText="Most Voted on All" />
-      <CarouselView headerText="New Updated on All" />
-
+      <Filter
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+      />
+      {isFocused && (
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {popular?.isFetched && (
+            <CarouselView headerText="Popular on All" data={popular.results} />
+          )}
+          {news?.isFetched && (
+            <CarouselView headerText="News on All" data={news.results} />
+          )}
+          {mostVoted?.isFetched && (
+            <CarouselView
+              headerText="Most Voted on All"
+              data={mostVoted.results}
+            />
+          )}
+          {newUpdated?.isFetched && (
+            <CarouselView
+              headerText="New Updated on All"
+              data={newUpdated.results}
+            />
+          )}
+        </ScrollView>
+      )}
       <SearchModal visible={visible} setVisible={setVisible} />
     </SafeAreaView>
   );

@@ -22,10 +22,7 @@ const FilterItem = ({ text, selected, onPress }) => {
   );
 };
 
-export default function Filter({ hideFilter }) {
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [sortSelection, setSortSelection] = useState("started-new-to-old");
-
+export default function Filter({ selectedCategory, setSelectedCategory }) {
   // const { getAllDebates } = debatesHook();
 
   // const sortEvent = (order) => {
