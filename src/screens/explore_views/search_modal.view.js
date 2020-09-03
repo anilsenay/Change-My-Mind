@@ -17,9 +17,7 @@ import CloseIcon from "../../components/icons/close";
 import { Colors } from "../../consts/colors";
 import BackIcon from "../../components/icons/back";
 
-import { searchDebates } from "../../hooks/debate.hooks";
 import FeedItem from "../../components/feed_item";
-import { navigate } from "../../navigation/root_navigation";
 
 export default function SearchModal({ visible, setVisible }) {
   const [focus, setFocus] = useState(false);

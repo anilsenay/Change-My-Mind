@@ -2,6 +2,7 @@
 
 const globalInitialState = {
   user: null,
+  notifications: [],
 };
 
 const globalReducer = (state, action) => {
@@ -10,6 +11,11 @@ const globalReducer = (state, action) => {
       return {
         ...state,
         user: action.payload,
+      };
+    case "SET_NOTIFICATIONS":
+      return {
+        ...state,
+        notifications: state.notifications.concat(action.payload),
       };
     default:
       return state;

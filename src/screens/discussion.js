@@ -93,10 +93,13 @@ export default function Discussion({ route }) {
 
           <FinishView />
 
-          {getCurrentUserId() !== data.proponent.uid && !newData.opponent && (
-            <PostButton join refreshEvent={refreshEvent} />
-          )}
-          {getCurrentUserId() === data.proponent.uid &&
+          {getCurrentUserId() !==
+            (newData.proponent.uid || data.proponent?.uid) &&
+            !newData.opponent && (
+              <PostButton join refreshEvent={refreshEvent} />
+            )}
+          {getCurrentUserId() ===
+            (newData.proponent.uid || data.proponent?.uid) &&
             newData.rounds?.length !== activeRound && <PostButton isNewRound />}
         </ScrollView>
       ) : (
