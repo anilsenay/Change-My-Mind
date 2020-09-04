@@ -62,6 +62,7 @@ export default function DebateModal({ data, cancelEvent, inDebate }) {
             onPress={() => reportUserEvent(data.opponent.uid)}
           />
         )}
+        <ModalButton text="Add to Favourites" />
         <ModalButton text="Share" onPress={shareEvent} />
         <ModalButton text="Cancel" noBorder onPress={cancelEvent} />
       </View>
