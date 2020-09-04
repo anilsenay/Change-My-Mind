@@ -1,7 +1,9 @@
+import * as firebase from "firebase";
+
 function createNotification(title, message, user, debate, owner) {
   firebase
     .firestore()
-    .collection("Notification")
+    .collection("Notifications")
     .add({
       title,
       message,

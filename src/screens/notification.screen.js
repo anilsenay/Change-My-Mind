@@ -16,6 +16,7 @@ import Header from "../components/header";
 import Notification from "../components/notification";
 
 import globalHook from "../hooks/global.hook";
+import { getUser, getCurrentUserId } from "../hooks/user.hooks";
 
 const ListHeader = ({ text }) => {
   return (
@@ -29,18 +30,22 @@ export default function Notifications() {
   const [refreshing, setRefreshing] = useState(false);
   const isFocused = useIsFocused();
 
-  const { useGlobalState, setNotifications } = globalHook();
+  const { useGlobalState, setNotifications, setLoggedUser } = globalHook();
   const { user, notifications } = useGlobalState();
 
+  const fetchedData = getUser(getCurrentUserId()).data;
+
   useEffect(() => {
-    user &&
+    if (fetchedData) {
+      setLoggedUser(fetchedData);
       setNotifications(
-        user.notifications.slice(
+        fetchedData.notifications.slice(
           notifications.length,
           notifications.length + 10
         )
       );
-  }, [user]);
+    }
+  }, [fetchedData]);
 
   const fetchMore = () => {
     console.log("fething more");
@@ -53,7 +58,13 @@ export default function Notifications() {
       );
   };
 
-  const onRefresh = () => {};
+  const onRefresh = React.useCallback(
+    (notifications) => {
+      // setRefreshing(true);
+      // loadNewNotifications(notifications, setRefreshing);
+    },
+    [refreshing]
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -76,7 +87,7 @@ export default function Notifications() {
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
-              onRefresh={() => onRefresh()}
+              onRefresh={() => onRefresh(notifications)}
             />
           }
           onEndReachedThreshold={0.01}

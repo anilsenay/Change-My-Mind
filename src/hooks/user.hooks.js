@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import * as firebase from "firebase";
 import "firebase/firestore";
+import { createNotification } from "./notification.hooks";
 
 function getCurrentUserId() {
   return firebase.auth().currentUser.uid;
@@ -61,6 +62,9 @@ const followUser = (uid) => {
             firebase.auth().currentUser.uid
           ),
         });
+    })
+    .finally(() => {
+      createNotification("followed you", null, getCurrentUserId(), null, uid);
     });
 };
 

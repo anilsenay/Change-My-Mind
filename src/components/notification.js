@@ -43,7 +43,10 @@ export default function Notification({ data }) {
           />
         )}
         <View style={styles.texts}>
-          <Text style={styles.title}>{title || "Title"}</Text>
+          <Text style={styles.title}>
+            {(userData?.username && userData?.username + " " + title) ||
+              "Title"}
+          </Text>
           {message?.length > 0 && <Text style={styles.message}>{message}</Text>}
         </View>
         <Text style={styles.date}>
