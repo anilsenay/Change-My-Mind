@@ -52,6 +52,7 @@ export default function Settings() {
       <View style={styles.bodyContainer}>
         <SettingsButton text="Language" />
         <SettingsButton text="Notifications" />
+        <SettingsButton text="Your Favourites" />
         <SettingsButton
           text="Logout"
           textStyle={{ color: "red" }}
