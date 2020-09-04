@@ -40,15 +40,18 @@ export default function Welcome({ navigation }) {
         >
           <Slide
             title="Welcome to Change My Mind"
-            description="Fikirlerin tartışacağı özgür bir alandasınız. Savunacak bir fikriniz varsa hadi başlayalım."
+            description="You are in a free area to discuss ideas now. If you have an idea to defend, let's get started."
+            imageComponent="Welcome"
           />
           <Slide
             title="Change My Mind!"
-            description="Ortaya bir fikir atın ve gelecek karşı görüşlere karşı bunu savunun!"
+            description="Take an opinion and defend it against opposing views!"
+            imageComponent="TakeCare"
           />
           <Slide
             title="You are wrong!"
-            description="Bir fikrin yanlış olduğunu mu düşünüyorsunuz? Ona meydan okuyun!"
+            description="Do you think an idea is wrong? Challenge it!"
+            imageComponent="Challenge"
           />
         </Animated.ScrollView>
         <Dots page={page} />

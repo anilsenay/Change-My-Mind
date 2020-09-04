@@ -9,6 +9,7 @@ import { firebaseConfig } from "./consts/firebase.config";
 import { Colors } from "./consts/colors";
 
 export default function Root({ navigation }) {
+  // TODO: this will be local storage state
   const [isFirstTime, setFirstTime] = useState(true);
 
   const [scaleValue] = useState(new Animated.Value(0));
@@ -37,7 +38,7 @@ export default function Root({ navigation }) {
         onLoaded(user);
         // navigation.replace after onLoaded
       } else if (isFirstTime) {
-        setFirstTime(false);
+        // setFirstTime(false);
         navigation.replace("Welcome");
       } else {
         navigation.replace("Login");

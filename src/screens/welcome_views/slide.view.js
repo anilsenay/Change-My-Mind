@@ -3,10 +3,16 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import { Dimensions } from "react-native";
 import { Colors } from "../../consts/colors";
 
-export default function Slide({ title, description, image, style }) {
+import Welcome from "../../assets/welcome-1";
+import TakeIdea from "../../assets/welcome-2";
+import Challenge from "../../assets/welcome-3";
+
+export default function Slide({ title, description, imageComponent, style }) {
   return (
     <View style={[styles.container, style]}>
-      {image ? <Image /> : <View style={styles.placeholder} />}
+      {imageComponent === "Welcome" && <Welcome width={250} height={250} />}
+      {imageComponent === "TakeCare" && <TakeIdea width={250} height={250} />}
+      {imageComponent === "Challenge" && <Challenge width={250} height={250} />}
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.description}>{description}</Text>
     </View>
@@ -25,7 +31,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    marginTop: 48,
+    marginTop: 24,
   },
   description: {
     marginTop: 16,
