@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,6 +7,7 @@ import {
   ScrollView,
   Image,
   TouchableWithoutFeedback,
+  BackHandler,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
@@ -19,7 +20,12 @@ import TickIcon from "../components/icons/tick";
 import Header from "../components/header";
 
 import globalHook from "../hooks/global.hook";
-import { updateUser, isUsernameExist, uploadImage } from "../hooks/user.hooks";
+import {
+  updateUser,
+  isUsernameExist,
+  uploadImage,
+  isUidExist,
+} from "../hooks/user.hooks";
 
 export default function EditProfile() {
   const [focus, setFocus] = useState();
@@ -101,17 +107,19 @@ export default function EditProfile() {
   };
 
   const submitEvent = () => {
-    isUsernameExist(values.username).then((query) => {
-      if (
-        (query.docs.length === 0 || values.username === user.username) &&
-        checkField() &&
-        !uploading
-      ) {
-        updateUser(values);
-        setLoggedUser({ ...user, ...values });
-        pop();
-      }
-    });
+    values.username
+      ? isUsernameExist(values.username).then((query) => {
+          if (
+            (query.docs.length === 0 || values.username === user.username) &&
+            checkField() &&
+            !uploading
+          ) {
+            updateUser(values);
+            setLoggedUser({ ...user, ...values });
+            pop();
+          }
+        })
+      : checkField();
   };
 
   const choosePhoto = async () => {
@@ -135,12 +143,28 @@ export default function EditProfile() {
         .finally(() => setUploading(false));
   };
 
+  useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", function () {
+      return true;
+    });
+    return () => {
+      BackHandler.removeEventListener("hardwareBackPress", function () {
+        return true;
+      });
+    };
+  }, []);
+
+  isUidExist("4IDIQmB0LwSLAwr11jZI8QbC8oF3").then((e) => console.log(e.data()));
+
   return (
     <SafeAreaView style={styles.container}>
       <Header
         title="Edit Profile"
-        leftIcon={<BackIcon width={24} height={24} fill="black" />}
-        leftIconEvent={() => pop()}
+        leftIcon={
+          user &&
+          user.username && <BackIcon width={24} height={24} fill="black" />
+        }
+        leftIconEvent={() => user && user.username && pop()}
         rightIcon={<TickIcon width={24} height={24} fill={Colors.purple} />}
         rightIconEvent={submitEvent}
         backgroundStyle={styles.headerStyle}

@@ -2,14 +2,41 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { pop } from "../navigation/root_navigation";
+import { Notifier, Easing } from "react-native-notifier";
 
 import Header from "../components/header";
 import SettingsButton from "../components/settings_button";
 import BackIcon from "../components/icons/back";
+import { ErrorMessage, SuccessMessage } from "../components/error_message";
 
 import { Colors } from "../consts/colors";
 
+import * as firebase from "firebase";
+
 export default function Settings() {
+  const logoutEvent = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(function () {
+        Notifier.showNotification({
+          title: "Succesful",
+          description: "You logged out succesfully",
+          duration: 5000,
+          showAnimationDuration: 800,
+          showEasing: Easing.bounce,
+          Component: status === "Success" ? SuccessMessage : ErrorMessage,
+          componentProps: {
+            alertType: "error",
+          },
+          hideOnPress: true,
+        });
+      })
+      .catch(function (error) {
+        // An error happened.
+      });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Header
@@ -25,7 +52,11 @@ export default function Settings() {
       <View style={styles.bodyContainer}>
         <SettingsButton text="Language" />
         <SettingsButton text="Notifications" />
-        <SettingsButton text="Logout" textStyle={{ color: "red" }} />
+        <SettingsButton
+          text="Logout"
+          textStyle={{ color: "red" }}
+          onPress={logoutEvent}
+        />
       </View>
     </SafeAreaView>
   );

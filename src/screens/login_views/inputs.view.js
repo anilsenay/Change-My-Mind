@@ -14,6 +14,7 @@ import EmailIcon from "../../components/icons/email";
 import ErrorMessage from "../../components/error_message";
 import CheckboxView from "../register_views/checkbox.view";
 import { navigate } from "../../navigation/root_navigation";
+import { registerUser } from "../../hooks/user.hooks";
 
 export default function Inputs({ type }) {
   const showErrorMessage = (errorMessage) => {
@@ -50,7 +51,11 @@ export default function Inputs({ type }) {
     await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(() => navigate("Feed"))
+      .then((e) =>
+        registerUser(e.user.uid, null, null, "", null).then(() =>
+          navigate("Feed")
+        )
+      )
       .catch((error) => {
         let errorCode = error.code;
         let errorMessage = error.message;

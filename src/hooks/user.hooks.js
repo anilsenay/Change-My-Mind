@@ -7,6 +7,30 @@ function getCurrentUserId() {
   return firebase.auth().currentUser.uid;
 }
 
+async function registerUser(
+  uid,
+  username,
+  profile_name,
+  biography = "",
+  imageSrc
+) {
+  await firebase.firestore().collection("Users").doc(uid).set({
+    UID: uid,
+    username,
+    profile_name,
+    biography,
+    imageSrc,
+    debates: [],
+    followers: [],
+    following: [],
+    won: 0,
+    lost: 0,
+    ongoing: 0,
+    points: 10,
+    notifications: [],
+  });
+}
+
 const getUser = (uid) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
@@ -44,6 +68,10 @@ const isUsernameExist = (username) => {
     .collection("Users")
     .where("username", "==", username)
     .get();
+};
+
+const isUidExist = (uid) => {
+  return firebase.firestore().collection("Users").doc(uid).get();
 };
 
 const followUser = (uid) => {
@@ -107,9 +135,11 @@ const reportUser = (id) => {
 
 export {
   getCurrentUserId,
+  registerUser,
   getUser,
   updateUser,
   isUsernameExist,
+  isUidExist,
   followUser,
   unfollowUser,
   uploadImage,

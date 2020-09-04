@@ -18,6 +18,7 @@ import {
   ANDROID_CLIENT_ID,
   IOS_CLIENT_ID,
 } from "../../consts/firebase.config";
+import { isUidExist, registerUser } from "../../hooks/user.hooks";
 
 export default function Footer({ text }) {
   console.log(
@@ -56,7 +57,16 @@ export default function Footer({ text }) {
       firebase
         .auth()
         .signInWithCredential(credential)
-        .then((user) => navigate("Feed"))
+        .then((user) =>
+          isUidExist(user.user.uid).then((e) => {
+            if (e.data()) navigate("Feed");
+            else {
+              registerUser(user.user.uid, null, null, "", null).then(() =>
+                navigate("Feed")
+              );
+            }
+          })
+        )
         .catch((error) => {
           showErrorMessage(error);
         });
@@ -79,7 +89,16 @@ export default function Footer({ text }) {
         firebase
           .auth()
           .signInWithCredential(credential)
-          .then((user) => navigate("Feed"))
+          .then((user) =>
+            isUidExist(user.user.uid).then((e) => {
+              if (e.data()) navigate("Feed");
+              else {
+                registerUser(user.user.uid, null, null, "", null).then(() =>
+                  navigate("Feed")
+                );
+              }
+            })
+          )
           .catch((error) => {
             showErrorMessage(error);
           });

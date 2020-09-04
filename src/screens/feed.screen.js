@@ -10,6 +10,7 @@ import FeedItems from "./feed_views/feed.items.view";
 
 import globalHook from "../hooks/global.hook";
 import { getUser, getCurrentUserId } from "../hooks/user.hooks";
+import { navigate } from "../navigation/root_navigation";
 
 export default function Feed() {
   const [hideFilter, setHideFilter] = useState(true);
@@ -19,6 +20,7 @@ export default function Feed() {
   const loggedUser = getUser(getCurrentUserId()).data;
   useEffect(() => {
     loggedUser && setLoggedUser(loggedUser);
+    loggedUser && !loggedUser.username && navigate("Edit Profile");
   }, [loggedUser]);
 
   return (
