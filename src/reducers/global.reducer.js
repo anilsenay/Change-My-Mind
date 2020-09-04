@@ -17,6 +17,24 @@ const globalReducer = (state, action) => {
         ...state,
         notifications: state.notifications.concat(action.payload),
       };
+    case "SET_FAVOURITES":
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          favourites: state.user.favourites.concat(action.payload),
+        },
+      };
+    case "REMOVE_FAVOURITES":
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          favourites: state.user.favourites.filter(
+            (item) => item !== action.payload
+          ),
+        },
+      };
     default:
       return state;
   }

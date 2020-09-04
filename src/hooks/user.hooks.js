@@ -34,6 +34,7 @@ async function registerUser(
       ongoing: 0,
       points: 10,
       notifications: [],
+      favourites: [],
     });
 }
 

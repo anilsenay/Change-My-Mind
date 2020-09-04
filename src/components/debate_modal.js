@@ -4,10 +4,14 @@ import { navigate } from "../navigation/root_navigation";
 
 import { reportDebate } from "../hooks/debate.hooks";
 import { reportUser } from "../hooks/user.hooks";
+import globalHook from "../hooks/global.hook";
 
 import ModalButton from "./modal_button";
 
 export default function DebateModal({ data, cancelEvent, inDebate }) {
+  const { addFavourites, removeFavourites, useGlobalState } = globalHook();
+  const { user } = useGlobalState();
+
   console.log(data.proponent);
   const goToDebate = () => {
     navigate("Discussion", {
@@ -39,6 +43,13 @@ export default function DebateModal({ data, cancelEvent, inDebate }) {
     cancelEvent();
   };
 
+  const addFavouriteEvent = () => {
+    addFavourites(data.id);
+  };
+  const removeFavouriteEvent = () => {
+    removeFavourites(data.id);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.buttonsContainer}>
@@ -62,7 +73,14 @@ export default function DebateModal({ data, cancelEvent, inDebate }) {
             onPress={() => reportUserEvent(data.opponent.uid)}
           />
         )}
-        <ModalButton text="Add to Favourites" />
+        {user?.favourites.includes(data.id) ? (
+          <ModalButton
+            text="Remove from Favourites"
+            onPress={removeFavouriteEvent}
+          />
+        ) : (
+          <ModalButton text="Add to Favourites" onPress={addFavouriteEvent} />
+        )}
         <ModalButton text="Share" onPress={shareEvent} />
         <ModalButton text="Cancel" noBorder onPress={cancelEvent} />
       </View>

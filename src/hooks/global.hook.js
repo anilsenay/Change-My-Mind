@@ -48,10 +48,40 @@ const globalHook = () => {
         });
   };
 
+  const addFavourites = (value) => {
+    console.log(value);
+    return firebase
+      .firestore()
+      .collection("Users")
+      .doc(firebase.auth().currentUser.uid)
+      .update({ favourites: firebase.firestore.FieldValue.arrayUnion(value) })
+      .then(() => {
+        globalDispatch({
+          type: "SET_FAVOURITES",
+          payload: value,
+        });
+      });
+  };
+  const removeFavourites = (value) => {
+    return firebase
+      .firestore()
+      .collection("Users")
+      .doc(firebase.auth().currentUser.uid)
+      .update({ favourites: firebase.firestore.FieldValue.arrayRemove(value) })
+      .then(() => {
+        globalDispatch({
+          type: "REMOVE_FAVOURITES",
+          payload: value,
+        });
+      });
+  };
+
   return {
     useGlobalState,
     setLoggedUser,
     setNotifications,
+    addFavourites,
+    removeFavourites,
   };
 };
 
