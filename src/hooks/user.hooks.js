@@ -14,21 +14,27 @@ async function registerUser(
   biography = "",
   imageSrc
 ) {
-  await firebase.firestore().collection("Users").doc(uid).set({
-    UID: uid,
-    username,
-    profile_name,
-    biography,
-    imageSrc,
-    debates: [],
-    followers: [],
-    following: [],
-    won: 0,
-    lost: 0,
-    ongoing: 0,
-    points: 10,
-    notifications: [],
-  });
+  await firebase
+    .firestore()
+    .collection("Users")
+    .doc(uid)
+    .set({
+      UID: uid,
+      username,
+      profile_name,
+      biography,
+      imageSrc:
+        imageSrc ||
+        "https://firebasestorage.googleapis.com/v0/b/change-my-mind-v0.appspot.com/o/profile_photos%2FPngItem_307416.png?alt=media&token=bdfc051b-1c3b-4573-82e0-d5eb71290591",
+      debates: [],
+      followers: [],
+      following: [],
+      won: 0,
+      lost: 0,
+      ongoing: 0,
+      points: 10,
+      notifications: [],
+    });
 }
 
 const getUser = (uid) => {
