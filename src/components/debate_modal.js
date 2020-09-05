@@ -9,7 +9,7 @@ import globalHook from "../hooks/global.hook";
 import ModalButton from "./modal_button";
 
 export default function DebateModal({ data, cancelEvent, inDebate }) {
-  const { addFavourites, removeFavourites, useGlobalState } = globalHook();
+  const { addFavourite, removeFavourite, useGlobalState } = globalHook();
   const { user } = useGlobalState();
 
   console.log(data.proponent);
@@ -44,10 +44,10 @@ export default function DebateModal({ data, cancelEvent, inDebate }) {
   };
 
   const addFavouriteEvent = () => {
-    addFavourites(data.id);
+    addFavourite(data.id);
   };
   const removeFavouriteEvent = () => {
-    removeFavourites(data.id);
+    removeFavourite(data.id);
   };
 
   return (

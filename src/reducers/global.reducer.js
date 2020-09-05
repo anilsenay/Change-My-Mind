@@ -3,6 +3,7 @@
 const globalInitialState = {
   user: null,
   notifications: [],
+  favourites: [],
 };
 
 const globalReducer = (state, action) => {
@@ -17,7 +18,7 @@ const globalReducer = (state, action) => {
         ...state,
         notifications: state.notifications.concat(action.payload),
       };
-    case "SET_FAVOURITES":
+    case "ADD_FAVOURITE":
       return {
         ...state,
         user: {
@@ -25,7 +26,7 @@ const globalReducer = (state, action) => {
           favourites: state.user.favourites.concat(action.payload),
         },
       };
-    case "REMOVE_FAVOURITES":
+    case "REMOVE_FAVOURITE":
       return {
         ...state,
         user: {
@@ -34,6 +35,17 @@ const globalReducer = (state, action) => {
             (item) => item !== action.payload
           ),
         },
+      };
+
+    case "SET_FAVOURITES":
+      return {
+        ...state,
+        favourites: action.payload,
+      };
+    case "SET_MORE_FAVOURITES":
+      return {
+        ...state,
+        favourites: [...state.favourites, action.payload],
       };
     default:
       return state;

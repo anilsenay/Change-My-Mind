@@ -48,7 +48,7 @@ const globalHook = () => {
         });
   };
 
-  const addFavourites = (value) => {
+  const addFavourite = (value) => {
     console.log(value);
     return firebase
       .firestore()
@@ -57,12 +57,12 @@ const globalHook = () => {
       .update({ favourites: firebase.firestore.FieldValue.arrayUnion(value) })
       .then(() => {
         globalDispatch({
-          type: "SET_FAVOURITES",
+          type: "ADD_FAVOURITE",
           payload: value,
         });
       });
   };
-  const removeFavourites = (value) => {
+  const removeFavourite = (value) => {
     return firebase
       .firestore()
       .collection("Users")
@@ -70,18 +70,77 @@ const globalHook = () => {
       .update({ favourites: firebase.firestore.FieldValue.arrayRemove(value) })
       .then(() => {
         globalDispatch({
-          type: "REMOVE_FAVOURITES",
+          type: "REMOVE_FAVOURITE",
           payload: value,
         });
       });
+  };
+
+  const fetchFavourites = (debateArray) => {
+    debateArray &&
+      debateArray.length > 0 &&
+      firebase
+        .firestore()
+        .collection("Debate")
+        .where(
+          firebase.firestore.FieldPath.documentId(),
+          "in",
+          debateArray.slice(0, 10)
+        )
+        .get()
+        .then((query) => {
+          const fetchedData = query.docs.map((doc) => {
+            return {
+              id: doc.id,
+              ...doc.data(),
+              start_date: doc.data().start_date.toDate(),
+              update_date: doc.data().update_date.toDate(),
+              finish_date: doc.data().finish_date?.toDate(),
+            };
+          });
+          globalDispatch({
+            type: "SET_FAVOURITES",
+            payload: fetchedData,
+          });
+        });
+  };
+  const fetchMoreFavourites = (debateArray) => {
+    debateArray &&
+      debateArray.length > 0 &&
+      firebase
+        .firestore()
+        .collection("Debate")
+        .where(
+          firebase.firestore.FieldPath.documentId(),
+          "in",
+          debateArray.slice(0, 10)
+        )
+        .get()
+        .then((query) => {
+          const fetchedData = query.docs.map((doc) => {
+            return {
+              id: doc.id,
+              ...doc.data(),
+              start_date: doc.data().start_date.toDate(),
+              update_date: doc.data().update_date.toDate(),
+              finish_date: doc.data().finish_date?.toDate(),
+            };
+          });
+          globalDispatch({
+            type: "SET_MORE_FAVOURITES",
+            payload: fetchedData,
+          });
+        });
   };
 
   return {
     useGlobalState,
     setLoggedUser,
     setNotifications,
-    addFavourites,
-    removeFavourites,
+    addFavourite,
+    removeFavourite,
+    fetchFavourites,
+    fetchMoreFavourites,
   };
 };
 

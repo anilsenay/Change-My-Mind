@@ -17,6 +17,7 @@ import Settings from "../screens/settings.screen";
 import Root from "../index";
 import { MyTabBar } from "./tabBar";
 import Discussion from "../screens/discussion";
+import Favourites from "../screens/favourites.screen";
 
 const Stack = createStackNavigator();
 
@@ -66,6 +67,11 @@ export function GlobalNavigation() {
       <Stack.Screen
         name="Settings"
         component={Settings}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Favourites"
+        component={Favourites}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { pop } from "../navigation/root_navigation";
+import { pop, navigate } from "../navigation/root_navigation";
 import { Notifier, Easing } from "react-native-notifier";
 
 import Header from "../components/header";
@@ -52,7 +52,10 @@ export default function Settings() {
       <View style={styles.bodyContainer}>
         <SettingsButton text="Language" />
         <SettingsButton text="Notifications" />
-        <SettingsButton text="Your Favourites" />
+        <SettingsButton
+          text="Your Favourites"
+          onPress={() => navigate("Favourites")}
+        />
         <SettingsButton
           text="Logout"
           textStyle={{ color: "red" }}
