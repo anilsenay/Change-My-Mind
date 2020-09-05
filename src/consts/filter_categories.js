@@ -10,6 +10,14 @@ const categories = [
   { name: "Health", isSelected: true },
   { name: "Animals", isSelected: true },
   { name: "Music", isSelected: true },
+  { name: "Philosophy", isSelected: true },
+  { name: "Sports", isSelected: true },
+  { name: "Technology", isSelected: true },
+  { name: "Nature", isSelected: true },
+  { name: "Science", isSelected: true },
+  { name: "Books", isSelected: true },
+  { name: "Cars", isSelected: true },
+  { name: "Irrelevant", isSelected: true },
 ];
 
 const categoriesWithEmoji = {
@@ -24,6 +32,14 @@ const categoriesWithEmoji = {
   Health: "⚕️",
   Animals: "🐶",
   Music: "🎵",
+  Philosophy,
+  Sports: "🏀",
+  Technology: "🤖",
+  Nature: "🌳",
+  Science: "🧬",
+  Books: "📖",
+  Cars: "🚗",
+  Irrelevant: "🏷️",
 };
 
 export { categories, categoriesWithEmoji };
