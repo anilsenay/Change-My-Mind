@@ -66,7 +66,7 @@ This was a project I was making with Kotlin but I aborted the project. Then last
 
 Demo video: [Click here](https://drive.google.com/file/d/1Kcosp5uze11e0xhZt5tWPl0LJWrHPbSD/view?usp=sharing)
 
-Splash Screen: [Click here](https://drive.google.com/file/d/1KohMshxDmxwgFd-W30sEk94v0ijUmnak/view?usp=sharing) ( animation is not that fast in app actually video is a little fast :D )
+Splash Screen: [Click here](https://drive.google.com/file/d/1KcvfrHQXoFu0QfuEdTfUwP-Pj2NxSHnl/view?usp=sharing) ( animation is not that fast in app actually video is a little fast :D )
 
 ### Feed - Explore
 ![Feed-Explore Image](https://i.ibb.co/w4RwBk4/feed-explore.png)
@@ -137,6 +137,7 @@ npm start
 - Discussion and Profile dots modals have "Share" button but Deep Linking is not ready for now. This is a future plan.
 - Need tests. 
 - Firebase provides more ease but owning backend will be better.
+- useEffect cleanup functions must to be added later.
 
 <!-- CONTRIBUTING -->
 ## Contributing
