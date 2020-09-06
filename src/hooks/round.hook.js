@@ -209,10 +209,10 @@ function createNewRound(uid, proponent_msg) {
       opponent_msg: null,
       proponent_date: new Date(),
       opponent_date: null,
-      proponent_like: 0,
-      opponent_like: 0,
-      proponent_dislike: 0,
-      opponent_dislike: 0,
+      proponent_like: [],
+      opponent_like: [],
+      proponent_dislike: [],
+      opponent_dislike: [],
     })
     .then((doc) => {
       firebase
