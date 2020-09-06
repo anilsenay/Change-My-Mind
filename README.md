@@ -27,6 +27,7 @@
 
 * [About the Project](#about-the-project)
   * [Built With](#built-with)
+  * [About the app](#about-the-app)
 * [Screens](#screens)
    * [Welcome & Login](#welcome---login)
    * [Feed & Explore](#feed---explore)
@@ -46,6 +47,9 @@
 ## About The Project
 
 This was a project I was making with Kotlin but I aborted the project. Then last month I started this project from stratch with React Native this time to learn more and get more experiment in React Native. I wanted to make this project in 1 month as a goal. So everything I've done is a month of labor. ~%90 of my goals are done. After all I have a working project although it has some problems. These problems are not a big deal but I am done with this project now. I will continue to develop this project in places. I used Firebase as backend, I will create my own backend one day if I start development in backend. Because some part of app is not working well because of Firebase's limits. If you like my project and want to cooperate please contact with me ^^
+
+### About the app
+This is a debate app basically. You can create a debate on any topic to challenge a user to change your mind. You will present your ideas in rounds. At the end of rounds, there is a voting period to able other users vote your opinions. After all most voted user wins the debate. If you already changed your mind and gave up, you can anytime finish the debate and let the opponent wins. I also added point system for win and lose but it is not effective right now because I did not decide that rank system yet.
 
 ### Built With
 * [React Native](https://reactnative.dev/)
@@ -97,6 +101,10 @@ Creating debate demo: [Click here](https://drive.google.com/file/d/1KlGSO5hE4qgz
 
 ![Notifications Image](https://i.ibb.co/9wr5rDG/Notifications.png)
 - Notifications are not working well right now. I will work on them later.
+
+<!-- DATABASE STRUCTURE -->
+## Database Structure
+![Structure](https://i.ibb.co/6DMVH0B/Frame-1-1.png)
 
 <!-- GETTING STARTED -->
 ## Getting Started
