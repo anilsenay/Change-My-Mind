@@ -63,12 +63,15 @@ This was a project I was making with Kotlin but I aborted the project. Then last
 ### Welcome - Login
 ![Welcome Image](https://i.ibb.co/2KYQFqQ/welcome-login.png)
 - Welcome and login screens are works perfectly.
+
 Demo video: [Click here](https://drive.google.com/file/d/1Kcosp5uze11e0xhZt5tWPl0LJWrHPbSD/view?usp=sharing)
+
 Splash Screen: [Click here](https://drive.google.com/file/d/1KohMshxDmxwgFd-W30sEk94v0ijUmnak/view?usp=sharing) ( animation is not that fast in app actually video is a little fast :D )
 
 ### Feed - Explore
 ![Feed-Explore Image](https://i.ibb.co/w4RwBk4/feed-explore.png)
 - Feed screen: needs to be customized according to the user. Sorting is working but category selection is not because of firestore limits.
+
 Demo video: [Click here](https://drive.google.com/file/d/1KsA7Q-_AAeMip_iyzapLDi5RQVHUa2ET/view?usp=sharing)
 
 - Explore screen: This screen is not working well. I will change almost everything on this screen. Page is so slow because of a lot of queries. "Wiew all" is not working for now, I did not create that screen. Only searching is working well. 
@@ -78,6 +81,7 @@ Demo video: [Click here](https://drive.google.com/file/d/1KsA7Q-_AAeMip_iyzapLDi
 - This page is working well but need tests. I know 1-2 bugs, I will work on them. Share button is not working for now. I need deep linking there.
 
 Demo video: [Click here](https://drive.google.com/file/d/1KohMshxDmxwgFd-W30sEk94v0ijUmnak/view?usp=sharing)
+
 Creating debate demo: [Click here](https://drive.google.com/file/d/1KlGSO5hE4qgzadDrD--cefJys-8d9OUW/view?usp=sharing)
 
 ### Join debate - Start new round - Post argument
